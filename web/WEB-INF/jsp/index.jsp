@@ -10,7 +10,7 @@
 
     <body>
 
-        <div class="navbar  navbar-default navbar-fixed-top">
+        <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <a class="navbar-brand nav-header" href="index.html">BSxSB</a>
@@ -32,7 +32,7 @@
                         </li>
                         <li>
                             <input class="navbarinput" type="text" name="password" placeholder="Password">
-                            <a class="resetpass" href="resume.html" style="font-size:12px;">Forgot your password?</a>
+                     
                         </li>
                         <li>
                             <a href="student.html">Login</a>
@@ -64,23 +64,29 @@
 
                             <form id="register" novalidate>
                                 <div class="col-sm-12">
-                                    <input placeholder="First Name" id="firstName"> </input>
-                                    <input placeholder="Last Name" id="lastName"> </input>
+                                    <input placeholder="First Name" id="firstName" style="width:360px;"> </input>
+ 
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Last Name" id="lastName" style="width:395px;"> </input>
+                                    <input placeholder="Last Name" id="lastName" style="width:360px;"> </input>
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Email Address" id="email"  style="width:395px;"> </input>
+                                    <input placeholder="Email Address" id="email" style="width:360px;" > </input>
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Password" id="password"  style="width:395px;"> </input>
+                                    <input placeholder="Password" id="password" style="width:360px;"> </input>
+                                </div>
+                                <div class="col-sm-2 registerform" >
+        <label for="select" class="control-label">School</label>
+                                </div>
+                     <div class="col-sm-10 registerform" >            
+        <select class="form-control" id="select" style="width:360px;" >
+          <option>Stony Brook U</option>
+          <option>Bronx Science</option>
+        </select>
                                 </div>
                                 <div class="col-sm-12 registerform" >
-
-                                </div>
-                                <div class="col-sm-12 registerform" >
-                                    <button type="button" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-right:215px;">
+                                    <button type="button" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">
                                         Register 
                                     </button>
                                 </div>
@@ -97,11 +103,11 @@
         </div>
 
 
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="resources/js/jquery.js"></script>
+        <script src="resources/js/bootstrap.min.js"></script>
     </body>
 
-    <footer class="text-center">
+    <footer class="footer-inverse text-center">
         <div class="footer-above">
             <div class="container">
                 <div class="row">

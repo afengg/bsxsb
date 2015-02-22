@@ -18,7 +18,6 @@ import org.springframework.web.portlet.ModelAndView;
 public class MainPageController {
     @RequestMapping
     public void studentPage(ModelAndView mv){
-     mv.setViewName("student");
 
     }
 

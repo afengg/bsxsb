@@ -86,8 +86,8 @@
 			
 			</ul>
 				</div>
-			<div class="col-sm-8 text-center">
-			<img src="img/profile.png">
+			<div class="col-sm-8 text-center" style="margin-top:30px;">
+			<img src="resources/img/profile.png">
 			
 			
 			</div>
@@ -131,8 +131,8 @@
                 </div>
             </div>
         </footer>
-		        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="resources/js/jquery.js"></script>
+        <script src="resources/js/bootstrap.min.js"></script>
 </body>
 
       

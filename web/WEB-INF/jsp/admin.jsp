@@ -3,15 +3,15 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin</title>
-		 <link href="css/bootstrap.min.css" rel="stylesheet">
-		  <link href="css/bootstrap-theme.min.css" rel="stylesheet">
-		  <link href="css/style.css" rel="stylesheet">
+		 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+		
+		  <link href="resources/css/style.css" rel="stylesheet">
 		  <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-default navbar-fixed-top">
 <div class="container">
 <div class="navbar-header">
 
@@ -68,7 +68,7 @@
 			<div class="col-sm-10 ">
 			<h1 align="center">Schools</h1>
 			<div >
-<table class="table "style="background-color:#2b3e50; ">
+<table class="table "style=" ">
 <thead>
 <tr>
 <th>
@@ -155,8 +155,8 @@ Stony Brook University
                 </div>
             </div>
         </footer>
-		        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+		        <script src="resources/js/jquery.js"></script>
+        <script src="resources/js/bootstrap.min.js"></script>
 </body>
 
       

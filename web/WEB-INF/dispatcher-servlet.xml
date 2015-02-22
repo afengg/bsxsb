@@ -23,7 +23,7 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
         <property name="mappings">
             <props>
                 <prop key="index.html">indexController</prop>
-                 <prop key="student.html">MainPageController</prop>
+         
             </props>
         </property>
     </bean>
