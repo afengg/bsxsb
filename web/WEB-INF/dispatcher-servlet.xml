@@ -13,7 +13,7 @@
 http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
     <bean class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping"/>
-
+    <bean class="BSxSB.Controllers.MainPageController" id="MainPageController" />
     <!--
     Most controllers will use the ControllerClassNameHandlerMapping above, but
     for the index controller we are using ParameterizableViewController, so we must
@@ -22,7 +22,8 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="index.htm">indexController</prop>
+                <prop key="index.html">indexController</prop>
+                 <prop key="student.html">MainPageController</prop>
             </props>
         </property>
     </bean>
