@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,17 +93,14 @@
 			
 			</div>
 			<div class="col-sm-8  text-center">
-			<h3>Lun Zhang</h3>
+			<h3></h3>
 			</div>
-				<div class="col-sm-8  text-center">
-			<h3>lun.zhang@stonybrook.edu</h3>
+                        <div class="col-sm-8  text-center">
+			<h3>    ${student.getPassword()}${student.getEmail()}${student.getLastname()}</h3>
+
+                        ${msg}
 			</div>
-			<div class="col-sm-8  text-center">
-			<h3>Stony Brook University</h3>
-			</div>
-			<div class="col-sm-8  text-center">
-			<h3>Password</h3>
-			</div>
+			
 			</div>
             		 
 </div>
