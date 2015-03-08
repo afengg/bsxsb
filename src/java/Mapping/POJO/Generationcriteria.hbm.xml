@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2015 9:53:13 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.POJO.Generationcriteria" table="generationcriteria" catalog="lunzhang" optimistic-lock="version">
+        <id name="generationcriteriaid" type="java.lang.Integer">
+            <column name="generationcriteriaid" />
+            <generator class="identity" />
+        </id>
+        <property name="studentid" type="java.lang.Integer">
+            <column name="studentid" />
+        </property>
+        <property name="courseidentifiers" type="string">
+            <column name="courseidentifiers" />
+        </property>
+        <property name="instructors" type="string">
+            <column name="instructors" />
+        </property>
+    </class>
+</hibernate-mapping>

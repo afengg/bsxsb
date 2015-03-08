@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://mysql2.cs.stonybrook.edu:3306/lunzhang?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">lunzhang</property>
     <property name="hibernate.connection.password">108598933</property>
-     <mapping resource="Mapping/POJO/Student.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Admin.hbm.xml"/>
+    <mapping resource="Mapping/POJO/School.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Courses.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Generationcriteria.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Student.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Scheduleblock.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Friendship.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

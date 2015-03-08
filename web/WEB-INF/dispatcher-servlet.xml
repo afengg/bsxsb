@@ -42,6 +42,6 @@ http://www.springframework.org/schema/context/spring-context.xsd">
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
 
- <mvc:annotation-driven />
+     <mvc:annotation-driven />
     <mvc:resources mapping="/resources/**" location="/resources/**"  /> 
 </beans>

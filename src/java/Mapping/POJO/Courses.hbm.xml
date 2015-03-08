@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 7, 2015 9:53:13 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.POJO.Courses" table="courses" catalog="lunzhang" optimistic-lock="version">
+        <id name="courseid" type="int">
+            <column name="courseid" />
+            <generator class="assigned" />
+        </id>
+        <property name="schoolid" type="int">
+            <column name="schoolid" not-null="true" />
+        </property>
+        <property name="coursename" type="string">
+            <column name="coursename" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" />
+        </property>
+        <property name="courseidentifier" type="string">
+            <column name="courseidentifier" length="45" />
+        </property>
+        <property name="numstudents" type="java.lang.Integer">
+            <column name="numstudents" />
+        </property>
+        <property name="instructor" type="string">
+            <column name="instructor" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

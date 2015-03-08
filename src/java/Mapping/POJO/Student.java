@@ -1,5 +1,5 @@
 package Mapping.POJO;
-// Generated Feb 28, 2015 3:00:22 PM by Hibernate Tools 4.3.1
+// Generated Mar 7, 2015 9:53:12 AM by Hibernate Tools 4.3.1
 
 
 
@@ -13,6 +13,8 @@ public class Student  implements java.io.Serializable {
      private String firstname;
      private String lastname;
      private String password;
+     private Boolean loggedin;
+     private Integer schoolid;
 
     public Student() {
     }
@@ -23,11 +25,13 @@ public class Student  implements java.io.Serializable {
         this.firstname = firstname;
         this.lastname = lastname;
     }
-    public Student(String email, String firstname, String lastname, String password) {
+    public Student(String email, String firstname, String lastname, String password, Boolean loggedin, Integer schoolid) {
        this.email = email;
        this.firstname = firstname;
        this.lastname = lastname;
        this.password = password;
+       this.loggedin = loggedin;
+       this.schoolid = schoolid;
     }
    
     public String getEmail() {
@@ -57,6 +61,20 @@ public class Student  implements java.io.Serializable {
     
     public void setPassword(String password) {
         this.password = password;
+    }
+    public Boolean getLoggedin() {
+        return this.loggedin;
+    }
+    
+    public void setLoggedin(Boolean loggedin) {
+        this.loggedin = loggedin;
+    }
+    public Integer getSchoolid() {
+        return this.schoolid;
+    }
+    
+    public void setSchoolid(Integer schoolid) {
+        this.schoolid = schoolid;
     }
 
 

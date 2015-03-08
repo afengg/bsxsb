@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated Feb 28, 2015 3:00:23 PM by Hibernate Tools 4.3.1 -->
-<hibernate-mapping package="Mapping.POJO">
+<!-- Generated Mar 7, 2015 9:53:13 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
     <class name="Mapping.POJO.Student" table="student" catalog="lunzhang" optimistic-lock="version">
         <id name="email" type="string">
             <column name="email" length="45" />
@@ -16,6 +16,12 @@
         </property>
         <property name="password" type="string">
             <column name="password" length="45" />
+        </property>
+        <property name="loggedin" type="java.lang.Boolean">
+            <column name="loggedin" />
+        </property>
+        <property name="schoolid" type="java.lang.Integer">
+            <column name="schoolid" />
         </property>
     </class>
 </hibernate-mapping>
