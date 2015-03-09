@@ -35,7 +35,9 @@
                      
                         </li>
                         <li>
+                            <form action="login" method="post">
                             <a href="student.html">Login</a>
+                            </form>
                         </li>
 
                     </ul>
