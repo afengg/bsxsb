@@ -25,19 +25,18 @@ public class StudentController  {
     @RequestMapping(value="/student",method=RequestMethod.GET)
     public String studentPage(Model model){
       StudentDAO studentdao = new StudentDAO();
-      System.out.print(studentdao.getStudent());
-       String email=studentdao.getStudent().get(0).getEmail();
-      model.addAttribute("student", studentdao.getStudent().get(0));
+      List list=studentdao.allStudent();
+      model.addAttribute("student", list.get(0));
       model.addAttribute("msg", "msg");
       return "student";
-      
+
 }
    @RequestMapping(value="/managefriends",method=RequestMethod.GET)
     public void studentPages(Model model){
       Student lun = new Student();
       lun.setEmail("asfsas");
       model.addAttribute("msg", "msg");
-      
+
 }
-  
+
 }

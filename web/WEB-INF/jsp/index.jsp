@@ -23,24 +23,12 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-
-                            <input class="navbarinput" type="text" name="userID" placeholder="User Id">
-
-                        </li>
-                        <li>
-                            <input class="navbarinput" type="text" name="password" placeholder="Password">
-                     
-                        </li>
-                        <li>
-                            <form action="login" method="post">
-                            <a href="student.html">Login</a>
-                            </form>
-                        </li>
-
-                    </ul>
+                <div class="collapse navbar-collapse nav navbar-nav navbar-right">
+                    <form action="/BSxSB/login" method="POST">
+                        <input class="navbarinput" type="text" name="email" placeholder="Email">
+                        <input class="navbarinput" type="text" name="password" placeholder="Password">
+                        <button type="submit" class="btn btn-sm btn-primary">Login</button>
+                    </form>
                 </div>	
 
 
@@ -67,7 +55,7 @@
                             <form id="register" novalidate>
                                 <div class="col-sm-12">
                                     <input placeholder="First Name" id="firstName" style="width:360px;"> </input>
- 
+
                                 </div>
                                 <div class="col-sm-12 registerform">
                                     <input placeholder="Last Name" id="lastName" style="width:360px;"> </input>
@@ -79,13 +67,13 @@
                                     <input placeholder="Password" id="password" style="width:360px;"> </input>
                                 </div>
                                 <div class="col-sm-2 registerform" >
-        <label for="select" class="control-label">School</label>
+                                    <label for="select" class="control-label">School</label>
                                 </div>
-                     <div class="col-sm-10 registerform" >            
-        <select class="form-control" id="select" style="width:360px;" >
-          <option>Stony Brook U</option>
-          <option>Bronx Science</option>
-        </select>
+                                <div class="col-sm-10 registerform" >            
+                                    <select class="form-control" id="select" style="width:360px;" >
+                                        <option>Stony Brook U</option>
+                                        <option>Bronx Science</option>
+                                    </select>
                                 </div>
                                 <div class="col-sm-12 registerform" >
                                     <button type="button" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">

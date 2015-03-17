@@ -18,7 +18,7 @@ import org.hibernate.Session;
  * @author lun
  */
 public class StudentDAO {
-    public static List<Student> getStudent(){
+    public  List<Student> allStudent(){
         Session session = HibernateUtil.getSessionFactory().openSession();
                 Query query = session.createSQLQuery(
                 "SELECT * FROM student")
