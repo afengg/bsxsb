@@ -60,6 +60,15 @@ public class Scheduleblocks  implements java.io.Serializable {
     public void setSemester(String semester) {
         this.semester = semester;
     }
+    /**
+     * This override method is use to present the scheduleblock data in the
+     * appropriate form {<period>;<day1>,<day2>}
+     * @return a String
+     */
+    @Override
+    public String toString(){
+         return "{" + period + ";" + days + "}";
+    }
 
 
 

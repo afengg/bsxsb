@@ -6,6 +6,10 @@
 package BSxSB.Controllers;
 
 import DAO.StudentDAO;
+import DAO.SchoolDAO;
+import DAO.ScheduleBlockDAO;
+import Mapping.POJO.Scheduleblocks;
+import Mapping.POJO.Schools;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -21,10 +25,22 @@ import org.springframework.web.portlet.ModelAndView;
 @Controller
 public class AdminController {
     
-     @RequestMapping(value="/admin",method=RequestMethod.GET)
+    @RequestMapping(value="/admin",method=RequestMethod.GET)
     public String adminPage(Model model){
+        SchoolDAO schoolDAO = new SchoolDAO();
+        ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
+        List<Schools> schools = schoolDAO.allSchools();
+        for(Schools school: schools){
+            List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
+            String SB2Strings = "";
+            for(Scheduleblocks sb : scheduleBlocks){
+                SB2Strings += sb.toString();
+            }
+            school.setScheduleblocks(SB2Strings);
+        }
+        model.addAttribute("school", schools);
+        return "admin";
+    }
     
-      return "admin";
-      
-}
+
 }

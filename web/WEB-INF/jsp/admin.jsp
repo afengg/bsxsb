@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,32 +96,34 @@ Schedule Blocks
 </tr>
 </thead>
 <tbody style="text-align:left;">
+<c:forEach items="${school}" var="school">
 <tr>
 <td>
-Stony Brook University
+${school.getSchoolname()}
 </td>
 <td>
-2015
+${school.getAcademicyear()}
 </td>
 <td>
-2
+${school.getNumsemesters()}
 </td>
 <td>
-5
+${school.getNumdays()}
 </td>
 <td>
-20
+${school.getNumperiods()}
 </td>
 <td>
-1-20
+${school.getLunchrange()}
 </td>
 <td>
-{1;1,2} {2;3,4,5} {1;1,6,2}
+${school.getScheduleblocks()}
 </td>
 <td>
 <button class="btn btn-danger btn-xs">Delete School </button>
 </td>
 </tr>
+</c:forEach>
 
 </tbody>
 </table>
