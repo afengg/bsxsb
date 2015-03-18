@@ -36,7 +36,7 @@ public class StudentController  {
 }
    @RequestMapping(value="/managefriends",method=RequestMethod.GET)
     public String manageFriends(Model model){
-      return "managefriends";
+      return "studentmanagefriends";
 }
 
 }
