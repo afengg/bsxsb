@@ -29,7 +29,7 @@
                     <ul class="nav navbar-nav navbar-right">
 					
                         <li>
-                            <a href="resume.html">Sign Out</a>
+                            <a href="j_spring_security_logout">Sign Out</a>
                         </li>
 				
                     </ul>
