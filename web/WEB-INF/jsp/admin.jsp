@@ -48,15 +48,15 @@
                     Manage School<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a href="addschool.html">Add School</a></li>
+                    <li><a href="adminaddschool.html">Add School</a></li>
                     <li><a href="admin.html">View Schools</a></li>
                   </ul>
                 </li>
                 <li>
-                    <a href="managerequests.html">Manage Account Requests</a>
+                    <a href="adminmanagerequests.html">Manage Account Requests</a>
                 </li>
                 <li>
-                    <a href="manageaccounts.html">Display Student Accounts</a>
+                    <a href="adminmanageaccounts.html">Display Student Accounts</a>
                 </li>
               
                 

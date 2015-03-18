@@ -20,12 +20,15 @@ import org.springframework.web.portlet.ModelAndView;
 @Controller
 public class LoginController {
 
- @RequestMapping(value="/login", method = RequestMethod.POST)
-    public String login(Model model,@RequestParam(value = "email") String email, @RequestParam(value = "password") String password,HttpSession session){
-    
-      return "admin";
-      
-}
-    
+@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String login(
+		@RequestParam(value = "error", required = false) String error,
+		@RequestParam(value = "logout", required = false) String logout) {
+ 
+
+ 
+		return "index";
+ 
+	}
 
 }

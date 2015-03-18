@@ -58,7 +58,7 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li><a href="entercourses.html">Enter Assigned Courses</a></li>
-                    <li><a href="assignedcourses.html">View Assigned Courses</a></li>
+                    <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
 					 <li><a href="editassigned.html">Edit Assigned Courses</a></li>
                   </ul>
                 </li>
@@ -67,8 +67,8 @@
                     Course Offerings<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a href="courseofferings.html">2014</a></li>
-                    <li><a href="courseofferings.html">2015</a></li>
+                    <li><a href="studentcourseofferings.html">2014</a></li>
+                    <li><a href="studentcourseofferings.html">2015</a></li>
                   </ul>
                 </li>
       <li class="dropdown">

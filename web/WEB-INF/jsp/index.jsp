@@ -24,8 +24,8 @@
                 </button>
 
                 <div class="collapse navbar-collapse nav navbar-nav navbar-right">
-                    <form action="/BSxSB/login" method="POST">
-                        <input class="navbarinput" type="text" name="email" placeholder="Email">
+                    <form action="j_spring_security_check" method="POST">
+                        <input class="navbarinput" type="text" name="username" placeholder="Email">
                         <input class="navbarinput" type="text" name="password" placeholder="Password">
                         <button type="submit" class="btn btn-sm btn-primary">Login</button>
                     </form>

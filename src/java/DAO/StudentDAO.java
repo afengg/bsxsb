@@ -21,7 +21,7 @@ public class StudentDAO {
     public  List<Student> allStudent(){
         Session session = HibernateUtil.getSessionFactory().openSession();
                 Query query = session.createSQLQuery(
-                "SELECT * FROM student")
+                "SELECT * FROM students")
                 .addEntity(Student.class);
           List<Student> allStudents = query.list();
           session.close();
