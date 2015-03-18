@@ -5,8 +5,6 @@
  */
 package DAO;
 
-
-
 import Hibernate.HibernateUtil;
 import Mapping.POJO.Students;
 import java.util.List;
@@ -18,13 +16,45 @@ import org.hibernate.Session;
  * @author lun
  */
 public class StudentDAO {
-    public  List<Students> allStudent(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-                Query query = session.createSQLQuery(
+
+    private static Session session;
+
+    public static List<Students> allStudent() {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
                 "SELECT * FROM students")
                 .addEntity(Students.class);
-          List<Students> allStudents = query.list();
-          session.close();
+        List<Students> allStudents = query.list();
         return allStudents;
     }
+
+    public Students loginStudent(String email, String password) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ? AND password =?")
+                .addEntity(Students.class)
+                .setString(0, email)
+                .setString(1, password);
+        List<Students> allStudents = query.list();
+        if (allStudents.isEmpty()) {
+            return null;
+        }
+        Students student = allStudents.get(0);
+        return student;
+    }
+
+    public static Students getStudent(String email) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ?")
+                .addEntity(Students.class)
+                .setString(0, email);
+        List<Students> allStudents = query.list();
+        if (allStudents.isEmpty()) {
+            return null;
+        }
+        Students student = allStudents.get(0);
+        return student;
+    }
+                
 }

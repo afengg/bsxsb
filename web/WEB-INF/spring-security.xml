@@ -22,11 +22,8 @@
     <beans:bean id="UserService"
                class="SpringSecurity.UserService" />
     <authentication-manager>
-       <authentication-provider>
-            <user-service>
-                <user name="lun" password="lun" authorities="ROLE_ADMIN" />
-                <user name="1" password="1" authorities="ROLE_USER" />
-            </user-service>
+       <authentication-provider user-service-ref="UserService">
+          
         </authentication-provider>
     </authentication-manager>
  

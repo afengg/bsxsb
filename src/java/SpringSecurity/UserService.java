@@ -5,6 +5,14 @@
  */
 package SpringSecurity;
 
+import DAO.AdminDAO;
+import DAO.StudentDAO;
+import Mapping.POJO.Admins;
+import Mapping.POJO.Students;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +25,19 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Students student = StudentDAO.getStudent(string);
+        if (student != null) {
+            List roles = new ArrayList();
+            roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+            return new User(student.getEmail(), student.getPassword(), true, true, true, true, roles);
+        }
+        Admins admin = AdminDAO.getAdmin(string);
+        if (admin != null) {
+            List roles = new ArrayList();
+            roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            return new User(admin.getEmail(), admin.getPassword(), true, true, true, true, roles);
+        }
+        throw new UsernameNotFoundException("User not found");
     }
-    
+
 }

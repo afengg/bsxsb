@@ -8,7 +8,10 @@ package BSxSB.Controllers;
 import DAO.StudentDAO;
 import Mapping.POJO.Students;
 import java.lang.annotation.Annotation;
+import java.security.Principal;
 import java.util.List;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -24,19 +27,16 @@ import org.springframework.web.portlet.ModelAndView;
 public class StudentController  {
     @RequestMapping(value="/student",method=RequestMethod.GET)
     public String studentPage(Model model){
-      StudentDAO studentdao = new StudentDAO();
-      List list=studentdao.allStudent();
-      model.addAttribute("student", list.get(0));
-      model.addAttribute("msg", "msg");
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+      String name = auth.getName();
+      Students currentStudent = StudentDAO.getStudent(name);
+      model.addAttribute("student", currentStudent);
       return "student";
 
 }
    @RequestMapping(value="/managefriends",method=RequestMethod.GET)
-    public void studentPages(Model model){
-      Students lun = new Students();
-      lun.setEmail("asfsas");
-      model.addAttribute("msg", "msg");
-
+    public String manageFriends(Model model){
+      return "managefriends";
 }
 
 }
