@@ -43,3 +43,7 @@ Temporary Items
 .apdisk
 /build/
 /dist/
+
+# nbproject/private
+
+./nbproject/private
