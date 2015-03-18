@@ -9,6 +9,7 @@
  
     <http auto-config="true">
         <intercept-url pattern="/admin**" access="ROLE_ADMIN" />
+         <intercept-url pattern="/student**" access="ROLE_USER" />
         <form-login 
             login-page="/index.html"
             authentication-success-handler-ref="AuthenticationHandler"
