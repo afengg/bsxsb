@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 18, 2015 11:06:22 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.POJO.Friendships" table="friendships" catalog="lunzhang" optimistic-lock="version">
+        <composite-id name="id" class="Mapping.POJO.FriendshipsId">
+            <key-property name="requester" type="int">
+                <column name="requester" />
+            </key-property>
+            <key-property name="requestee" type="int">
+                <column name="requestee" />
+            </key-property>
+        </composite-id>
+        <property name="accepted" type="java.lang.Boolean">
+            <column name="accepted" />
+        </property>
+        <property name="date" type="date">
+            <column name="date" length="0" />
+        </property>
+    </class>
+</hibernate-mapping>

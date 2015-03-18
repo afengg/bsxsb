@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 18, 2015 11:06:22 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.POJO.Admins" table="admins" catalog="lunzhang" optimistic-lock="version">
+        <id name="email" type="string">
+            <column name="email" length="45" />
+            <generator class="assigned" />
+        </id>
+        <property name="password" type="string">
+            <column name="password" length="45" />
+        </property>
+        <property name="loggedin" type="java.lang.Boolean">
+            <column name="loggedin" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="45" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

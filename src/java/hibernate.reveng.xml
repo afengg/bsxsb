@@ -2,11 +2,12 @@
 <!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd">
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="lunzhang"/>
-  <table-filter match-name="courses"/>
-  <table-filter match-name="scheduleblock"/>
-  <table-filter match-name="friendship"/>
   <table-filter match-name="generationcriteria"/>
-  <table-filter match-name="admin"/>
-  <table-filter match-name="student"/>
-  <table-filter match-name="school"/>
+  <table-filter match-name="students"/>
+  <table-filter match-name="registrations"/>
+  <table-filter match-name="friendships"/>
+  <table-filter match-name="scheduleblocks"/>
+  <table-filter match-name="schools"/>
+  <table-filter match-name="admins"/>
+  <table-filter match-name="courses"/>
 </hibernate-reverse-engineering>

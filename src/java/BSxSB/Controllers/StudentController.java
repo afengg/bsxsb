@@ -6,7 +6,7 @@
 package BSxSB.Controllers;
 
 import DAO.StudentDAO;
-import Mapping.POJO.Student;
+import Mapping.POJO.Students;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class StudentController  {
 }
    @RequestMapping(value="/managefriends",method=RequestMethod.GET)
     public void studentPages(Model model){
-      Student lun = new Student();
+      Students lun = new Students();
       lun.setEmail("asfsas");
       model.addAttribute("msg", "msg");
 

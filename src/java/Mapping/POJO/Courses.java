@@ -1,5 +1,5 @@
 package Mapping.POJO;
-// Generated Mar 7, 2015 9:53:12 AM by Hibernate Tools 4.3.1
+// Generated Mar 18, 2015 11:06:19 AM by Hibernate Tools 4.3.1
 
 
 
@@ -16,17 +16,19 @@ public class Courses  implements java.io.Serializable {
      private String courseidentifier;
      private Integer numstudents;
      private String instructor;
+     private int scheduleblockid;
 
     public Courses() {
     }
 
 	
-    public Courses(int courseid, int schoolid, String instructor) {
+    public Courses(int courseid, int schoolid, String instructor, int scheduleblockid) {
         this.courseid = courseid;
         this.schoolid = schoolid;
         this.instructor = instructor;
+        this.scheduleblockid = scheduleblockid;
     }
-    public Courses(int courseid, int schoolid, String coursename, String description, String courseidentifier, Integer numstudents, String instructor) {
+    public Courses(int courseid, int schoolid, String coursename, String description, String courseidentifier, Integer numstudents, String instructor, int scheduleblockid) {
        this.courseid = courseid;
        this.schoolid = schoolid;
        this.coursename = coursename;
@@ -34,6 +36,7 @@ public class Courses  implements java.io.Serializable {
        this.courseidentifier = courseidentifier;
        this.numstudents = numstudents;
        this.instructor = instructor;
+       this.scheduleblockid = scheduleblockid;
     }
    
     public int getCourseid() {
@@ -84,6 +87,13 @@ public class Courses  implements java.io.Serializable {
     
     public void setInstructor(String instructor) {
         this.instructor = instructor;
+    }
+    public int getScheduleblockid() {
+        return this.scheduleblockid;
+    }
+    
+    public void setScheduleblockid(int scheduleblockid) {
+        this.scheduleblockid = scheduleblockid;
     }
 
 

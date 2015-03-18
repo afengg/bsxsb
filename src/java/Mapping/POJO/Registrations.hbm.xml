@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 18, 2015 11:06:22 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Mapping.POJO.Registrations" table="registrations" catalog="lunzhang" optimistic-lock="version">
+        <composite-id name="id" class="Mapping.POJO.RegistrationsId">
+            <key-property name="courseid" type="int">
+                <column name="courseid" />
+            </key-property>
+            <key-property name="studentid" type="int">
+                <column name="studentid" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>

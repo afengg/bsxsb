@@ -7,12 +7,13 @@
     <property name="hibernate.connection.url">jdbc:mysql://mysql2.cs.stonybrook.edu:3306/lunzhang?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">lunzhang</property>
     <property name="hibernate.connection.password">108598933</property>
-    <mapping resource="Mapping/POJO/Admin.hbm.xml"/>
-    <mapping resource="Mapping/POJO/School.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Scheduleblocks.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Friendships.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Students.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Schools.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Registrations.hbm.xml"/>
     <mapping resource="Mapping/POJO/Courses.hbm.xml"/>
     <mapping resource="Mapping/POJO/Generationcriteria.hbm.xml"/>
-    <mapping resource="Mapping/POJO/Student.hbm.xml"/>
-    <mapping resource="Mapping/POJO/Scheduleblock.hbm.xml"/>
-    <mapping resource="Mapping/POJO/Friendship.hbm.xml"/>
+    <mapping resource="Mapping/POJO/Admins.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
