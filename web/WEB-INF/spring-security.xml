@@ -19,9 +19,10 @@
     </http>
     <beans:bean id="AuthenticationHandler"
                 class="SpringSecurity.AuthenticationHandler" />
-
+    <beans:bean id="UserService"
+               class="SpringSecurity.UserService" />
     <authentication-manager>
-        <authentication-provider>
+       <authentication-provider>
             <user-service>
                 <user name="lun" password="lun" authorities="ROLE_ADMIN" />
                 <user name="1" password="1" authorities="ROLE_USER" />
