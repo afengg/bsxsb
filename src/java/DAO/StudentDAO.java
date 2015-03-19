@@ -20,14 +20,35 @@ public class StudentDAO {
     private static Session session;
 
     public static void register(String firstName, String lastName, String email, String password, String school) {
+        //the String school is actually in the form: [schoolname] - [academicyear]
+        //so we need to split it into these two parts to query for the school id
+        String[] schoolparts = school.split(" - ");
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "INSERT INTO students values (?,?,?,?)")
-                .setParameter(0, email)
-                .setParameter(1, firstName)
-                .setParameter(2, lastName)
-                .setParameter(3, password);
-        query.executeUpdate();
+                "SELECT schoolid FROM schools WHERE schoolname = " + "'" + schoolparts[0] + "'" +
+                " AND academicyear = " + "'"+ schoolparts[1] + "'"
+        );
+        //This query should only return one result, a schoolid int
+        session.getTransaction().begin();
+        int schoolid = (int) query.uniqueResult();
+        Students newStudent = new Students();
+        newStudent.setEmail(email);
+        newStudent.setFirstname(firstName);
+        newStudent.setLastname(lastName);
+        newStudent.setSchoolid(schoolid);
+        newStudent.setPassword(password);
+        newStudent.setRole("ROLE_USER");
+        session.save(newStudent);
+        session.getTransaction().commit();
+        /**
+        query = session.createSQLQuery(
+                "INSERT INTO students (email, firstname, lastname, password, schoolid) VALUES (:a, :b, :c, :d, :e)")
+                .setParameter("a", email)
+                .setParameter("b", firstName)
+                .setParameter("c", lastName)
+                .setParameter("d", password)
+                .setParameter("e", schoolid);
+        query.executeUpdate(); */
     }
     public static List<Students> allStudent() {
         session = HibernateUtil.getSessionFactory().openSession();

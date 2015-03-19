@@ -46,11 +46,11 @@ public class StudentController {
    
         else if(student!=null){
            model.addAttribute("taken", "The email address is taken");
-      }
-      else {
-          //StudentDAO.register(firstName, lastName, email, password, school);
+        }
+        else {
+          StudentDAO.register(firstName, lastName, email, password, school);
           model.addAttribute("registered", "You have been successfully registered. Please Login");
-      }
+        }
         return "index";
     }
 

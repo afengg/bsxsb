@@ -72,7 +72,7 @@
                                 <div class="col-sm-10 registerform" >            
                                     <select class="form-control" name="school" style="width:360px;" >
                                         <c:forEach items="${school}" var="school">
-                                            <option>  ${school.getSchoolname()}</option>
+                                            <option>  ${school.getSchoolname()} - ${school.getAcademicyear()}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
