@@ -59,6 +59,10 @@ public class LoginController {
             model.addAttribute("school", schools);
             return "admin";
         }
+        List<Schools> schools = SchoolDAO.allSchools();
+        if(schools!=null){
+        model.addAttribute("school", schools);
+        }
         return "index";
 
     }

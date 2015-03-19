@@ -47,7 +47,7 @@ public class AdminController {
       return "adminaddschool";     
 }
     
-    @RequestMapping(value="/adminmanageacounts",method=RequestMethod.GET)
+    @RequestMapping(value="/adminmanageaccounts",method=RequestMethod.GET)
     public String manageAccounts(Model model){    
       return "adminmanageaccounts";     
 }

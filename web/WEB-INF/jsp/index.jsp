@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -52,35 +53,44 @@
 
                             </div>
 
-                            <form id="register" novalidate>
+                            <form action="register.html" method="POST">
                                 <div class="col-sm-12">
-                                    <input placeholder="First Name" id="firstName" style="width:360px;"> </input>
-
+                                    <input placeholder="First Name" name="firstName" style="width:360px;"> 
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Last Name" id="lastName" style="width:360px;"> </input>
+                                    <input placeholder="Last Name" name="lastName" style="width:360px;"> 
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Email Address" id="email" style="width:360px;" > </input>
+                                    <input placeholder="Email Address" name="email" style="width:360px;" >
                                 </div>
                                 <div class="col-sm-12 registerform">
-                                    <input placeholder="Password" id="password" style="width:360px;"> </input>
+                                    <input placeholder="Password" name="password" style="width:360px;"> 
                                 </div>
                                 <div class="col-sm-2 registerform" >
                                     <label for="select" class="control-label">School</label>
                                 </div>
                                 <div class="col-sm-10 registerform" >            
-                                    <select class="form-control" id="select" style="width:360px;" >
-                                        <option>Stony Brook U</option>
-                                        <option>Bronx Science</option>
+                                    <select class="form-control" name="school" style="width:360px;" >
+                                        <c:forEach items="${school}" var="school">
+                                            <option>  ${school.getSchoolname()}</option>
+                                        </c:forEach>
                                     </select>
                                 </div>
                                 <div class="col-sm-12 registerform" >
-                                    <button type="button" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">
+                                    <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">
                                         Register 
                                     </button>
                                 </div>
                             </form>
+                            <c:if test="${not empty taken}">
+                                <div class="taken">${taken}</div>
+                            </c:if>
+                                 <c:if test="${not empty fillout}">
+                                <div class="fillout">${fillout}</div>
+                            </c:if>
+                            <c:if test="${not empty register}">
+                                <div class="register">${register}</div>
+                            </c:if>
                         </div>
                     </div>
                 </div>

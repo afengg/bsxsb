@@ -19,6 +19,16 @@ public class StudentDAO {
 
     private static Session session;
 
+    public static void register(String firstName, String lastName, String email, String password, String school) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "INSERT INTO students values (?,?,?,?)")
+                .setParameter(0, email)
+                .setParameter(1, firstName)
+                .setParameter(2, lastName)
+                .setParameter(3, password);
+        query.executeUpdate();
+    }
     public static List<Students> allStudent() {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
@@ -56,5 +66,5 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         return student;
     }
-                
+
 }
