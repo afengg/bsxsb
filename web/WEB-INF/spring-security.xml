@@ -9,14 +9,14 @@
  
     <http auto-config="true">
         <intercept-url pattern="/admin**" access="ROLE_ADMIN" />
-        <intercept-url pattern="/student**" access="ROLE_USER" />
+         <intercept-url pattern="/student**" access="ROLE_USER" />
         <form-login 
             login-page="/index.html"
             authentication-success-handler-ref="AuthenticationHandler"
             username-parameter="username"
             password-parameter="password" 
         />
-        <logout logout-success-url="/index.html" />
+        <logout logout-success-url="/index" />
     </http>
     <beans:bean id="AuthenticationHandler"
                 class="SpringSecurity.AuthenticationHandler" />
