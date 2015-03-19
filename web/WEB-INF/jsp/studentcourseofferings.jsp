@@ -43,44 +43,44 @@
                 <div class="row">
               <div class="col-sm-2">
 			  <ul class="nav nav-pills nav-stacked" >
-               <li >
-                                <a href="student.html">
-                                    Home
-                                </a>
-                            </li>
-                            <li>
-                                <a href="studentmanagefriends.html">Manage Friends</a>
-                            </li>
-                            <li>
-                                <a href="studentdisplayfriends.html">Display Friends</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Manage Assigned Courses<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="studententercourses.html">Enter Assigned Courses</a></li>
-                                    <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
-                                    <li><a href="studenteditassigned.html">Edit Assigned Courses</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown active">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Course Offerings<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="studentcourseofferings.html">2014</a></li>
-                                    <li><a href="studentcourseofferings.html">2015</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Manage Desired Courses<span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
-                                    <li><a href="studentviewcourses.html">View Desired Courses</a></li>
-                                    <li><a href="studentviewcourses.html">Export Desired Courses</a></li>
+                <li >
+                    <a href="student.html">
+                        Home
+                    </a>
+                </li>
+				<li>
+                    <a href="managefriends.html">Manage Friends</a>
+                </li>
+                <li>
+                    <a href="displayfriends.html">Display Friends</a>
+                </li>
+                <li>
+             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Manage Assigned Courses<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="entercourses.html">Enter Assigned Courses</a></li>
+                    <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
+					 <li><a href="editassigned.html">Edit Assigned Courses</a></li>
+                  </ul>
+                </li>
+              <li class="dropdown active">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Course Offerings<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="studentcourseofferings.html">2014</a></li>
+                    <li><a href="studentcourseofferings.html">2015</a></li>
+                  </ul>
+                </li>
+   <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    Manage Desired Courses<span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a href="generatecourses.html">Generate Desired Courses</a></li>
+                    <li><a href="viewcourses.html">View Desired Courses</a></li>
+					<li><a href="viewcourses.html">Export Desired Courses</a></li>
                   </ul>
                 </li>
             </ul>

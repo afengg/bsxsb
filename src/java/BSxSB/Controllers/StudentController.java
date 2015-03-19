@@ -34,43 +34,9 @@ public class StudentController  {
       return "student";
 
 }
-   @RequestMapping(value="/studentmanagefriends",method=RequestMethod.GET)
+   @RequestMapping(value="/managefriends",method=RequestMethod.GET)
     public String manageFriends(Model model){
       return "studentmanagefriends";
 }
 
-     @RequestMapping(value="/studentassignedcourses",method=RequestMethod.GET)
-    public String assignedCourses(Model model){
-        return "studentassignedcourses";
-    }
-    
-    @RequestMapping(value="/studentcourseofferings",method=RequestMethod.GET)
-    public String courseOfferings(Model model){
-        return "studentcourseofferings";
-    }
-    
-    @RequestMapping(value="/studentdisplayfriends",method=RequestMethod.GET)
-    public String displayFriends(Model model){
-        return "studentdisplayfriends";
-    }
-    
-    @RequestMapping(value="/studenteditassigned",method=RequestMethod.GET)
-    public String editAssigned(Model model){
-        return "studenteditassigned";
-    }
-    
-    @RequestMapping(value="/studententercourses",method=RequestMethod.GET)
-    public String enterCourses(Model model){
-        return "studententercourses";
-    }
-    
-    @RequestMapping(value="/studentgeneratecourses",method=RequestMethod.GET)
-    public String generateCourses(Model model){
-        return "studentgeneratecourses";
-    }
-    
-    @RequestMapping(value="/studentviewgenerated",method=RequestMethod.GET)
-    public String viewGenerated(Model model){
-        return "studentviewgenerated";
-    }
 }
