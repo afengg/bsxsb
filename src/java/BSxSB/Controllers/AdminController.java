@@ -41,6 +41,20 @@ public class AdminController {
         model.addAttribute("school", schools);
         return "admin";
     }
+
+    @RequestMapping(value="/adminaddschool",method=RequestMethod.GET)
+    public String addSchool(Model model){    
+      return "adminaddschool";     
+}
     
+    @RequestMapping(value="/adminmanageacounts",method=RequestMethod.GET)
+    public String manageAccounts(Model model){    
+      return "adminmanageaccounts";     
+}
+    
+    @RequestMapping(value="/adminmanagerequests",method=RequestMethod.GET)
+    public String manageRequests(Model model){    
+      return "adminmanagerequests";     
+}
 
 }

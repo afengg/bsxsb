@@ -48,19 +48,19 @@
                     </a>
                 </li>
 				<li>
-                    <a href="managefriends.html">Manage Friends</a>
+                    <a href="studentmanagefriends.html">Manage Friends</a>
                 </li>
                 <li>
-                    <a href="displayfriends.html">Display Friends</a>
+                    <a href="studentdisplayfriends.html">Display Friends</a>
                 </li>
                 <li>
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     Manage Assigned Courses<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a href="entercourses.html">Enter Assigned Courses</a></li>
+                    <li><a href="studententercourses.html">Enter Assigned Courses</a></li>
                     <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
-					 <li><a href="editassigned.html">Edit Assigned Courses</a></li>
+					 <li><a href="studenteditassigned.html">Edit Assigned Courses</a></li>
                   </ul>
                 </li>
               <li class="dropdown">
@@ -77,9 +77,9 @@
                     Manage Desired Courses<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-              <li><a href="generatecourses.html">Generate Desired Courses</a></li>
-                    <li><a href="viewgenerated.html">View Desired Courses</a></li>
-					<li><a href="viewgenerated.html">Export Desired Courses</a></li>
+              <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
+                    <li><a href="studentviewgenerated.html">View Desired Courses</a></li>
+					<li><a href="studentviewgenerated.html">Export Desired Courses</a></li>
                   </ul>
                 </li>
             </ul>
