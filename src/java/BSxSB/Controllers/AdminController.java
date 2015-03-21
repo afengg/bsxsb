@@ -50,6 +50,8 @@ public class AdminController {
     
     @RequestMapping(value="/adminmanageaccounts",method=RequestMethod.GET)
     public String manageAccounts(Model model){    
+        List<Students> allStudents= StudentDAO.allStudent();
+      model.addAttribute("allstudents",allStudents);
       return "adminmanageaccounts";     
 }
     
