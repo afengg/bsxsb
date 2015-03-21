@@ -88,8 +88,8 @@
                                  <c:if test="${not empty fillout}">
                                 <div class="fillout">${fillout}</div>
                             </c:if>
-                            <c:if test="${not empty register}">
-                                <div class="register">${register}</div>
+                            <c:if test="${not empty registered}">
+                                <div class="registered">${registered}</div>
                             </c:if>
                         </div>
                     </div>

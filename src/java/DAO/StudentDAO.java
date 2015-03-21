@@ -87,5 +87,14 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         return student;
     }
+    
+    public static List<Students> getAccountRequests(){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE approved = 0")
+                .addEntity(Students.class);
+        List<Students> allStudents = query.list();
+        return allStudents;
+    }
 
 }

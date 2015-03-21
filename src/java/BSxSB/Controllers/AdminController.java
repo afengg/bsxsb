@@ -10,6 +10,7 @@ import DAO.SchoolDAO;
 import DAO.ScheduleBlockDAO;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
+import Mapping.POJO.Students;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -53,7 +54,9 @@ public class AdminController {
 }
     
     @RequestMapping(value="/adminmanagerequests",method=RequestMethod.GET)
-    public String manageRequests(Model model){    
+    public String manageRequests(Model model){ 
+       List<Students> accountrequests= StudentDAO.getAccountRequests();
+       model.addAttribute("accountrequests",accountrequests);
       return "adminmanagerequests";     
 }
 
