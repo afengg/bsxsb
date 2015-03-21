@@ -19,7 +19,7 @@ public class ScheduleBlockDAO {
     public List<Scheduleblocks> getSchoolsScheduleBlocks(int schoolid){
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = schoolid")
+                "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = " + schoolid)
                 .addEntity(Scheduleblocks.class);
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
         return schoolScheduleBlocks;
