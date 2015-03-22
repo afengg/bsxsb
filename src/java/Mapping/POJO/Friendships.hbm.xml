@@ -5,11 +5,11 @@
 <hibernate-mapping>
     <class name="Mapping.POJO.Friendships" table="friendships" catalog="lunzhang" optimistic-lock="version">
         <composite-id name="id" class="Mapping.POJO.FriendshipsId">
-            <key-property name="requester" type="int">
-                <column name="requester" />
+            <key-property name="friend2" type="int">
+                <column name="friend2" />
             </key-property>
-            <key-property name="requestee" type="int">
-                <column name="requestee" />
+            <key-property name="friend1" type="int">
+                <column name="friend1" />
             </key-property>
         </composite-id>
         <property name="accepted" type="java.lang.Boolean">

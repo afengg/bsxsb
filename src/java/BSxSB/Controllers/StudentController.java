@@ -40,16 +40,13 @@ public class StudentController {
             model.addAttribute("school", schools);
         }
         Students student = StudentDAO.getStudent(email);
-        if(firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()){
-            model.addAttribute("fillout", "Please fill out all Required Fields");         
-        }
-   
-        else if(student!=null){
-           model.addAttribute("taken", "The email address is taken");
-        }
-        else {
-          StudentDAO.register(firstName, lastName, email, password, school);
-          model.addAttribute("registered", "You have been successfully registered. Please Login");
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            model.addAttribute("fillout", "Please fill out all Required Fields");
+        } else if (student != null) {
+            model.addAttribute("taken", "The email address is taken");
+        } else {
+            StudentDAO.register(firstName, lastName, email, password, school);
+            model.addAttribute("registered", "You have been successfully registered. Please Login");
         }
         return "index";
     }
@@ -66,6 +63,11 @@ public class StudentController {
 
     @RequestMapping(value = "/studentmanagefriends", method = RequestMethod.GET)
     public String manageFriends(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }
 

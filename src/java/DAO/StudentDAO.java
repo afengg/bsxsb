@@ -6,6 +6,7 @@
 package DAO;
 
 import Hibernate.HibernateUtil;
+import Mapping.POJO.Friendships;
 import Mapping.POJO.Students;
 import java.util.List;
 import org.hibernate.Query;
@@ -25,8 +26,8 @@ public class StudentDAO {
         String[] schoolparts = school.split(" - ");
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "SELECT schoolid FROM schools WHERE schoolname = " + "'" + schoolparts[0] + "'" +
-                " AND academicyear = " + "'"+ schoolparts[1] + "'"
+                "SELECT schoolid FROM schools WHERE schoolname = " + "'" + schoolparts[0] + "'"
+                + " AND academicyear = " + "'" + schoolparts[1] + "'"
         );
         //This query should only return one result, a schoolid int
         session.getTransaction().begin();
@@ -41,15 +42,14 @@ public class StudentDAO {
         session.save(newStudent);
         session.getTransaction().commit();
         /**
-        query = session.createSQLQuery(
-                "INSERT INTO students (email, firstname, lastname, password, schoolid) VALUES (:a, :b, :c, :d, :e)")
-                .setParameter("a", email)
-                .setParameter("b", firstName)
-                .setParameter("c", lastName)
-                .setParameter("d", password)
-                .setParameter("e", schoolid);
-        query.executeUpdate(); */
+         * query = session.createSQLQuery( "INSERT INTO students (email,
+         * firstname, lastname, password, schoolid) VALUES (:a, :b, :c, :d,
+         * :e)") .setParameter("a", email) .setParameter("b", firstName)
+         * .setParameter("c", lastName) .setParameter("d", password)
+         * .setParameter("e", schoolid); query.executeUpdate();
+         */
     }
+
     public static List<Students> allStudent() {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
@@ -87,8 +87,8 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         return student;
     }
-    
-    public static List<Students> getAccountRequests(){
+
+    public static List<Students> getAccountRequests() {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE approved = 0")
@@ -97,4 +97,14 @@ public class StudentDAO {
         return allStudents;
     }
 
+    public static List<Students> getFriendRequests(int id) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM friendships WHERE accepted = 0 AND friend1=?")
+                .addEntity(Friendships.class)
+                .setInteger(0, id);
+        List<Friendships> friendships=query.list();
+        List<Students> allStudents = query.list();
+        return allStudents;
+    }
 }
