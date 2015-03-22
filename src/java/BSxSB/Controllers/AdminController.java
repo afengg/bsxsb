@@ -11,6 +11,7 @@ import DAO.ScheduleBlockDAO;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
 import Mapping.POJO.Students;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -26,12 +27,24 @@ import java.util.logging.*;
  */
 @Controller
 public class AdminController {
-    
+    static final Logger logger = Logger.getLogger(AdminController.class.getName());
+
     @RequestMapping(value="/admin",method=RequestMethod.GET)
     public String adminPage(Model model){
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("./ViewSchools.log");
+            logger.addHandler(handler);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        logger.info("Admin Viewing List of Schools.");
         SchoolDAO schoolDAO = new SchoolDAO();
         ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
         List<Schools> schools = schoolDAO.allSchools();
+        logger.info("Returning list of schools..." + schools.size() + " schools found.");
         for(Schools school: schools){
             List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
             String SB2Strings = "";
@@ -41,6 +54,7 @@ public class AdminController {
             school.setScheduleblocks(SB2Strings);
         }
         model.addAttribute("school", schools);
+        logger.info("Schools successfully added to model.");
         return "admin";
     }
 
