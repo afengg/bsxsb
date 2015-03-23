@@ -59,6 +59,15 @@ public class StudentDAO {
         return allStudents;
     }
 
+    public static List<Students> getAcceptedAccounts() {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students where approved =1")
+                .addEntity(Students.class);
+        List<Students> allStudents = query.list();
+        return allStudents;
+    }
+
     public Students loginStudent(String email, String password) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
@@ -106,7 +115,7 @@ public class StudentDAO {
         List<Students> allStudents = query.list();
         return allStudents;
     }
-    
+
     public static List<Students> getFriends(int id) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
@@ -116,5 +125,32 @@ public class StudentDAO {
                 .setInteger(1, id);
         List<Students> allStudents = query.list();
         return allStudents;
+    }
+
+    public static void acceptAccount(String email) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ?")
+                .addEntity(Students.class)
+                .setString(0, email);
+        List<Students> allStudents = query.list();
+        Students student = allStudents.get(0);
+        student.setApproved(true);
+        session.update(student);
+        session.getTransaction().commit();
+    }
+
+    public static void deleteAccount(String email) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ?")
+                .addEntity(Students.class)
+                .setString(0, email);
+        List<Students> allStudents = query.list();
+        Students student = allStudents.get(0);
+        session.delete(student);
+        session.getTransaction().commit();
     }
 }

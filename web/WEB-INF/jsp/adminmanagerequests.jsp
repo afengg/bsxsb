@@ -74,7 +74,7 @@
                             <table class="table  "style=" width:600px;">
                                 <thead>
                                     <tr>
-                                          <th>
+                                        <th>
                                             Email
                                         </th>
                                         <th>
@@ -87,23 +87,27 @@
                                 </thead>
                                 <tbody style="text-align:left;">
                                     <c:forEach items="${accountrequests}" var="accountrequests">
-                                    <tr>
-                                        <td>
-                                            ${accountrequests.getEmail()}
-                                        </td>
-                                         <td>
-                                          ${accountrequests.getFirstname()}
-                                        </td>
-                                        <td>
-                                          ${accountrequests.getLastname()}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info btn-xs">Accept</button>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-danger btn-xs">Reject</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                ${accountrequests.getEmail()}
+                                            </td>
+                                            <td>
+                                                ${accountrequests.getFirstname()}
+                                            </td>
+                                            <td>
+                                                ${accountrequests.getLastname()}
+                                            </td>
+                                            <td>
+                                                <form action="acceptaccount.html" method="POST">
+                                                    <button class="btn btn-info btn-xs" type="submit" name="email" value="${accountrequests.getEmail()}">Accept </button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form action="rejectaccount.html" method="POST">
+                                                    <button class="btn btn-danger btn-xs" type="submit" name="email" value="${accountrequests.getEmail()}">Reject </button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>

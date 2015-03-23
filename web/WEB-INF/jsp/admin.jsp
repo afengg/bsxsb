@@ -121,13 +121,12 @@
                                             </td>
                                             <td>
                                                 <form action="deleteschool.html" method="POST">
-                                                <button class="btn btn-danger btn-sm" type="submit" name="schoolID" value="${school.getSchoolid()}">Delete School </button>
+                                                <button class="btn btn-danger btn-xs" type="submit" name="schoolID" value="${school.getSchoolid()}">Delete School </button>
                                                 </form>
                                             </td>
                                         </tr>
                                     </c:forEach>
-                                        Hi there
-                                            ${schoolid}
+                                    
                                 </tbody>
                             </table>
                         </div>	

@@ -34,13 +34,10 @@ public class SchoolDAO {
                 "select * from schools where schoolid = ?")
                 .addEntity(Schools.class)
                 .setParameter(0, schoolID);
-            
         List<Schools> allSchools = query.list();
         Schools school = allSchools.get(0);
-        System.out.print(school.getSchoolname());
         session.getTransaction().begin();
         session.delete(school);
         session.getTransaction().commit();
-
     }
 }
