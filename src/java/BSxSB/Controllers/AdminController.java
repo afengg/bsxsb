@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.portlet.ModelAndView;
 import java.util.logging.*;
+import org.springframework.web.bind.annotation.RequestParam;
 /**
  *
  * @author lun
@@ -58,7 +59,35 @@ public class AdminController {
         
         return "admin";
     }
-
+ @RequestMapping(value="/deleteschool",method=RequestMethod.POST)
+    public String deleteSchool(Model model, @RequestParam(value = "schoolID") int schoolID){    
+     SchoolDAO.deleteSchool(schoolID);
+     try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("./ViewSchools.log");
+            logger.addHandler(handler);
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
+        logger.info("Admin Viewing List of Schools.");
+        SchoolDAO schoolDAO = new SchoolDAO();
+        ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
+        List<Schools> schools = schoolDAO.allSchools();
+        logger.info("Returning list of schools..." + schools.size() + " schools found.");
+        for(Schools school: schools){
+            List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
+            String SB2Strings = "";
+            for(Scheduleblocks sb : scheduleBlocks){
+                SB2Strings += sb.toString();
+            }
+            school.setScheduleblocks(SB2Strings);
+        }
+        model.addAttribute("school", schools);
+        logger.info("Schools successfully added to model.");
+        return "admin";    
+}
     @RequestMapping(value="/adminaddschool",method=RequestMethod.GET)
     public String addSchool(Model model){    
       return "adminaddschool";     
