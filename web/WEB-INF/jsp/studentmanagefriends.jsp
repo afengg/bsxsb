@@ -114,6 +114,9 @@
                                            ${friendrequests.getLastname()}
                                         </td>
                                         <td>
+                                            ${friendrequests.getEmail()}
+                                        </td>
+                                        <td>
                                             <button class="btn btn-info btn-xs">Accept</button>
                                         </td>
                                         <td>

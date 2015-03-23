@@ -12,7 +12,6 @@ public class Friendships  implements java.io.Serializable {
 
      private FriendshipsId id;
      private Boolean accepted;
-     private Date date;
 
     public Friendships() {
     }
@@ -24,7 +23,6 @@ public class Friendships  implements java.io.Serializable {
     public Friendships(FriendshipsId id, Boolean accepted, Date date) {
        this.id = id;
        this.accepted = accepted;
-       this.date = date;
     }
    
     public FriendshipsId getId() {
@@ -40,13 +38,6 @@ public class Friendships  implements java.io.Serializable {
     
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
-    }
-    public Date getDate() {
-        return this.date;
-    }
-    
-    public void setDate(Date date) {
-        this.date = date;
     }
 
 

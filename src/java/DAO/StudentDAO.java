@@ -100,10 +100,20 @@ public class StudentDAO {
     public static List<Students> getFriendRequests(int id) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "SELECT * FROM friendships WHERE accepted = 0 AND friend1=?")
-                .addEntity(Friendships.class)
+                "SELECT * FROM students INNER JOIN friendships ON friendships.friend1=? AND students.studentid=friend2 AND friendships.accepted=0")
+                .addEntity(Students.class)
                 .setInteger(0, id);
-        List<Friendships> friendships=query.list();
+        List<Students> allStudents = query.list();
+        return allStudents;
+    }
+    
+    public static List<Students> getFriends(int id) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students INNER JOIN friendships ON ((friendships.friend1=? AND studentid=friend2) OR (friendships.friend2=? AND studentid=friend1)) AND accepted=1")
+                .addEntity(Students.class)
+                .setInteger(0, id)
+                .setInteger(1, id);
         List<Students> allStudents = query.list();
         return allStudents;
     }

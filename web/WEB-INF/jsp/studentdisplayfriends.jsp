@@ -103,20 +103,21 @@ First Name
 Last Name
 </th>
 <th>
-School
+Email
 </th>
 </tr>
 </thead>
 <tbody style="text-align:left;">
+<c:forEach items="${friends}" var="friends">
 <tr>
 <td>
-Alvin
+${friends.getFirstname()}
 </td>
 <td>
-Feng
+${friends.getLastname()}
 </td>
 <td>
-Stony Brook University
+${friends.getEmail()}
 </td>
 <td>
 <div class="btn-group">
@@ -146,7 +147,7 @@ Stony Brook University
 
 </td>
 </tr>
-
+</c:forEach>
 </tbody>
 </table>
 		</div>	

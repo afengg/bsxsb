@@ -29,6 +29,11 @@ public class Students  implements java.io.Serializable {
         this.lastname = lastname;
         this.role = role;
     }
+    public Students(String email, String firstname, String lastname){
+        this.email = email;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
     public Students(String email, String firstname, String lastname, String password, Boolean loggedin, Integer schoolid, Boolean approved, String role) {
        this.email = email;
        this.firstname = firstname;

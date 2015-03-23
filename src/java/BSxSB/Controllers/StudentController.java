@@ -83,6 +83,11 @@ public class StudentController {
 
     @RequestMapping(value = "/studentdisplayfriends", method = RequestMethod.GET)
     public String displayFriends(Model model) {
+         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+        model.addAttribute("friends", friends);
         return "studentdisplayfriends";
     }
 

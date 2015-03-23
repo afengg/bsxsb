@@ -11,6 +11,7 @@ import DAO.ScheduleBlockDAO;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
 import Mapping.POJO.Students;
+import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.List;
@@ -33,14 +34,13 @@ public class AdminController {
     public String adminPage(Model model){
         try {
             //Initialize the file that the logger writes to.
-            Handler handler = new FileHandler("./ViewSchools.log");
-            logger.addHandler(handler);
+            FileHandler handler = new FileHandler("/ViewSchools312.log");
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
+            logger.info("IOException ijjklkl" + ex);
         } catch (SecurityException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
-        logger.info("Admin Viewing List of Schools.");
+            logger.info("SecurityException");
+        }        
+        logger.log(Level.FINE, "Admin Viewing List of Schools.");
         SchoolDAO schoolDAO = new SchoolDAO();
         ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
         List<Schools> schools = schoolDAO.allSchools();
@@ -55,6 +55,7 @@ public class AdminController {
         }
         model.addAttribute("school", schools);
         logger.info("Schools successfully added to model.");
+        
         return "admin";
     }
 
