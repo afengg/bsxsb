@@ -114,8 +114,10 @@
                         </div>	
                     </div>
                     <div class="col-sm-3 ">
+                        <form action="acceptallaccount.html" method="POST">
+                            <button class="btn btn-success btn-xs" style="margin-top:15px" type="submit"  >Accept All </button>
+                        </form>
 
-                        <button class="btn btn-success btn-xs" style="margin-top:15px" >Accept All </button>
                     </div>
 
                 </div>

@@ -108,6 +108,14 @@ public class AdminController {
         return "adminmanagerequests";
     }
 
+     @RequestMapping(value = "/acceptallaccount", method = RequestMethod.POST)
+    public String acceptAllAccount(Model model) {
+        StudentDAO.acceptAllAccount();
+         List<Students> accountrequests = StudentDAO.getAccountRequests();
+        model.addAttribute("accountrequests", accountrequests);
+        return "adminmanagerequests";
+    }
+    
     @RequestMapping(value = "/adminaddschool", method = RequestMethod.GET)
     public String addSchool(Model model) {
         return "adminaddschool";

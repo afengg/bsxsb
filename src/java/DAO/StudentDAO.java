@@ -153,4 +153,20 @@ public class StudentDAO {
         session.delete(student);
         session.getTransaction().commit();
     }
+
+    public static void acceptAllAccount() {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students")
+                .addEntity(Students.class);
+        List<Students> allStudents = query.list();
+        for (Students student : allStudents) {
+            student.setApproved(true);
+        }
+        for (Students student : allStudents) {
+            session.update(student);
+        }
+        session.getTransaction().commit();
+    }
 }
