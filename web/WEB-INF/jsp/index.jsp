@@ -105,19 +105,14 @@
         <script src="resources/js/bootstrap.min.js"></script>
     </body>
 
-    <footer class="footer-inverse text-center">
-        <div class="footer-above">
+    <div class="text-center footer-lun">
             <div class="container">
                 <div class="row">
-
                     <div class="col-lg-12">
                         &copy; BSxSB
                     </div>
-
                 </div>
             </div>
-        </div>
-        <div class="footer-below">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -125,6 +120,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+    </div>
 </html>

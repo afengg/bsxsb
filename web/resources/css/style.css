@@ -43,3 +43,9 @@ min-height:510px;
   overflow-x:hidden;
   overflow-y: scroll;
 }
+
+.footer-lun {
+    
+    max-height:100px;
+
+}
