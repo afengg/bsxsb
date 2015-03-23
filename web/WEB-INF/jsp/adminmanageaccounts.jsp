@@ -98,7 +98,10 @@
                                                 ${allstudents.getLastname()}
                                             </td>
                                             <td>
-                                                <button class="btn btn-danger btn-xs">Delete</button>
+                                                 <form action="deleteaccount.html" method="POST">
+                                                    <button class="btn btn-danger btn-xs" type="submit" name="email" value="${allstudents.getEmail()}">Delete </button>
+                                                </form>
+                                                
                                             </td>
                                         </tr>
                                     </c:forEach>

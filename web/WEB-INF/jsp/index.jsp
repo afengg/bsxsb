@@ -105,7 +105,7 @@
         <script src="resources/js/bootstrap.min.js"></script>
     </body>
 
-    <div class="text-center footer-lun">
+    <div class="text-center navbar-fixed-bottom">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
