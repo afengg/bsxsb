@@ -16,7 +16,7 @@ import org.hibernate.Session;
 public class ScheduleBlockDAO {
     private static Session session;
     
-    public List<Scheduleblocks> getSchoolsScheduleBlocks(int schoolid){
+    public static List<Scheduleblocks> getSchoolsScheduleBlocks(int schoolid){
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
                 "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = " + schoolid)
@@ -24,5 +24,13 @@ public class ScheduleBlockDAO {
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
         return schoolScheduleBlocks;
     }
-
+    public static Scheduleblocks getScheduleBlock(int scheduleBlockID){
+                session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM scheduleblocks WHERE scheduleblockid = ?")
+                .addEntity(Scheduleblocks.class)
+                .setInteger(0, scheduleBlockID);
+        List<Scheduleblocks> schoolScheduleBlocks = query.list();
+        return schoolScheduleBlocks.get(0);
+    }
 }

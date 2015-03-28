@@ -14,6 +14,7 @@ public class Scheduleblocks  implements java.io.Serializable {
      private Integer period;
      private String days;
      private String semester;
+     private transient int[] daysarrays;
 
     public Scheduleblocks() {
     }
@@ -23,6 +24,12 @@ public class Scheduleblocks  implements java.io.Serializable {
        this.period = period;
        this.days = days;
        this.semester = semester;
+       String[] daysarraysString = days.split(days);
+       this.daysarrays = new int[daysarraysString.length];
+       for(int i = 0; i < daysarrays.length; i++){
+           daysarrays[i] = Integer.parseInt(daysarraysString[i]);
+       }
+       
     }
    
     public Integer getScheduleblockid() {

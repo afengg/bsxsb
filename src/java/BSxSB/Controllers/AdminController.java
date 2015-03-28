@@ -35,18 +35,9 @@ public class AdminController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model) {
-        try {
-        //Initialize the file that the logger writes to.
-        FileHandler handler = new FileHandler("%tBSxSBViewSchools.log", true);
-        handler.setFormatter(new SimpleFormatter());
-        logger.addHandler(handler);
-        logger.info("Admin aViewing List of Schools.");
-        logger.log(Level.FINE, "Admin Viewing List of Schools.");
         SchoolDAO schoolDAO = new SchoolDAO();
         ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
         List<Schools> schools = schoolDAO.allSchools();
-        String msg = "Returning list of schools..." + schools.size() + " schools found.";
-        logger.log(Level.FINE, msg);
         for (Schools school : schools) {
             List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
             String SB2Strings = "";
@@ -56,13 +47,6 @@ public class AdminController {
             school.setScheduleblocks(SB2Strings);
         }
         model.addAttribute("school", schools);
-        logger.log(Level.FINE, "Schools successfully added to model.");
-        handler.close();
-        } catch (IOException ex) {
-            logger.info("IOException" + ex);
-        } catch (SecurityException ex) {
-            logger.info("SecurityException");
-        }
         return "admin";
     }
 

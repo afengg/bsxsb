@@ -27,7 +27,14 @@ public class SchoolDAO {
         List<Schools> allSchools = query.list();
         return allSchools;
     }
-
+    public static Schools getSchool(int schoolID){
+                session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolid = ")
+                .addEntity(Schools.class)
+                .setInteger(0, schoolID);
+        List<Schools> schools = query.list();
+        return schools.get(0);
+    }
     public static void deleteSchool(int schoolID) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(

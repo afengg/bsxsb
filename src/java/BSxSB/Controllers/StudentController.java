@@ -5,13 +5,19 @@
  */
 package BSxSB.Controllers;
 
+import DAO.CourseDAO;
 import DAO.FriendshipsDAO;
 import DAO.SchoolDAO;
 import DAO.StudentDAO;
+import DAO.CourseDAO;
+import DAO.ScheduleBlockDAO;
+import Mapping.POJO.Courses;
+import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
 import Mapping.POJO.Students;
 import java.lang.annotation.Annotation;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -74,6 +80,23 @@ public class StudentController {
 
     @RequestMapping(value = "/studentassignedcourses", method = RequestMethod.GET)
     public String assignedCourses(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        List<Courses> studentCourses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> courseSBs = new ArrayList<Scheduleblocks>();
+        for(int i = 0; i < studentCourses.size(); i++){
+            Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(studentCourses.get(i).getScheduleblockid());
+           courseSBs.add(sb);
+        }
+        //Create 5 arrays, each one to represent the weekday. We will add courses to these arrays IFF this course's scheduleblock includes this day.
+        
+        // Below is the code to arrange the courses into schedule format.
+        // First build the period column. Get the school that this student belongs to, and make an 
+        // array of the ints that contain period numbers.
+        // Since we have an unordered list of student courses, we first must order them by their period and day of the week.
+        // If there is no course in a cell, then replace with a dummy course that has the name/id FREE.        
+        List<List<Courses>> courseTable = new ArrayList();
         return "studentassignedcourses";
     }
 
