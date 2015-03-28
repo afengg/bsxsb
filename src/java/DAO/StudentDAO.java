@@ -115,6 +115,8 @@ public class StudentDAO {
         List<Students> allStudents = query.list();
         return allStudents;
     }
+    
+     
 
     public static List<Students> getFriends(int id) {
         session = HibernateUtil.getSessionFactory().openSession();

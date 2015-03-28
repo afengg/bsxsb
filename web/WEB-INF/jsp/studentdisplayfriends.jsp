@@ -143,8 +143,9 @@ ${friends.getEmail()}
    </ul>
 </div></td>
 <td>
-<button class="btn btn-danger btn-xs">Unfriend</button>
-
+    <form action="unfriend.html" method="POST">
+<button class="btn btn-danger btn-xs" type="submit" name="id" value="${friends.getStudentid()}">Unfriend</button>
+    </form>
 </td>
 </tr>
 </c:forEach>
