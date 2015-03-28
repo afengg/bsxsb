@@ -5,6 +5,7 @@
  */
 package BSxSB.Controllers;
 
+import DAO.FriendshipsDAO;
 import DAO.SchoolDAO;
 import DAO.StudentDAO;
 import Mapping.POJO.Schools;
@@ -83,7 +84,7 @@ public class StudentController {
 
     @RequestMapping(value = "/studentdisplayfriends", method = RequestMethod.GET)
     public String displayFriends(Model model) {
-         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
@@ -110,4 +111,26 @@ public class StudentController {
     public String viewGenerated(Model model) {
         return "studentviewgenerated";
     }
+
+    @RequestMapping(value = "/acceptfriend", method = RequestMethod.POST)
+    public String acceptfriend(Model model, @RequestParam(value = "id") int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        FriendshipsDAO.acceptfriend(currentStudent.getStudentid(), id);
+        List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        model.addAttribute("friendrequests", friendrequests);
+        return "studentmanagefriends";
+    }
+    @RequestMapping(value = "/rejectfriend", method = RequestMethod.POST)
+    public String rejectfriend(Model model, @RequestParam(value = "id") int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
+        List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        model.addAttribute("friendrequests", friendrequests);
+        return "studentmanagefriends";
+    }
+
 }

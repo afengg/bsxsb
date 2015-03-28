@@ -140,7 +140,7 @@ public class StudentDAO {
         session.update(student);
         session.getTransaction().commit();
     }
-
+    
     public static void deleteAccount(String email) {
         session = HibernateUtil.getSessionFactory().openSession();
         session.getTransaction().begin();

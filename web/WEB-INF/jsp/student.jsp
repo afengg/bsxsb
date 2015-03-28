@@ -96,9 +96,9 @@
                         <h3></h3>
                     </div>
                     <div class="col-sm-8  text-center">
-                        <h3>    ${student.getPassword()}${student.getEmail()}${student.getLastname()}</h3>
+                        <h3>   Welcome ${student.getFirstname()} ${student.getLastname()}</h3>
 
-                        ${msg}
+                
                     </div>
 
                 </div>

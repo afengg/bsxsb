@@ -15,8 +15,6 @@ public class Friendships  implements java.io.Serializable {
 
     public Friendships() {
     }
-
-	
     public Friendships(FriendshipsId id) {
         this.id = id;
     }
@@ -39,10 +37,6 @@ public class Friendships  implements java.io.Serializable {
     public void setAccepted(Boolean accepted) {
         this.accepted = accepted;
     }
-
-
-
-
 }
 
 

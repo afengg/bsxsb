@@ -15,10 +15,6 @@
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-
-
-
-
                     <button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -32,11 +28,8 @@
                         <li>
                             <a href="j_spring_security_logout">Sign Out</a>
                         </li>
-
                     </ul>
                 </div>
-
-
             </div>
         </div>
         <div class="jumbotron">
@@ -117,10 +110,15 @@
                                             ${friendrequests.getEmail()}
                                         </td>
                                         <td>
-                                            <button class="btn btn-info btn-xs">Accept</button>
+                                            
+                                           <form action="acceptfriend.html" method="POST">
+                                                    <button class="btn btn-info btn-xs" type="submit" name="id" value="${friendrequests.getStudentid()}">Accept </button>
+                                                </form>
                                         </td>
                                         <td>
-                                            <button class="btn btn-danger btn-xs">Reject</button>
+                                           <form action="rejectfriend.html" method="POST">
+                                                    <button class="btn btn-danger btn-xs" type="submit" name="id" value="${friendrequests.getEmail()}">Reject </button>
+                                                </form>
                                         </td>
                                     </tr>
                                     </c:forEach>
@@ -132,8 +130,7 @@
                     </div>
                     <div class="col-sm-3 ">
                         <h3>Add A Friend</h3>
-                        <input id="firstName" placeholder="First Name" ></input>
-                        <input id="lastName" placeholder="Last Name" style="margin-top:15px"></input>
+                        <input id="email" placeholder="Email" >
                         <button class="btn btn-success btn-xs" style="margin-top:15px" >Friend Request </button>
                     </div>
 
@@ -147,7 +144,6 @@
             <div class="footer-above">
                 <div class="container">
                     <div class="row">
-
                         <div class="col-lg-12">
                             &copy; BSxSB
                         </div>
