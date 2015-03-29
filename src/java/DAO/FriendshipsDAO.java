@@ -63,7 +63,7 @@ public class FriendshipsDAO {
         friendship.setAccepted(false);
         session.save(friendship);
         session.getTransaction().commit();
-        return "Successfully added friend";
+        return "Successfully sent friend request";
     }
 
     public static void deletefriend(int userid, int friendid) {

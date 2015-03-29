@@ -177,7 +177,10 @@ public class StudentController {
         if(friend==null){
              model.addAttribute("msg", "The email you have entered doesn't belong to any student");
         }
-        else if(friend.getSchoolid()!=currentStudent.getStudentid()) {
+        else if(friend.getStudentid()==currentStudent.getStudentid()){
+             model.addAttribute("msg", "Can't friend yourself...");
+        }
+        else if(friend.getSchoolid()!=currentStudent.getSchoolid()) {
             model.addAttribute("msg", "Can not add a student from different school");
         }
         else
