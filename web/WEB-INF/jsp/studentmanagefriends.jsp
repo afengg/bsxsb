@@ -99,30 +99,30 @@
                                 </thead>
                                 <tbody style="text-align:left;">
                                     <c:forEach items="${friendrequests}" var="friendrequests">
-                                           <tr>
-                                        <td>
-                                          ${friendrequests.getFirstname()}
-                                        </td>
-                                        <td>
-                                           ${friendrequests.getLastname()}
-                                        </td>
-                                        <td>
-                                            ${friendrequests.getEmail()}
-                                        </td>
-                                        <td>
-                                            
-                                           <form action="acceptfriend.html" method="POST">
+                                        <tr>
+                                            <td>
+                                                ${friendrequests.getFirstname()}
+                                            </td>
+                                            <td>
+                                                ${friendrequests.getLastname()}
+                                            </td>
+                                            <td>
+                                                ${friendrequests.getEmail()}
+                                            </td>
+                                            <td>
+
+                                                <form action="acceptfriend.html" method="POST">
                                                     <button class="btn btn-info btn-xs" type="submit" name="id" value="${friendrequests.getStudentid()}">Accept </button>
                                                 </form>
-                                        </td>
-                                        <td>
-                                           <form action="rejectfriend.html" method="POST">
-                                                    <button class="btn btn-danger btn-xs" type="submit" name="id" value="${friendrequests.getEmail()}">Reject </button>
+                                            </td>
+                                            <td>
+                                                <form action="rejectfriend.html" method="POST">
+                                                    <button class="btn btn-danger btn-xs" type="submit" name="id" value="${friendrequests.getStudentid()}">Reject </button>
                                                 </form>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     </c:forEach>
-                                 
+
 
                                 </tbody>
                             </table>
@@ -130,8 +130,11 @@
                     </div>
                     <div class="col-sm-3 ">
                         <h3>Add A Friend</h3>
-                        <input id="email" placeholder="Email" >
-                        <button class="btn btn-success btn-xs" style="margin-top:15px" >Friend Request </button>
+                        <form action="addfriend.html" method="POST">
+                            <input  placeholder="Email" name="email">
+                            <button class="btn btn-success btn-xs" style="margin-top:15px" >Friend Request </button>
+                        </form>
+                        ${msg}
                     </div>
 
                 </div>

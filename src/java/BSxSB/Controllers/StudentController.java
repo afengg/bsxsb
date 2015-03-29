@@ -145,6 +145,7 @@ public class StudentController {
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }
+
     @RequestMapping(value = "/rejectfriend", method = RequestMethod.POST)
     public String rejectfriend(Model model, @RequestParam(value = "id") int id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -156,4 +157,35 @@ public class StudentController {
         return "studentmanagefriends";
     }
 
+    @RequestMapping(value = "/unfriend", method = RequestMethod.POST)
+    public String unfriend(Model model, @RequestParam(value = "id") int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
+        List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+        model.addAttribute("friends", friends);
+        return "studentdisplayfriends";
+    }
+
+    @RequestMapping(value = "/addfriend", method = RequestMethod.POST)
+    public String addfriend(Model model, @RequestParam(value = "email") String email) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        Students friend = StudentDAO.getStudent(email);
+        if(friend==null){
+             model.addAttribute("msg", "The email you have entered doesn't belong to any student");
+        }
+        else if(friend.getSchoolid()!=currentStudent.getStudentid()) {
+            model.addAttribute("msg", "Can not add a student from different school");
+        }
+        else
+        {
+        model.addAttribute("msg", FriendshipsDAO.addfriend(friend, currentStudent));
+        }
+        List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        model.addAttribute("friendrequests", friendrequests);
+        return "studentmanagefriends";
+    }
 }
