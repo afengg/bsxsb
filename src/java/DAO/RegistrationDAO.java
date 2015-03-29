@@ -6,6 +6,7 @@
 package DAO;
 import Hibernate.HibernateUtil;
 import Mapping.POJO.Registrations;
+import Mapping.POJO.RegistrationsId;
 import java.util.List;
 import org.hibernate.Session;
 /**
@@ -14,5 +15,12 @@ import org.hibernate.Session;
  */
 public class RegistrationDAO {
     private static Session session;
-    
+    public static void removereg(int courseid,int studentid){
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        RegistrationsId regID = new RegistrationsId(courseid,studentid);
+        Registrations reg = new Registrations(regID);
+        session.delete(reg);
+        session.getTransaction().commit();
+    }
 }

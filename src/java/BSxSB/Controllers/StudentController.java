@@ -10,6 +10,7 @@ import DAO.FriendshipsDAO;
 import DAO.SchoolDAO;
 import DAO.StudentDAO;
 import DAO.CourseDAO;
+import DAO.RegistrationDAO;
 import DAO.ScheduleBlockDAO;
 import Mapping.POJO.Courses;
 import Mapping.POJO.Scheduleblocks;
@@ -85,12 +86,12 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         List<Courses> studentCourses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
         List<Scheduleblocks> courseSBs = new ArrayList<Scheduleblocks>();
-        for(int i = 0; i < studentCourses.size(); i++){
+        for (int i = 0; i < studentCourses.size(); i++) {
             Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(studentCourses.get(i).getScheduleblockid());
-           courseSBs.add(sb);
+            courseSBs.add(sb);
         }
         //Create 5 arrays, each one to represent the weekday. We will add courses to these arrays IFF this course's scheduleblock includes this day.
-        
+
         // Below is the code to arrange the courses into schedule format.
         // First build the period column. Get the school that this student belongs to, and make an 
         // array of the ints that contain period numbers.
@@ -117,6 +118,32 @@ public class StudentController {
 
     @RequestMapping(value = "/studenteditassigned", method = RequestMethod.GET)
     public String editAssigned(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
+        return "studenteditassigned";
+    }
+
+    @RequestMapping(value = "/removeassign", method = RequestMethod.POST)
+    public String removeAssigned(Model model,@RequestParam(value="id") int id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        RegistrationDAO.removereg(id, currentStudent.getStudentid());
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
         return "studenteditassigned";
     }
 
@@ -174,18 +201,14 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         Students friend = StudentDAO.getStudent(email);
-        if(friend==null){
-             model.addAttribute("msg", "The email you have entered doesn't belong to any student");
-        }
-        else if(friend.getStudentid()==currentStudent.getStudentid()){
-             model.addAttribute("msg", "Can't friend yourself...");
-        }
-        else if(friend.getSchoolid()!=currentStudent.getSchoolid()) {
+        if (friend == null) {
+            model.addAttribute("msg", "The email you have entered doesn't belong to any student");
+        } else if (friend.getStudentid() == currentStudent.getStudentid()) {
+            model.addAttribute("msg", "Can't friend yourself...");
+        } else if (friend.getSchoolid() != currentStudent.getSchoolid()) {
             model.addAttribute("msg", "Can not add a student from different school");
-        }
-        else
-        {
-        model.addAttribute("msg", FriendshipsDAO.addfriend(friend, currentStudent));
+        } else {
+            model.addAttribute("msg", FriendshipsDAO.addfriend(friend, currentStudent));
         }
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
         model.addAttribute("friendrequests", friendrequests);

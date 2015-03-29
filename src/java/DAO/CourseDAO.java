@@ -23,9 +23,6 @@ public class CourseDAO {
                 .addEntity(Courses.class)
                 .setInteger(0, studentid);
         List<Courses> studentsCourses = query.list();
-        for(int i = 0; i< studentsCourses.size(); i++){
-            System.out.println(studentsCourses.get(i).getCoursename() + " " + studentsCourses.get(i).getCourseidentifier());
-        }
         return studentsCourses;
                 
                 

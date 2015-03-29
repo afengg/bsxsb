@@ -93,24 +93,34 @@
                             <table class="table  "style=" width:700px;">
                                 <thead>
                                     <tr>
+                                        <th>Course Name</th>
                                         <th>Course Identifier</th>
-                                        <th>Range of Semesters</th>
+                                        <th>Number of Students</th>
+                                        <th>Instructor</th>
+                                        <th>Semester</th>
                                         <th>Period</th>
                                         <th>Days</th>
-                                        <th>Instructor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>CSE 308</td>
-                                        <td>1-2</td>
-                                        <td>2</td>
-                                        <td>1,2,3,4,5</td>
-                                        <td>Scott Stoller</td>
-                                        <td>	<button class="btn btn-xs btn-danger">Remove Course</button></td>
+                                    <c:set var="index" value="0" />
+                                    <c:forEach items="${courses}" var="courses">
+                                        <tr>
+                                            <td>${courses.getCoursename()}</td>
+                                            <td>${courses.getCourseidentifier()}</td>
+                                            <td>${courses.getNumstudents()}</td>
+                                            <td>${courses.getInstructor()}</td>
+                                            <td> ${scheduleblocks[index].getSemester()}</td>
+                                            <td> ${scheduleblocks[index].getPeriod()}</td>
+                                            <td> ${scheduleblocks[index].getDays()}</td>
+                                            <c:set var="index" value="${index + 1}" />
+                                    <form action="removeassign.html" method="POST">
+                                        <td><button class="btn btn-xs btn-danger" type="submit" name="id" value="${courses.getCourseid()}">Remove Course</button></td>
+                                    </form>      
                                     </tr>
-                                </tbody>
+                                </c:forEach>
 
+                                </tbody>
                             </table>
                         </div>	
                     </div>		
@@ -121,25 +131,25 @@
 
 
         <footer class="text-center">
-    
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            &copy; BSxSB
-                        </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        &copy; BSxSB
                     </div>
                 </div>
-  
-         
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            Lun Zhang, Alvin Feng, Chris Mak
-                        </div>
+            </div>
+
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        Lun Zhang, Alvin Feng, Chris Mak
                     </div>
                 </div>
+            </div>
         </footer>
-        
+
         <script src="resources/js/jquery.js"></script>
         <script src="resources/js/bootstrap.min.js"></script>
     </body>
