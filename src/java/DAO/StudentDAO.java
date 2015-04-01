@@ -41,6 +41,7 @@ public class StudentDAO {
         newStudent.setRole("ROLE_USER");
         session.save(newStudent);
         session.getTransaction().commit();
+        session.close();
         /**
          * query = session.createSQLQuery( "INSERT INTO students (email,
          * firstname, lastname, password, schoolid) VALUES (:a, :b, :c, :d,
@@ -56,6 +57,7 @@ public class StudentDAO {
                 "SELECT * FROM students")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
+        session.close();
         return allStudents;
     }
 
@@ -65,6 +67,7 @@ public class StudentDAO {
                 "SELECT * FROM students where approved =1")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
+         session.close();
         return allStudents;
     }
 
@@ -80,6 +83,7 @@ public class StudentDAO {
             return null;
         }
         Students student = allStudents.get(0);
+         session.close();
         return student;
     }
 
@@ -94,6 +98,7 @@ public class StudentDAO {
             return null;
         }
         Students student = allStudents.get(0);
+        session.close();
         return student;
     }
 
@@ -103,6 +108,7 @@ public class StudentDAO {
                 "SELECT * FROM students WHERE approved = 0")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
+         session.close();
         return allStudents;
     }
 
@@ -113,6 +119,7 @@ public class StudentDAO {
                 .addEntity(Students.class)
                 .setInteger(0, id);
         List<Students> allStudents = query.list();
+         session.close();
         return allStudents;
     }
     
@@ -126,6 +133,7 @@ public class StudentDAO {
                 .setInteger(0, id)
                 .setInteger(1, id);
         List<Students> allStudents = query.list();
+         session.close();
         return allStudents;
     }
 
@@ -141,6 +149,7 @@ public class StudentDAO {
         student.setApproved(true);
         session.update(student);
         session.getTransaction().commit();
+         session.close();
     }
     
     public static void deleteAccount(String email) {
@@ -154,6 +163,7 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         session.delete(student);
         session.getTransaction().commit();
+         session.close();
     }
 
     public static void acceptAllAccount() {
@@ -170,5 +180,6 @@ public class StudentDAO {
             session.update(student);
         }
         session.getTransaction().commit();
+         session.close();
     }
 }

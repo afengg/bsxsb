@@ -23,9 +23,8 @@ public class CourseDAO {
                 .addEntity(Courses.class)
                 .setInteger(0, studentid);
         List<Courses> studentsCourses = query.list();
+        session.close();
         return studentsCourses;
-                
-                
     }
     
     public static List<Courses> getCourseOfferingForSchool(int schoolid){
@@ -34,6 +33,7 @@ public class CourseDAO {
                .addEntity(Courses.class)
                .setInteger(0, schoolid);
        List<Courses> studentsCourses = query.list();
+       session.close();
        return studentsCourses;
     }
 }

@@ -31,6 +31,7 @@ public class FriendshipsDAO {
         friendship.setAccepted(true);
         session.update(friendship);
         session.getTransaction().commit();
+        session.close();
     }
 
     public static String addfriend(Students addfriend, Students currentStudent) {
@@ -63,6 +64,7 @@ public class FriendshipsDAO {
         friendship.setAccepted(false);
         session.save(friendship);
         session.getTransaction().commit();
+        session.close();
         return "Successfully sent friend request";
     }
 
@@ -76,5 +78,6 @@ public class FriendshipsDAO {
         friendship.setId(friendshipid);
         session.delete(friendship);
         session.getTransaction().commit();
+        session.close();
     }
 }

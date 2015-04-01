@@ -22,5 +22,6 @@ public class RegistrationDAO {
         Registrations reg = new Registrations(regID);
         session.delete(reg);
         session.getTransaction().commit();
+        session.close();
     }
 }

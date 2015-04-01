@@ -89,9 +89,10 @@
                     </div>
                     <div class="col-sm-8 ">
                         <h1 align="center">Assigned Courses</h1>
-                        <div>
+                       
                             <c:set var="sem" value="1" />
                             <c:forEach items="${semester}" var="semester">
+                                 <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
                                 <h3 align="center">Semester ${sem}</h3>
                                 <table class="table  "style=" width:700px;">
                                     <thead>
@@ -123,9 +124,10 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                 </div>
                                 <c:set var="sem" value="${sem + 1}" /> 
                             </c:forEach>
-                        </div>	
+                  
                     </div>
                     <div style="margin-top:30px;">
                         <button class="btn btn-success btn-xs">With friend</button>

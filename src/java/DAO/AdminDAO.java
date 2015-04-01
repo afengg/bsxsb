@@ -31,6 +31,7 @@ public class AdminDAO {
             return null;
         }
         Admins admin = allAdmins.get(0);
+        session.close();
         return admin;
     }
 }
