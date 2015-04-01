@@ -116,6 +116,12 @@ public class StudentController {
 
     @RequestMapping(value = "/studentcourseofferings", method = RequestMethod.GET)
     public String courseOfferings(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        int schoolid = currentStudent.getSchoolid();
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolid);
+        model.addAttribute("courses",courses);
         return "studentcourseofferings";
     }
 

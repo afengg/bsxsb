@@ -27,4 +27,13 @@ public class CourseDAO {
                 
                 
     }
+    
+    public static List<Courses> getCourseOfferingForSchool(int schoolid){
+       session = HibernateUtil.getSessionFactory().openSession();
+       Query query = session.createSQLQuery("SELECT * FROM courses WHERE schoolid=?")
+               .addEntity(Courses.class)
+               .setInteger(0, schoolid);
+       List<Courses> studentsCourses = query.list();
+       return studentsCourses;
+    }
 }

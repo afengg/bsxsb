@@ -101,14 +101,16 @@
 	   </tr>
 	   </thead>
 	   <tbody>
+                <c:forEach items="${courses}" var="courses">
 	   <tr>
-	   <td>CSE308</td>
-	   <td>Software Engineering</td>
-	   <td>Prof. Scott Stoller</td>
-	   <td>1</td>
-	   <td>2</td>
-	   <td>60</td>
+	   <td>${courses.getCourseidentifier()}</td>
+	   <td>${courses.getCoursename()}</td>
+	   <td>${courses.getInstructor()}</td>
+	   <td>${courses.getSemester()}</td>
+	   <td>${courses.getScheduleblockid()}</td>
+	   <td>${courses.getNumstudents()}</td>
 	   </tr>
+           </c:forEach>
 	   </tbody>
 
 </table>
