@@ -29,5 +29,8 @@
         <property name="scheduleblockid" type="int">
             <column name="scheduleblockid" not-null="true" />
         </property>
+        <property name="semester" type="string">
+            <column name="semester" length="10" />
+        </property>
     </class>
 </hibernate-mapping>

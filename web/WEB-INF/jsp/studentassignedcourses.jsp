@@ -1,177 +1,149 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Assigned Courses</title>
-		 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-		
-		  <link href="resources/css/style.css" rel="stylesheet">
-		  <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-</head>
+        <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 
-<body>
+        <link href="resources/css/style.css" rel="stylesheet">
+        <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    </head>
 
-<div class="navbar navbar-default navbar-fixed-top">
-<div class="container">
-<div class="navbar-header">
+    <body>
 
-
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
 
 
-<button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-</button>
-			</div>
 
-			 <div class="collapse navbar-collapse">
+
+                    <button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-					
+
                         <li>
                             <a href="j_spring_security_logout">Sign Out</a>
                         </li>
-				
+
                     </ul>
                 </div>
-			
-			
-</div>
-</div>
-<div class="jumbotron">
-<div class="container" >
+
+
+            </div>
+        </div>
+        <div class="jumbotron">
+            <div class="container" >
                 <div class="row">
-              <div class="col-sm-2">
-			  <ul class="nav nav-pills nav-stacked" >
-                <li >
-                    <a href="student.html">
-                        Home
-                    </a>
-                </li>
-				<li>
-                    <a href="studentmanagefriends.html">Manage Friends</a>
-                </li>
-                <li>
-                    <a href="studentdisplayfriends.html">Display Friends</a>
-                </li>
-                <li class="active">
-                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Manage Assigned Courses<span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="studententercourses.html">Enter Assigned Courses</a></li>
-                    <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
-					 <li><a href="studenteditassigned.html">Edit Assigned Courses</a></li>
-                  </ul>
-                </li>
-              <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Course Offerings<span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="studentcourseofferings.html">2014</a></li>
-                    <li><a href="studentcourseofferings.html">2015</a></li>
-                  </ul>
-                </li>
-   <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    Manage Desired Courses<span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
-                    <li><a href="studentviewgenerated.html">View Desired Courses</a></li>
-					<li><a href="studentviewgenerated.html">Export Desired Courses</a></li>
-                  </ul>
-                </li>
-            </ul>
-			</ul>
-				</div>
-			<div class="col-sm-8 ">
-			<h1 align="center">Assigned Courses</h1>
-			<div class="col-sm-offset-1">
-<table class="table  "style=" width:700px;">
-	   <thead>
-	   <tr>
-	   <th>Period</th>
-	    <th>Monday</th>
-	      <th>Tuesday</th>
-		  <th>Wednesday</th>
-		  <th>Thursday</th>
-		     <th>Friday</th>
-	   </tr>
-	   </thead>
-	   <tbody>
-	   <tr>
-	   <td>1</td>
-	   <td>CSE 310</td>
-	   <td>CSE 310</td>
-	   <td>CSE 310</td>
-	   <td>CSE 310</td>
-	   <td>CSE 310</td>
-	   </tr>
-	    <tr>
-	   <td>2</td>
-	   <td>CSE 308</td>
-	   <td>CSE 308</td>
-	   <td>CSE 308</td>
-	   <td>CSE 308</td>
-	   <td>CSE 308</td>
-	   </tr>
-	    <tr>
-	   <td>3</td>
-	   <td>CSE 305</td>
-	   <td>CSE 305</td>
-	   <td>CSE 305</td>
-	   <td>CSE 305</td>
-	   <td>CSE 305</td>
-	   </tr>
-	    <tr>
-	   <td>4</td>
-	   <td>Lunch</td>
-	   <td>Lunch</td>
-	   <td>Lunch</td>
-	   <td>Lunch</td>
-	   <td>Lunch</td>
-	   </tr>
-	   <tr>
-	   <td>5</td>
-	   <td>CSE 320</td>
-	   <td>CSE 320</td>
-	   <td>CSE 320</td>
-	   <td>CSE 320</td>
-	   <td>CSE 320</td>
-	   </tr>
-	   <tr>
-	   <td>6</td>
-	   <td>CSE 373</td>
-	   <td>CSE 373</td>
-	   <td>CSE 373</td>
-	   <td>CSE 373</td>
-	   <td>CSE 373</td>
-	   </tr>
-	   </tbody>
-
-</table>
-		</div>	
-			</div>
-                    <div style="margin-top:30px;">
-			<button class="btn btn-success btn-xs">With friend</button>
-		<button class="btn btn-danger btn-xs">Without friend</button>
+                    <div class="col-sm-2">
+                        <ul class="nav nav-pills nav-stacked" >
+                            <li >
+                                <a href="student.html">
+                                    Home
+                                </a>
+                            </li>
+                            <li>
+                                <a href="studentmanagefriends.html">Manage Friends</a>
+                            </li>
+                            <li>
+                                <a href="studentdisplayfriends.html">Display Friends</a>
+                            </li>
+                            <li class="active">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Manage Assigned Courses<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="studententercourses.html">Enter Assigned Courses</a></li>
+                                    <li><a href="studentassignedcourses.html">View Assigned Courses</a></li>
+                                    <li><a href="studenteditassigned.html">Edit Assigned Courses</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Course Offerings<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="studentcourseofferings.html">2014</a></li>
+                                    <li><a href="studentcourseofferings.html">2015</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Manage Desired Courses<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
+                                    <li><a href="studentviewgenerated.html">View Desired Courses</a></li>
+                                    <li><a href="studentviewgenerated.html">Export Desired Courses</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        </ul>
                     </div>
-			</div>
-            		 
-</div>
-</div>
+                    <div class="col-sm-8 ">
+                        <h1 align="center">Assigned Courses</h1>
+                        <div>
+                            <c:set var="sem" value="1" />
+                            <c:forEach items="${semester}" var="semester">
+                                <h3 align="center">Semester ${sem}</h3>
+                                <table class="table  "style=" width:700px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Period</th>
+                                            <th>Monday</th>
+                                            <th>Tuesday</th>
+                                            <th>Wednesday</th>
+                                            <th>Thursday</th>
+                                            <th>Friday</th>
+                                            <th>Saturday</th>
+                                            <th>Sunday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:set var="index" value="1" />
+                                        <c:forEach items="${semester}" var="schedule">
+                                            <tr>
+                                                <td>
+                                                    ${index}
+                                                </td>
+                                                <c:forEach items="${schedule}" var="period">
+                                                    <td>
+                                                        ${period.getCoursename()}
+                                                    </td>
+                                                </c:forEach>
+                                                <c:set var="index" value="${index + 1}" /> 
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                                <c:set var="sem" value="${sem + 1}" /> 
+                            </c:forEach>
+                        </div>	
+                    </div>
+                    <div style="margin-top:30px;">
+                        <button class="btn btn-success btn-xs">With friend</button>
+                        <button class="btn btn-danger btn-xs">Without friend</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
 
-<footer class="text-center">
+        <footer class="text-center">
             <div class="footer-above">
                 <div class="container">
                     <div class="row">
-                      
+
                         <div class="col-lg-12">
-						&copy; BSxSB
+                            &copy; BSxSB
                         </div>
 
                     </div>
@@ -181,15 +153,15 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-12">
-                           Lun Zhang, Alvin Feng, Chris Mak
+                            Lun Zhang, Alvin Feng, Chris Mak
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
-		        <script src="resources/js/jquery.js"></script>
+        <script src="resources/js/jquery.js"></script>
         <script src="resources/js/bootstrap.min.js"></script>
-</body>
+    </body>
 
-      
+
 </html>

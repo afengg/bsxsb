@@ -3,9 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/web/WEB-INF/jsp/studentmanagefriends.jsp</file>
-            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/src/java/DAO/FriendshipsDAO.java</file>
-            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/src/java/DAO/StudentDAO.java</file>
+            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/web/WEB-INF/jsp/studentdisplayfriends.jsp</file>
+            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/web/WEB-INF/jsp/studenteditassigned.jsp</file>
+            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/src/java/DAO/SchoolDAO.java</file>
+            <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/src/java/DAO/RegistrationDAO.java</file>
             <file>file:/C:/Users/lun/Desktop/Hws/BSxSB/src/java/BSxSB/Controllers/StudentController.java</file>
         </group>
     </open-files>

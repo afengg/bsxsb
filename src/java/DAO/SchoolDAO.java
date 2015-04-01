@@ -29,11 +29,13 @@ public class SchoolDAO {
     }
     public static Schools getSchool(int schoolID){
                 session = HibernateUtil.getSessionFactory().openSession();
-        Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolid = ")
+        Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolid = ?")
                 .addEntity(Schools.class)
                 .setInteger(0, schoolID);
         List<Schools> schools = query.list();
+         session.close();
         return schools.get(0);
+       
     }
     public static void deleteSchool(int schoolID) {
         session = HibernateUtil.getSessionFactory().openSession();

@@ -13,17 +13,15 @@ public class Scheduleblocks  implements java.io.Serializable {
      private Integer schoolid;
      private Integer period;
      private String days;
-     private String semester;
      private transient int[] daysarrays;
 
     public Scheduleblocks() {
     }
 
-    public Scheduleblocks(Integer schoolid, Integer period, String days, String semester) {
+    public Scheduleblocks(Integer schoolid, Integer period, String days) {
        this.schoolid = schoolid;
        this.period = period;
        this.days = days;
-       this.semester = semester;
        String[] daysarraysString = days.split(days);
        this.daysarrays = new int[daysarraysString.length];
        for(int i = 0; i < daysarrays.length; i++){
@@ -59,13 +57,6 @@ public class Scheduleblocks  implements java.io.Serializable {
     
     public void setDays(String days) {
         this.days = days;
-    }
-    public String getSemester() {
-        return this.semester;
-    }
-    
-    public void setSemester(String semester) {
-        this.semester = semester;
     }
     /**
      * This override method is use to present the scheduleblock data in the

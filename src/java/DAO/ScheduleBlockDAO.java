@@ -22,6 +22,7 @@ public class ScheduleBlockDAO {
                 "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = " + schoolid)
                 .addEntity(Scheduleblocks.class);
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
+        session.close();
         return schoolScheduleBlocks;
     }
     public static Scheduleblocks getScheduleBlock(int scheduleBlockID){
@@ -31,6 +32,7 @@ public class ScheduleBlockDAO {
                 .addEntity(Scheduleblocks.class)
                 .setInteger(0, scheduleBlockID);
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
+        session.close();
         return schoolScheduleBlocks.get(0);
     }
 }

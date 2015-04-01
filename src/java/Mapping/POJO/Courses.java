@@ -17,6 +17,15 @@ public class Courses  implements java.io.Serializable {
      private Integer numstudents;
      private String instructor;
      private int scheduleblockid;
+     private String semester;
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
 
     public Courses() {
     }

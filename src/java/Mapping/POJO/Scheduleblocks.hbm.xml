@@ -17,8 +17,5 @@
         <property name="days" type="string">
             <column name="days" length="45" />
         </property>
-        <property name="semester" type="string">
-            <column name="semester" length="45" />
-        </property>
     </class>
 </hibernate-mapping>

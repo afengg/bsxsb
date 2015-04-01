@@ -110,7 +110,7 @@
                                             <td>${courses.getCourseidentifier()}</td>
                                             <td>${courses.getNumstudents()}</td>
                                             <td>${courses.getInstructor()}</td>
-                                            <td> ${scheduleblocks[index].getSemester()}</td>
+                                            <td> ${courses.getSemester()}</td>
                                             <td> ${scheduleblocks[index].getPeriod()}</td>
                                             <td> ${scheduleblocks[index].getDays()}</td>
                                             <c:set var="index" value="${index + 1}" />

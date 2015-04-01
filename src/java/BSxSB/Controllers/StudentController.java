@@ -85,19 +85,32 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         List<Courses> studentCourses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
-        List<Scheduleblocks> courseSBs = new ArrayList<Scheduleblocks>();
-        for (int i = 0; i < studentCourses.size(); i++) {
-            Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(studentCourses.get(i).getScheduleblockid());
-            courseSBs.add(sb);
-        }
-        //Create 5 arrays, each one to represent the weekday. We will add courses to these arrays IFF this course's scheduleblock includes this day.
+        Schools school = SchoolDAO.getSchool(currentStudent.getSchoolid());
 
-        // Below is the code to arrange the courses into schedule format.
-        // First build the period column. Get the school that this student belongs to, and make an 
-        // array of the ints that contain period numbers.
-        // Since we have an unordered list of student courses, we first must order them by their period and day of the week.
-        // If there is no course in a cell, then replace with a dummy course that has the name/id FREE.        
-        List<List<Courses>> courseTable = new ArrayList();
+        List<List<Courses[]>> semesters = new ArrayList<>();
+        for (int s = 0; s < school.getNumsemesters(); s++) {
+            List<Courses[]> schedule = new ArrayList<>();
+            for (int i = 0; i < school.getNumperiods(); i++) {
+                Courses[] period = new Courses[7];
+                for (Courses course : studentCourses) {
+                    Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid());
+                    if (sb.getPeriod() == i + 1) {
+                        String[] days = sb.getDays().split(",");
+                        String[] semester = course.getSemester().split(",");
+                        for (String sem : semester) {
+                            if (Integer.parseInt(sem) == s + 1) {
+                                for (String day : days) {
+                                    period[Integer.parseInt(day) - 1] = course;
+                                }
+                            }
+                        }
+                    }
+                }
+                schedule.add(period);
+            }
+            semesters.add(schedule);
+        }
+        model.addAttribute("semester", semesters);
         return "studentassignedcourses";
     }
 
@@ -132,7 +145,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/removeassign", method = RequestMethod.POST)
-    public String removeAssigned(Model model,@RequestParam(value="id") int id) {
+    public String removeAssigned(Model model, @RequestParam(value = "id") int id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
