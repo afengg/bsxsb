@@ -86,8 +86,22 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         List<Courses> studentCourses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
         Schools school = SchoolDAO.getSchool(currentStudent.getSchoolid());
-
         List<List<Courses[]>> semesters = new ArrayList<>();
+        List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+        for (Courses course : studentCourses) {
+            for (Students friend : friends) {
+                List<Courses> friendCourses = CourseDAO.getCoursesForStudent(friend.getStudentid());
+                for (Courses friendCourse : friendCourses) {
+                    if (friendCourse.getCourseid() == (course.getCourseid())) {
+                        if (course.getFriends() != null) {
+                            course.setFriends(course.getFriends() +" "+ friend.getFirstname() +" "+ friend.getLastname());
+                        } else {
+                            course.setFriends(friend.getFirstname() +" "+ friend.getLastname());
+                        }
+                    }
+                }
+            }
+        }
         for (int s = 0; s < school.getNumsemesters(); s++) {
             List<Courses[]> schedule = new ArrayList<>();
             for (int i = 0; i < school.getNumperiods(); i++) {
@@ -100,6 +114,7 @@ public class StudentController {
                         for (String sem : semester) {
                             if (Integer.parseInt(sem) == s + 1) {
                                 for (String day : days) {
+
                                     period[Integer.parseInt(day) - 1] = course;
                                 }
                             }
@@ -121,7 +136,7 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolid);
-        model.addAttribute("courses",courses);
+        model.addAttribute("courses", courses);
         return "studentcourseofferings";
     }
 

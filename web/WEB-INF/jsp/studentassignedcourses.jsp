@@ -5,38 +5,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Assigned Courses</title>
         <link href="resources/css/bootstrap.min.css" rel="stylesheet">
-
         <link href="resources/css/style.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <script>
+                           function showFriends() {
+                               var div = document.getElementsByClassName("friends");
+                               for (var i = 0; i < div.length; i++) {
+                                   div[i].style.display = 'block';
+                               }
+                           }
+                           function hideFriends() {
+                               var div = document.getElementsByClassName("friends");
+                               for (var i = 0; i < div.length; i++) {
+                                   div[i].style.display = 'none';
+                               }
+                           }
+        </script>
     </head>
-
     <body>
-
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-
-
-
-
                     <button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-
                         <li>
                             <a href="j_spring_security_logout">Sign Out</a>
                         </li>
-
                     </ul>
                 </div>
-
-
             </div>
         </div>
         <div class="jumbotron">
@@ -89,10 +91,9 @@
                     </div>
                     <div class="col-sm-8 ">
                         <h1 align="center">Assigned Courses</h1>
-                       
-                            <c:set var="sem" value="1" />
-                            <c:forEach items="${semester}" var="semester">
-                                 <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
+                        <c:set var="sem" value="1" />
+                        <c:forEach items="${semester}" var="semester">
+                            <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
                                 <h3 align="center">Semester ${sem}</h3>
                                 <table class="table  "style=" width:700px;">
                                     <thead>
@@ -116,6 +117,9 @@
                                                 </td>
                                                 <c:forEach items="${schedule}" var="period">
                                                     <td>
+                                                        <div class="friends" style=" display: none;">    
+                                                            ${period.getFriends()}
+                                                        </div>
                                                         ${period.getCoursename()}
                                                     </td>
                                                 </c:forEach>
@@ -124,30 +128,24 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
-                                 </div>
-                                <c:set var="sem" value="${sem + 1}" /> 
-                            </c:forEach>
-                  
+                            </div>
+                            <c:set var="sem" value="${sem + 1}" /> 
+                        </c:forEach>
                     </div>
                     <div style="margin-top:30px;">
-                        <button class="btn btn-success btn-xs">With friend</button>
-                        <button class="btn btn-danger btn-xs">Without friend</button>
+                        <button onclick="showFriends()" class="btn btn-success btn-xs">With friend</button>
+                        <button onclick="hideFriends()"class="btn btn-danger btn-xs">Without friend</button>
                     </div>
                 </div>
-
             </div>
         </div>
-
-
         <footer class="text-center">
             <div class="footer-above">
                 <div class="container">
                     <div class="row">
-
                         <div class="col-lg-12">
                             &copy; BSxSB
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -164,6 +162,4 @@
         <script src="resources/js/jquery.js"></script>
         <script src="resources/js/bootstrap.min.js"></script>
     </body>
-
-
 </html>
