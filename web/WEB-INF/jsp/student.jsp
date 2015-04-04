@@ -66,10 +66,12 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     Course Offerings<span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="studentcourseofferings.html">2014</a></li>
-                                    <li><a href="studentcourseofferings.html">2015</a></li>
-                                </ul>
+                                 <form action="studentcourseofferings.html"> 
+                          <select name="year">
+                          <option value="2014-2015"><a href="studentcourseofferings.html">2014</option>
+                          <option value="2015-2016"><a href="studentcourseofferings.html">2015</option>
+                      </select>
+                      <input type="submit" value="Submit"> 
                             </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">

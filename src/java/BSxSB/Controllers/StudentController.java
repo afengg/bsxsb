@@ -130,13 +130,17 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/studentcourseofferings", method = RequestMethod.GET)
-    public String courseOfferings(Model model) {
+    public String courseOfferings(Model model, @RequestParam(value = "year") String year) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
-        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolid);
-        model.addAttribute("courses", courses);
+        Schools sc = SchoolDAO.getSchool(schoolid);
+        String schoolName = sc.getSchoolname();
+        Schools schoolYear = SchoolDAO.getSchoolByNameYear(schoolName,year);
+        int schoolYearID = schoolYear.getSchoolid();       
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolYearID);
+        model.addAttribute("courses",courses);
         return "studentcourseofferings";
     }
 
