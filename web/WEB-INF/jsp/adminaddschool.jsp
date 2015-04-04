@@ -67,19 +67,19 @@
 				</div>
 			<div class="col-sm-10 text-center">
 			<h1>Add School</h1>
-			<form id="adminaddschool" novalidate>
+			<form action="addschool.html" method="POST">
 			<div class="col-sm-12">
-			<input placeholder="School Name" id="firstName" style="width:395px;"> </input>
+			<input placeholder="School Name" name="schoolname" id="firstName" style="width:395px;"> </input>
 			</div>
 			<div class="col-sm-12 registerform">
-			<input placeholder="Academic Year" id="lastName" style="width:395px;"> </input>
+			<input placeholder="Academic Year" name="academicyear" id="lastName" style="width:395px;"> </input>
 			</div>
 		
 			<div class="col-sm-12 registerform" style="margin-left:93px;">
 			
       <label for="select" class="col-sm-2 control-label">Semesters</label>
       <div class="col-lg-10" style="width:425px;">
-        <select class="form-control" id="select">
+        <select class="form-control" name="numsemesters" id="select">
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -92,19 +92,19 @@
 			    <table class="table" style="">
 	  <thead>
 	  <tr>
-	  <th>Semester 1</th>
+	  <th>Semester Information</th>
 	  </tr>
 	  </thead>
 	  <tbody>
 	  <tr>
 	  <td><div>
       <label for="select" >Days</label>  
-        <select class="form-control" id="select" style="height:40px;">
+        <select class="form-control" name="numdays" id="select" style="height:40px;">
           <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
-		  <option>5</option>
+	  <option>5</option>
           <option>6</option>
           <option>7</option>
         </select>
@@ -113,7 +113,7 @@
 		<tr>
 		<td>
 		<label for="select">Periods</label>
-        <select class="form-control" id="select">
+        <select class="form-control" name="numperiods" id="select">
           <option>6</option>
           <option>7</option>
           <option>8</option>
@@ -126,98 +126,39 @@
 	  </tr>
 	  </tbody>
 	  </table>
-	  </div>
-	<div class="col-sm-3 registerform">	
-			    <table class="table" style="">
-	  <thead>
-	  <tr>
-	  <th>Semester 2</th>
-	  </tr>
-	  </thead>
-	  <tbody>
-	  <tr>
-	  <td><div>
-      <label for="select" >Days</label>  
-        <select class="form-control" id="select" style="height:40px;">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-		  <option>5</option>
-          <option>6</option>
-          <option>7</option>
-        </select>
-			</div></td></tr>
-			
-		<tr>
-		<td>
-		<label for="select">Periods</label>
-        <select class="form-control" id="select">
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-		  <option>10</option>
-          <option>11</option>
-          <option>12</option>
-        </select>
-      </td>
-	  </tr>
-	  </tbody>
-	  </table>
-	  </div>	
-		<div class="col-sm-3 registerform">	
-			    <table class="table" style="">
-	  <thead>
-	  <tr>
-	  <th>Semester 3</th>
-	  </tr>
-	  </thead>
-	  <tbody>
-	  <tr>
-	  <td><div>
-      <label for="select" >Days</label>  
-        <select class="form-control" id="select" style="height:40px;">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-		  <option>5</option>
-          <option>6</option>
-          <option>7</option>
-        </select>
-			</div></td></tr>
-			
-		<tr>
-		<td>
-		<label for="select">Periods</label>
-        <select class="form-control" id="select">
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-		  <option>10</option>
-          <option>11</option>
-          <option>12</option>
-        </select>
-      </td>
-	  </tr>
-	  </tbody>
-	  </table>
-	  </div>			
-				<div class="col-sm-12 registerform">
-			<input placeholder='Lunch Range(exe."3-5")' id="firstName" style="width:395px;"> </input>
+	  </div>		
+<div class="col-sm-12 registerform">
+			<input placeholder='Lunch Range(exe."3-5")' name="lunchrange" id="firstName" style="width:395px;"> </input>
 			</div>
 			<div class="col-sm-12 registerform">
-			<input placeholder='Legal Blocks(exe."{1;1,2,3,5")' id="firstName" style="width:395px;"> </input>
+                            <input placeholder='Legal Blocks(<Period;Day1,Day2,...>#<Period...> ex. <1;1,2,3,5>#<2;1,2,3,5>")' name="legalblocks" id="firstName" style="width:395px;"> </input>
 			</div>
 	<div class="col-sm-12 registerform" >
-   <button type="button" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-right:215px;">
+   <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-right:215px;">
      Add School 
    </button>
 			</div>
 			</form>
-             
+                        <div>
+            <c:if test = "${not empty fillout}">
+                <div class="fillout">${fillout}</div>
+            </c:if>
+            <c:if test="${not empty taken}">
+                <div class="taken">${taken}</div>
+            </c:if>
+            <c:if test="${not empty ayregex}">
+                <div class="ayregex">${ayregex}</div>
+            </c:if>
+            <c:if test="${not empty lrregex}">
+                <div class="lrregex">${lrregex}</div>
+            </c:if>
+			<c:if test="${not empty lbregex}">
+                <div class="lbregex">${lbregex}</div>
+            </c:if>
+			<c:if test="${not empty added}">
+                <div class="added">${added}</div>
+            </c:if>
+                        </div>
 			</div>
 
 		

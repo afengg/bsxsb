@@ -35,4 +35,15 @@ public class ScheduleBlockDAO {
         session.close();
         return schoolScheduleBlocks.get(0);
     }
+    public static void addScheduleBlock(int schoolID, int periods, String days){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Scheduleblocks sb = new Scheduleblocks();
+        sb.setDays(days);
+        sb.setPeriod(periods);
+        sb.setSchoolid(schoolID);
+        session.getTransaction().begin();
+        session.save(sb);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

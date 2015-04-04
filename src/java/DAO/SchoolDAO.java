@@ -53,4 +53,35 @@ public class SchoolDAO {
         session.getTransaction().commit();
         session.close();
     }
+    
+    public static Schools getSchoolByNameYear(String schoolName, String academicYear){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ? AND academicyear = ?")
+                .addEntity(Schools.class)
+                .setParameter(0, schoolName)
+                .setParameter(1, academicYear);
+        List<Schools> schools = query.list();
+        session.close();
+        if(schools.size() == 0){
+            return null;
+        }
+        else{
+            return schools.get(0);
+        }
+    }
+    
+    public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange){
+        Schools newSchool = new Schools();
+        newSchool.setSchoolname(schoolName);
+        newSchool.setAcademicyear(academicYear);
+        newSchool.setNumdays(days);
+        newSchool.setLunchrange(lunchRange);
+        newSchool.setNumperiods(periods);
+        newSchool.setNumsemesters(semesters);
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        session.save(newSchool);
+        session.getTransaction().commit();
+        session.close();
+    }
 }
