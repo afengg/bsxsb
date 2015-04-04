@@ -70,8 +70,15 @@
                     Course Offerings<span class="caret"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a href="studentcourseofferings.html">2014</a></li>
-                    <li><a href="studentcourseofferings.html">2015</a></li>
+                     <c:forEach items="${schoolyears}" var="schoolyears">
+                                        <form action="studentcourseofferings.html" method="get">
+                                            <li>
+                                                <button class="btn btn-link" type="submit" name="year" value="${schoolyears.getAcademicyear()}">
+                                                    ${schoolyears.getAcademicyear()}
+                                                </button>
+                                            </li>
+                                        </form>
+                                    </c:forEach>
                   </ul>
                 </li>
    <li class="dropdown active">

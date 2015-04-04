@@ -64,6 +64,9 @@ public class StudentController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("student", currentStudent);
         return "student";
 
@@ -75,6 +78,9 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }
@@ -94,9 +100,9 @@ public class StudentController {
                 for (Courses friendCourse : friendCourses) {
                     if (friendCourse.getCourseid() == (course.getCourseid())) {
                         if (course.getFriends() != null) {
-                            course.setFriends(course.getFriends() +" "+ friend.getFirstname() +" "+ friend.getLastname());
+                            course.setFriends(course.getFriends() + " " + friend.getFirstname() + " " + friend.getLastname());
                         } else {
-                            course.setFriends(friend.getFirstname() +" "+ friend.getLastname());
+                            course.setFriends(friend.getFirstname() + " " + friend.getLastname());
                         }
                     }
                 }
@@ -114,7 +120,6 @@ public class StudentController {
                         for (String sem : semester) {
                             if (Integer.parseInt(sem) == s + 1) {
                                 for (String day : days) {
-
                                     period[Integer.parseInt(day) - 1] = course;
                                 }
                             }
@@ -125,6 +130,9 @@ public class StudentController {
             }
             semesters.add(schedule);
         }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("semester", semesters);
         return "studentassignedcourses";
     }
@@ -137,10 +145,13 @@ public class StudentController {
         int schoolid = currentStudent.getSchoolid();
         Schools sc = SchoolDAO.getSchool(schoolid);
         String schoolName = sc.getSchoolname();
-        Schools schoolYear = SchoolDAO.getSchoolByNameYear(schoolName,year);
-        int schoolYearID = schoolYear.getSchoolid();       
+        Schools schoolYear = SchoolDAO.getSchoolByNameYear(schoolName, year);
+        int schoolYearID = schoolYear.getSchoolid();
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolYearID);
-        model.addAttribute("courses",courses);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("courses", courses);
         return "studentcourseofferings";
     }
 
@@ -150,6 +161,9 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friends", friends);
         return "studentdisplayfriends";
     }
@@ -164,6 +178,9 @@ public class StudentController {
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
         return "studenteditassigned";
@@ -180,6 +197,9 @@ public class StudentController {
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
         return "studenteditassigned";
@@ -187,16 +207,34 @@ public class StudentController {
 
     @RequestMapping(value = "/studententercourses", method = RequestMethod.GET)
     public String enterCourses(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         return "studententercourses";
     }
 
     @RequestMapping(value = "/studentgeneratecourses", method = RequestMethod.GET)
     public String generateCourses(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/studentviewgenerated", method = RequestMethod.GET)
     public String viewGenerated(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         return "studentviewgenerated";
     }
 
@@ -207,6 +245,9 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.acceptfriend(currentStudent.getStudentid(), id);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }
@@ -218,6 +259,9 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }
@@ -229,6 +273,9 @@ public class StudentController {
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
         List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friends", friends);
         return "studentdisplayfriends";
     }
@@ -249,6 +296,9 @@ public class StudentController {
             model.addAttribute("msg", FriendshipsDAO.addfriend(friend, currentStudent));
         }
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }

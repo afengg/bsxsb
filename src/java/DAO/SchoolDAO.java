@@ -37,7 +37,16 @@ public class SchoolDAO {
         List<Schools> schools = query.list();
         session.close();
         return schools.get(0);
+    }
 
+    public static List<Schools> getSchoolSameName(String schoolName) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ?")
+                .addEntity(Schools.class)
+                .setString(0, schoolName);
+        List<Schools> schools = query.list();
+        session.close();
+        return schools;
     }
 
     public static void deleteSchool(int schoolID) {
@@ -53,8 +62,8 @@ public class SchoolDAO {
         session.getTransaction().commit();
         session.close();
     }
-    
-    public static Schools getSchoolByNameYear(String schoolName, String academicYear){
+
+    public static Schools getSchoolByNameYear(String schoolName, String academicYear) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ? AND academicyear = ?")
                 .addEntity(Schools.class)
@@ -62,15 +71,10 @@ public class SchoolDAO {
                 .setParameter(1, academicYear);
         List<Schools> schools = query.list();
         session.close();
-        if(schools.size() == 0){
-            return null;
-        }
-        else{
             return schools.get(0);
-        }
     }
-    
-    public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange){
+
+    public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange) {
         Schools newSchool = new Schools();
         newSchool.setSchoolname(schoolName);
         newSchool.setAcademicyear(academicYear);

@@ -66,12 +66,17 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     Course Offerings<span class="caret"></span>
                                 </a>
-                                 <form action="studentcourseofferings.html"> 
-                          <select name="year">
-                          <option value="2014-2015"><a href="studentcourseofferings.html">2014</option>
-                          <option value="2015-2016"><a href="studentcourseofferings.html">2015</option>
-                      </select>
-                      <input type="submit" value="Submit"> 
+                                <ul class="dropdown-menu">
+                                    <c:forEach items="${schoolyears}" var="schoolyears">
+                                        <form action="studentcourseofferings.html" method="get">
+                                            <li>
+                                                <button class="btn btn-link" type="submit" name="year" value="${schoolyears.getAcademicyear()}">
+                                                    ${schoolyears.getAcademicyear()}
+                                                </button>
+                                            </li>
+                                        </form>
+                                    </c:forEach>
+                                </ul>
                             </li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -99,8 +104,6 @@
                     </div>
                     <div class="col-sm-8  text-center">
                         <h3>   Welcome ${student.getFirstname()} ${student.getLastname()}</h3>
-
-                
                     </div>
 
                 </div>
