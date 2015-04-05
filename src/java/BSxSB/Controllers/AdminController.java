@@ -172,7 +172,7 @@ public class AdminController {
             
             model.addAttribute("added", "School has been successfully added.");
         }
-        // Scheduleblocks are in the form of {period;day1,day2..}#{period;day1,day2..}.
+        // Scheduleblocks are in the form of <period;day1,day2..>#<period;day1,day2..>.
         
         return "adminaddschool";
     }
