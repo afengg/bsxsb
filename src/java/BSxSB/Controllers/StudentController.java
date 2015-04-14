@@ -262,7 +262,7 @@ public class StudentController {
                 int sbid = sb.getScheduleblockid();
                 Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid);
                 int studentid = currentStudent.getStudentid();
-                CourseDAO.addCourse(newCourse, sbid);
+                CourseDAO.addCourse(newCourse, studentid);
                 model.addAttribute("success", "New course successfully added.");
             }
         }
