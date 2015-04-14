@@ -26,13 +26,20 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String string) throws UsernameNotFoundException {
         Students student = StudentDAO.getStudent(string);
+
         if (student != null) {
+            if (student.getLoggedin()) {
+                throw new UsernameNotFoundException("User Logged In");
+            }
             List roles = new ArrayList();
             roles.add(new SimpleGrantedAuthority("ROLE_USER"));
             return new User(student.getEmail(), student.getPassword(), true, true, true, true, roles);
         }
         Admins admin = AdminDAO.getAdmin(string);
         if (admin != null) {
+            if (admin.getLoggedin()) {
+                throw new UsernameNotFoundException("User Logged In");
+            }
             List roles = new ArrayList();
             roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             return new User(admin.getEmail(), admin.getPassword(), true, true, true, true, roles);

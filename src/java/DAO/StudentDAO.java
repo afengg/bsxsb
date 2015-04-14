@@ -20,6 +20,36 @@ public class StudentDAO {
 
     private static Session session;
 
+    public static void setLoggedIn(String email) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ?")
+                .addEntity(Students.class)
+                .setString(0, email);
+        List<Students> allStudents = query.list();
+        Students student = allStudents.get(0);
+        student.setLoggedin(true);
+        session.update(student);
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    public static void setLoggedOut(String email) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM students WHERE email = ?")
+                .addEntity(Students.class)
+                .setString(0, email);
+        List<Students> allStudents = query.list();
+        Students student = allStudents.get(0);
+        student.setLoggedin(false);
+        session.update(student);
+        session.getTransaction().commit();
+        session.close();
+    }
+
     public static void register(String firstName, String lastName, String email, String password, String school) {
         //the String school is actually in the form: [schoolname] - [academicyear]
         //so we need to split it into these two parts to query for the school id
@@ -67,7 +97,7 @@ public class StudentDAO {
                 "SELECT * FROM students where approved =1")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
-         session.close();
+        session.close();
         return allStudents;
     }
 
@@ -83,7 +113,7 @@ public class StudentDAO {
             return null;
         }
         Students student = allStudents.get(0);
-         session.close();
+        session.close();
         return student;
     }
 
@@ -108,7 +138,7 @@ public class StudentDAO {
                 "SELECT * FROM students WHERE approved = 0")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
-         session.close();
+        session.close();
         return allStudents;
     }
 
@@ -119,11 +149,9 @@ public class StudentDAO {
                 .addEntity(Students.class)
                 .setInteger(0, id);
         List<Students> allStudents = query.list();
-         session.close();
+        session.close();
         return allStudents;
     }
-    
-     
 
     public static List<Students> getFriends(int id) {
         session = HibernateUtil.getSessionFactory().openSession();
@@ -133,7 +161,7 @@ public class StudentDAO {
                 .setInteger(0, id)
                 .setInteger(1, id);
         List<Students> allStudents = query.list();
-         session.close();
+        session.close();
         return allStudents;
     }
 
@@ -149,9 +177,9 @@ public class StudentDAO {
         student.setApproved(true);
         session.update(student);
         session.getTransaction().commit();
-         session.close();
+        session.close();
     }
-    
+
     public static void deleteAccount(String email) {
         session = HibernateUtil.getSessionFactory().openSession();
         session.getTransaction().begin();
@@ -163,7 +191,7 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         session.delete(student);
         session.getTransaction().commit();
-         session.close();
+        session.close();
     }
 
     public static void acceptAllAccount() {
@@ -180,6 +208,6 @@ public class StudentDAO {
             session.update(student);
         }
         session.getTransaction().commit();
-         session.close();
+        session.close();
     }
 }

@@ -103,19 +103,23 @@
                                         <th>Course Name</th>
                                         <th>Instructor</th>
                                         <th>Semesters</th>
-                                        <th>Schedule Block</th>
+                                        <th>Period</th>
+                                        <th>Days</th>
                                         <th>Registered Students</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <c:set var="index" value="0" />
                                     <c:forEach items="${courses}" var="courses">
                                         <tr>
                                             <td>${courses.getCourseidentifier()}</td>
                                             <td>${courses.getCoursename()}</td>
                                             <td>${courses.getInstructor()}</td>
                                             <td>${courses.getSemester()}</td>
-                                            <td>${courses.getScheduleblockid()}</td>
+                                            <td>${scheduleblocks[index].getPeriod()}</td>
+                                            <td>${scheduleblocks[index].getDays()}</td>
                                             <td>${courses.getNumstudents()}</td>
+                                            <c:set var="index" value="${index + 1}" />
                                         </tr>
                                     </c:forEach>
                                 </tbody>

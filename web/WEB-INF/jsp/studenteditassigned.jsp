@@ -9,23 +9,16 @@
         <link href="resources/css/style.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     </head>
-
     <body>
-
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-
-
-
-
                     <button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
 
@@ -35,8 +28,6 @@
 
                     </ul>
                 </div>
-
-
             </div>
         </div>
         <div class="jumbotron">
@@ -103,10 +94,10 @@
                                         <th>Course Name</th>
                                         <th>Course Identifier</th>
                                         <th>Number of Students</th>
-                                        <th>Instructor</th>
                                         <th>Semester</th>
                                         <th>Period</th>
                                         <th>Days</th>
+                                        <th>Instructor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -116,10 +107,10 @@
                                             <td>${courses.getCoursename()}</td>
                                             <td>${courses.getCourseidentifier()}</td>
                                             <td>${courses.getNumstudents()}</td>
-                                            <td>${courses.getInstructor()}</td>
                                             <td> ${courses.getSemester()}</td>
                                             <td> ${scheduleblocks[index].getPeriod()}</td>
                                             <td> ${scheduleblocks[index].getDays()}</td>
+                                            <td>${courses.getInstructor()}</td>
                                             <c:set var="index" value="${index + 1}" />
                                     <form action="removeassign.html" method="POST">
                                         <td><button class="btn btn-xs btn-danger" type="submit" name="id" value="${courses.getCourseid()}">Remove Course</button></td>
