@@ -36,7 +36,12 @@ public class SchoolDAO {
                 .setInteger(0, schoolID);
         List<Schools> schools = query.list();
         session.close();
-        return schools.get(0);
+        if(schools.isEmpty()){
+            return null;
+        }
+        else{
+            return schools.get(0);
+        }
     }
 
     public static List<Schools> getSchoolSameName(String schoolName) {
@@ -71,8 +76,13 @@ public class SchoolDAO {
                 .setParameter(1, academicYear);
         List<Schools> schools = query.list();
         session.close();
+        if(schools.isEmpty()){
+            return null;
+        }
+        else{
             return schools.get(0);
-    }
+        }
+        }
 
     public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange) {
         Schools newSchool = new Schools();

@@ -33,7 +33,28 @@ public class ScheduleBlockDAO {
                 .setInteger(0, scheduleBlockID);
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
         session.close();
-        return schoolScheduleBlocks.get(0);
+        if(schoolScheduleBlocks.isEmpty()){
+            return null;
+        }
+        else{
+            return schoolScheduleBlocks.get(0);
+        }
+    }
+    
+    public static Scheduleblocks getScheduleBlock(int schoolid, int period, String days){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM scheduleblocks WHERE schoolid = ? AND period = ? AND days = ?")
+                .addEntity(Scheduleblocks.class)
+                .setInteger(0, schoolid)
+                .setInteger(1, period)
+                .setParameter(2, days);
+        List<Scheduleblocks> sb = query.list();
+        if(sb.isEmpty()){
+            return null;
+        }
+        else{
+            return sb.get(0);
+        }
     }
     public static void addScheduleBlock(int schoolID, int periods, String days){
         session = HibernateUtil.getSessionFactory().openSession();

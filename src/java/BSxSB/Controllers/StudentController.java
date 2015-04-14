@@ -213,9 +213,62 @@ public class StudentController {
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("numSemesters", currentSchool.getNumsemesters());
+        model.addAttribute("numPeriods", currentSchool.getNumperiods());
+        model.addAttribute("numDays", currentSchool.getNumdays());
         return "studententercourses";
     }
-
+    
+    @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)
+    public String submitAssigned(Model model, @RequestParam(value="courseidentifier") String courseidentifier,
+                                              @RequestParam(value="coursename") String coursename,
+                                              @RequestParam(value="instructor") String instructor,
+                                              @RequestParam(value="semesters") String[] semesters,
+                                              @RequestParam(value="period") String period,
+                                              @RequestParam(value="days") String[] days){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        int schoolid = currentStudent.getSchoolid();
+        //Build the semester string
+        String semString = "";
+        for(int i = 0; i < semesters.length; i++){
+            semString += semesters[i];
+            semString += ",";
+        }
+        //Get rid of last ','
+        semString = semString.substring(0, semString.length()-1);
+        System.out.println(semString);
+        //Build the scheduleblock days
+        String daysString = "";
+        for(int i = 0; i < days.length; i++ ){
+            daysString += days[i];
+            daysString += ",";
+        }
+        daysString = daysString.substring(0, daysString.length()-1);
+        int periodInt = Integer.parseInt(period);
+        Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, periodInt, daysString);
+        if(sb == null){
+            model.addAttribute("sbinvalid", "Scheduleblock provided is invalid.");
+            // return error msg
+        }
+        else{
+            Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
+            if(c != null){          
+                RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
+                model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
+            }
+            else{
+                int sbid = sb.getScheduleblockid();
+                Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid);
+                int studentid = currentStudent.getStudentid();
+                CourseDAO.addCourse(newCourse, sbid);
+                model.addAttribute("success", "New course successfully added.");
+            }
+        }
+        return "studententercourses";
+    }
+    
     @RequestMapping(value = "/studentgeneratecourses", method = RequestMethod.GET)
     public String generateCourses(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

@@ -24,4 +24,14 @@ public class RegistrationDAO {
         session.getTransaction().commit();
         session.close();
     }
+    
+    public static void addRegistration(int courseid, int studentid){
+                session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        RegistrationsId regID = new RegistrationsId(courseid,studentid);
+        Registrations reg = new Registrations(regID);
+        session.save(reg);
+        session.getTransaction().commit();
+        session.close();
+    }
 }
