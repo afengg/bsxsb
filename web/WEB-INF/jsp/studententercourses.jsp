@@ -125,13 +125,13 @@
                             </div>
                             <div class="col-sm-7 registerform">
                                 <div><p>Days</p></div>
-                                <div>
+                                <div style="margin-left:20px;">
                                 <c:forEach begin="1" end="${numDays}" var = "val3">
                                 <input type="checkbox" name="days" id="days" value=${val3}>${val3}</input>
                                 </c:forEach>
                                 </div>
                             </div>
-                            <div class="col-sm-10 registerform">
+                            <div class="col-sm-10 col-sm-offset-2 registerform">
                                 <input placeholder="Instructor" name="instructor" id="instructor"  style="width:395px;"> </input>
                             </div>
                             <div class="col-sm-10 registerform" >
