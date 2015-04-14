@@ -16,8 +16,10 @@
             username-parameter="username"
             password-parameter="password" 
         />
-        <logout logout-success-url="/index.html" />
+        <logout success-handler-ref="LogoutHandler"/>
     </http>
+    <beans:bean id="LogoutHandler"
+                class="SpringSecurity.LogoutHandler" />
     <beans:bean id="AuthenticationHandler"
                 class="SpringSecurity.AuthenticationHandler" />
     <beans:bean id="UserService"

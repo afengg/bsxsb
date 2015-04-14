@@ -10,9 +10,11 @@ import DAO.FriendshipsDAO;
 import DAO.SchoolDAO;
 import DAO.StudentDAO;
 import DAO.CourseDAO;
+import DAO.GenerationcriteriaDAO;
 import DAO.RegistrationDAO;
 import DAO.ScheduleBlockDAO;
 import Mapping.POJO.Courses;
+import Mapping.POJO.Generationcriteria;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
 import Mapping.POJO.Students;
@@ -64,6 +66,9 @@ public class StudentController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
+        if (!currentStudent.getLoggedin()) {
+            StudentDAO.setLoggedIn(name);
+        }
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
@@ -150,6 +155,11 @@ public class StudentController {
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolYearID);
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("courses", courses);
         return "studentcourseofferings";
@@ -218,47 +228,45 @@ public class StudentController {
         model.addAttribute("numDays", currentSchool.getNumdays());
         return "studententercourses";
     }
-    
+
     @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)
-    public String submitAssigned(Model model, @RequestParam(value="courseidentifier") String courseidentifier,
-                                              @RequestParam(value="coursename") String coursename,
-                                              @RequestParam(value="instructor") String instructor,
-                                              @RequestParam(value="semesters") String[] semesters,
-                                              @RequestParam(value="period") String period,
-                                              @RequestParam(value="days") String[] days){
+    public String submitAssigned(Model model, @RequestParam(value = "courseidentifier") String courseidentifier,
+            @RequestParam(value = "coursename") String coursename,
+            @RequestParam(value = "instructor") String instructor,
+            @RequestParam(value = "semesters") String[] semesters,
+            @RequestParam(value = "period") String period,
+            @RequestParam(value = "days") String[] days) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
         //Build the semester string
         String semString = "";
-        for(int i = 0; i < semesters.length; i++){
+        for (int i = 0; i < semesters.length; i++) {
             semString += semesters[i];
             semString += ",";
         }
         //Get rid of last ','
-        semString = semString.substring(0, semString.length()-1);
+        semString = semString.substring(0, semString.length() - 1);
         System.out.println(semString);
         //Build the scheduleblock days
         String daysString = "";
-        for(int i = 0; i < days.length; i++ ){
+        for (int i = 0; i < days.length; i++) {
             daysString += days[i];
             daysString += ",";
         }
-        daysString = daysString.substring(0, daysString.length()-1);
+        daysString = daysString.substring(0, daysString.length() - 1);
         int periodInt = Integer.parseInt(period);
         Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, periodInt, daysString);
-        if(sb == null){
+        if (sb == null) {
             model.addAttribute("sbinvalid", "Scheduleblock provided is invalid.");
             // return error msg
-        }
-        else{
+        } else {
             Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
-            if(c != null){          
+            if (c != null) {
                 RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
                 model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
-            }
-            else{
+            } else {
                 int sbid = sb.getScheduleblockid();
                 Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid);
                 int studentid = currentStudent.getStudentid();
@@ -266,17 +274,43 @@ public class StudentController {
                 model.addAttribute("success", "New course successfully added.");
             }
         }
+
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("numSemesters", currentSchool.getNumsemesters());
+        model.addAttribute("numPeriods", currentSchool.getNumperiods());
+        model.addAttribute("numDays", currentSchool.getNumdays());
         return "studententercourses";
     }
-    
+
     @RequestMapping(value = "/studentgeneratecourses", method = RequestMethod.GET)
     public String generateCourses(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            System.out.print(genCourse.getScheduleblockid());
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        model.addAttribute("genscheduleblocks", genscheduleblocks);
+        model.addAttribute("gencourses", genCourses);
         model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
         return "studentgeneratecourses";
     }
 

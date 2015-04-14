@@ -11,16 +11,16 @@ public class Generationcriteria  implements java.io.Serializable {
 
      private Integer generationcriteriaid;
      private Integer studentid;
-     private String courseidentifiers;
-     private String instructors;
+     private String courseids;
+
 
     public Generationcriteria() {
     }
 
-    public Generationcriteria(Integer studentid, String courseidentifiers, String instructors) {
+    public Generationcriteria(Integer studentid, String courseids, String instructors) {
        this.studentid = studentid;
-       this.courseidentifiers = courseidentifiers;
-       this.instructors = instructors;
+       this.courseids = courseids;
+
     }
    
     public Integer getGenerationcriteriaid() {
@@ -37,19 +37,12 @@ public class Generationcriteria  implements java.io.Serializable {
     public void setStudentid(Integer studentid) {
         this.studentid = studentid;
     }
-    public String getCourseidentifiers() {
-        return this.courseidentifiers;
+    public String getCourseids() {
+        return this.courseids;
     }
     
-    public void setCourseidentifiers(String courseidentifiers) {
-        this.courseidentifiers = courseidentifiers;
-    }
-    public String getInstructors() {
-        return this.instructors;
-    }
-    
-    public void setInstructors(String instructors) {
-        this.instructors = instructors;
+    public void setCourseids(String courseids) {
+        this.courseids = courseids;
     }
 
 
