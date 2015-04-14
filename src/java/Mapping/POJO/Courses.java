@@ -36,6 +36,13 @@ public class Courses implements java.io.Serializable {
     public Courses() {
     }
 
+    public Courses(int schoolid, String coursename, String courseidentifier, String instructor, int scheduleblockid){
+        this.schoolid = schoolid;
+        this.coursename = coursename;
+        this.courseidentifier = courseidentifier;
+        this.instructor = instructor;
+        this.scheduleblockid = scheduleblockid;
+    }
     public Courses(int courseid, int schoolid, String instructor, int scheduleblockid) {
         this.courseid = courseid;
         this.schoolid = schoolid;
@@ -117,5 +124,10 @@ public class Courses implements java.io.Serializable {
     public void setScheduleblockid(int scheduleblockid) {
         this.scheduleblockid = scheduleblockid;
     }
-
+    public void incrementStudents(){
+        numstudents++;
+    }
+    public void decrementStudents(){
+        numstudents--;
+    }
 }

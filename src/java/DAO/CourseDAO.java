@@ -7,6 +7,8 @@ package DAO;
 
 import Hibernate.HibernateUtil;
 import Mapping.POJO.Courses;
+import Mapping.POJO.Registrations;
+import Mapping.POJO.RegistrationsId;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -50,4 +52,50 @@ public class CourseDAO {
         session.close();
         return course;
     }
+    public static Courses getCourse(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String instructor, String semesters){
+                session = HibernateUtil.getSessionFactory().openSession();
+                Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
+                .addEntity(Courses.class)
+                .setParameter(0, courseIdentifier)
+                .setParameter(1, courseName)
+                .setParameter(2, scheduleblockid)
+                .setParameter(3, schoolid)
+                .setParameter(4, instructor)
+                .setParameter(5, semesters);
+        List<Courses> course = query.list();
+        if(course.isEmpty()){
+            return null;
+        }
+        else{
+            return course.get(0);
+        }
+    }
+    public static void addCourse(Courses newCourse, int studentid){
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        session.save(newCourse);
+        session.getTransaction().commit();
+        //retrieve this course
+        Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ?")
+                .addEntity(Courses.class)
+                .setParameter(0, newCourse.getCourseidentifier())
+                .setParameter(1, newCourse.getCoursename())
+                .setParameter(2, newCourse.getScheduleblockid())
+                .setParameter(3, newCourse.getSchoolid())
+                .setParameter(4, newCourse.getInstructor());
+        List<Courses> course = query.list();
+        if(course.isEmpty()){
+            return;
+        }
+        else{
+            Courses c = course.get(0);
+            RegistrationsId registrationId = new RegistrationsId(c.getCourseid(), studentid);
+            Registrations registration = new Registrations(registrationId);
+            session.getTransaction().begin();
+            session.save(registration);
+            session.getTransaction().commit();
+        }
+        session.close();
+    }
+   
 }
