@@ -56,9 +56,9 @@ public class StudentDAO {
         String[] schoolparts = school.split(" - ");
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "SELECT schoolid FROM schools WHERE schoolname = " + "'" + schoolparts[0] + "'"
-                + " AND academicyear = " + "'" + schoolparts[1] + "'"
-        );
+                "SELECT schoolid FROM schools WHERE schoolname = ? AND academicyear = ?")
+                .setParameter(0, schoolparts[0])
+                .setParameter(1, schoolparts[1]);
         //This query should only return one result, a schoolid int
         session.getTransaction().begin();
         int schoolid = (int) query.uniqueResult();
@@ -69,6 +69,7 @@ public class StudentDAO {
         newStudent.setSchoolid(schoolid);
         newStudent.setPassword(password);
         newStudent.setRole("ROLE_USER");
+        newStudent.setApproved(false);
         session.save(newStudent);
         session.getTransaction().commit();
         session.close();
