@@ -9,6 +9,7 @@ import DAO.AdminDAO;
 import DAO.StudentDAO;
 import DAO.SchoolDAO;
 import DAO.ScheduleBlockDAO;
+import Email.EmailNotification;
 import Mapping.POJO.Admins;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
@@ -93,6 +94,8 @@ public class AdminController {
     @RequestMapping(value = "/acceptaccount", method = RequestMethod.POST)
     public String acceptAccount(Model model, @RequestParam(value = "email") String email) {
         StudentDAO.acceptAccount(email);
+        Students student = StudentDAO.getStudent(email);
+        EmailNotification.sendEmail(student.getEmail(), student.getFirstname());
         List<Students> accountrequests = StudentDAO.getAccountRequests();
         model.addAttribute("accountrequests", accountrequests);
         return "adminmanagerequests";
