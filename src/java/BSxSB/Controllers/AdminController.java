@@ -28,6 +28,7 @@ import java.util.logging.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -90,7 +91,78 @@ public class AdminController {
         logger.info("Schools successfully added to model.");
         return "admin";
     }
+    @RequestMapping(value = "/admineditschool", method = RequestMethod.POST)
+    public String editRequest(Model model, @RequestParam(value = "schoolID") String schoolID){
+        Schools school = SchoolDAO.getSchool(Integer.parseInt(schoolID));
+        List<Scheduleblocks> scheduleBlocks = ScheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
+            String SB2Strings = "";
+            for (Scheduleblocks sb : scheduleBlocks) {
+                SB2Strings += "#" + sb.toString();
+            }
+            SB2Strings = SB2Strings.substring(1);
+            school.setScheduleblocks(SB2Strings);
+        model.addAttribute("school", school);
+        model.addAttribute("currentsemesters", String.valueOf(school.getNumsemesters()));
+        model.addAttribute("currentdays", String.valueOf(school.getNumdays()));
+        model.addAttribute("currentperiods", String.valueOf(school.getNumperiods()));
+        
+        return "admineditschool";
+    }
+    @RequestMapping(value = "/editschool", method = RequestMethod.POST)
+    public String editSchool(Model model, @RequestParam(value="schoolID") String schoolID,
+                                           @RequestParam(value="schoolname") String schoolName,
+                                           @RequestParam(value="academicyear") String academicYear,
+                                           @RequestParam(value="numsemesters") String numSemesters,
+                                           @RequestParam(value="numdays") String numDays,
+                                           @RequestParam(value="numperiods") String numPeriods,
+                                           @RequestParam(value="lunchrange") String lunchRange,
+                                           @RequestParam(value="legalblocks") String legalBlocks){
+        boolean valid = true;
+        if (schoolName.isEmpty() || academicYear.isEmpty() || numSemesters.isEmpty() || numPeriods.isEmpty() || legalBlocks.isEmpty() || lunchRange.isEmpty()) {
+            model.addAttribute("fillout", "Please fill out all Required Fields");
+            valid = false;
+        }
+        int schoolid2 = Integer.parseInt(schoolID); 
+        String academicYearRegex = "[0-9]{4}-[0-9]{4}";
+        String lunchRangeRegex = "[0-9]-[0-9]";
+        int periods = Integer.parseInt(numPeriods);
+        int days = Integer.parseInt(numDays);
+        int semesters = Integer.parseInt(numSemesters);
+        String legalBlockRegex = "(<[1-" + periods + "];([1-" + days + "](,[1-" + days + "]){0," + days + "})>)"
+                + "(#<[1-" + periods + "];([1-" + days + "](,[1-" + days + "]){0," + days + "})>)*";
+        if (!academicYear.matches(academicYearRegex)) {
+            model.addAttribute("ayregex", "Academic Year is invalid.");
+            valid = false;
+        }
+        if (!lunchRange.matches(lunchRangeRegex)) {
+            model.addAttribute("lrregex", "Lunch Range is invalid.");
+            valid = false;
+        }
+        if (periods <= 9) {
+            if (!legalBlocks.matches(legalBlockRegex)) {
+                model.addAttribute("lbregex", "Legal Block set is invalid.");
+                System.out.println(legalBlocks);
+                valid = false;
+            }
+        }
+        if (valid == true) {
+            SchoolDAO.editSchool(schoolid2, schoolName, academicYear, semesters, days, periods, lunchRange);
+            //Delete all existing scheduleblocks
+            ScheduleBlockDAO.deleteSchoolScheduleBlocks(schoolid2);
+            //Add new scheduleblocks
+            String[] lbArray = legalBlocks.split("#");
+            //Array of strings in the format ({1;1,2,3}
+            for (String s : lbArray) {
+                String temp = s.substring(1, s.length() - 1);
+                String[] tempArray = temp.split(";");
+                int pd = Integer.parseInt(tempArray[0]);
+                ScheduleBlockDAO.addScheduleBlock(schoolid2, pd, tempArray[1]);
+            }
 
+            model.addAttribute("added", "School has been successfully edited.");
+        }
+        return editRequest(model, schoolID);
+    }
     @RequestMapping(value = "/acceptaccount", method = RequestMethod.POST)
     public String acceptAccount(Model model, @RequestParam(value = "email") String email) {
         StudentDAO.acceptAccount(email);

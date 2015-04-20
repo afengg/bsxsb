@@ -41,7 +41,21 @@ public class CourseDAO {
         session.close();
         return studentsCourses;
     }
-
+    public static Courses getCourseCourseIdentifier(int schoolid, String courseidentifier){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier=? AND schoolid=?")
+                .addEntity(Courses.class)
+                .setParameter(0, courseidentifier)
+                .setParameter(1, schoolid);
+        List<Courses> courses = query.list();
+        session.close();   
+        if(courses.isEmpty()){
+            return null;
+        }
+        else{
+            return courses.get(0);
+        }     
+    }
     public static Courses getCourse(int courseid) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseid=?")
@@ -62,6 +76,23 @@ public class CourseDAO {
                 .setParameter(3, schoolid)
                 .setParameter(4, instructor)
                 .setParameter(5, semesters);
+        List<Courses> course = query.list();
+        if(course.isEmpty()){
+            return null;
+        }
+        else{
+            return course.get(0);
+        }
+    }
+    public static Courses getCourseNoInstructor(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String semesters){
+                session = HibernateUtil.getSessionFactory().openSession();
+                Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND semester = ?")
+                .addEntity(Courses.class)
+                .setParameter(0, courseIdentifier)
+                .setParameter(1, courseName)
+                .setParameter(2, scheduleblockid)
+                .setParameter(3, schoolid)
+                .setParameter(4, semesters);
         List<Courses> course = query.list();
         if(course.isEmpty()){
             return null;

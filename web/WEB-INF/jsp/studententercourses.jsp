@@ -7,10 +7,28 @@
         <link href="resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="resources/css/style.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <script src="http://code.jquery.com/jquery-latest.js">   
+        </script>
     </head>
 
     <body>
-
+        <script>
+        function courseCheck(){
+            var f = document.getElementById("instructor");
+            f.innerHTML = "hi";
+        var identifier = $('#courseidentifier').val();                
+        $.ajax({
+            type: "POST",
+            url: "coursecheck.html",
+            data: 
+            "courseidentifier" = identifier,
+            success: function( data ) {
+                $("#coursename").html(data);
+            }
+        });
+  }
+        </script>
+            
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -99,42 +117,43 @@
                     </div>
                     <form action="submitassigned.html" method="POST" id="register" novalidate>
                         <div class="text-center">
-                            <div class="col-sm-10  registerform">
-                                <input placeholder="Course Identifier" name="courseidentifier" id="courseidentifier" style="width:395px;"> </input>
+                            <div class="form-group">
+                                <label for="courseidentifier">Course ID</label>
+                                <input onblur="courseCheck();" placeholder="Course Identifier" name="courseidentifier" id="courseidentifier" style="width:395px;"> </input>
                             </div>
-                            <div class="col-sm-10  registerform">
+                            <div class="form-group">
+                                <label for="coursename">Course Name</label>
                                 <input placeholder="Course Name" name="coursename" id="coursename" style="width:395px;"> </input>
                             </div>
-                            <div class="col-sm-7  registerform">
-                                <div>
-                                <p>Semesters</p>
-                            </div>
-                            <div>
+                            <div class="form-group">
+                                <label for="semesters">Semesters</label>
                                 <c:forEach begin="1" end="${numSemesters}" var = "val">
-                                    <input type="checkbox" name="semesters" value=${val}>${val}</input>
+                                    <label>
+                                    <input type="checkbox" id="semesters" name="semesters" value=${val}>${val}</input>
+                                    </label>
                                 </c:forEach>
                             </div>
-                            </div>
-                            <div class="col-sm-10 registerform">
-                                <div><p>Period<p></div>
+                            <div class="form-group">
+                                <label for="period">Period</label>
                                 <select placeholder="Period" name="period" id="period" style="width:395px;">
                                 <c:forEach begin="1" end ="${numPeriods}" var = "val2">
                                 <option value="${val2}">${val2}</option>
                                 </c:forEach>
                                 </select>
                             </div>
-                            <div class="col-sm-7 registerform">
-                                <div><p>Days</p></div>
-                                <div style="margin-left:20px;">
+                            <div class="form-group">
+                                <label>Days</label>
                                 <c:forEach begin="1" end="${numDays}" var = "val3">
+                                    <label>
                                 <input type="checkbox" name="days" id="days" value=${val3}>${val3}</input>
+                                    </label>
                                 </c:forEach>
-                                </div>
                             </div>
-                            <div class="col-sm-10 col-sm-offset-2 registerform">
+                            <div class="form-group">
+                                <label for="instructor">Instructor</label>
                                 <input placeholder="Instructor" name="instructor" id="instructor"  style="width:395px;"> </input>
                             </div>
-                            <div class="col-sm-10 registerform" >
+                            <div class="form-group" >
                                 <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-left:170px;">
                                     Add Course
                                 </button>

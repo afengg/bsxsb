@@ -124,6 +124,12 @@
                                                 <button class="btn btn-danger btn-xs" type="submit" name="schoolID" value="${school.getSchoolid()}">Delete School </button>
                                                 </form>
                                             </td>
+                                            <td>
+                                                <form action="admineditschool.html" method="POST">
+                                                <input type="hidden" name="schoolID" value="${school.getSchoolid()}"/>
+                                                <button class="btn btn-warning btn-xs" type="submit">Edit School </button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     

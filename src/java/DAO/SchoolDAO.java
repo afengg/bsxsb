@@ -43,7 +43,7 @@ public class SchoolDAO {
             return schools.get(0);
         }
     }
-
+    
     public static List<Schools> getSchoolSameName(String schoolName) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ?")
@@ -83,6 +83,21 @@ public class SchoolDAO {
             return schools.get(0);
         }
         }
+    public static void editSchool(int schoolID, String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange){
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Schools school = (Schools)session.get(Schools.class, schoolID);
+        school.setAcademicyear(academicYear);
+        school.setLunchrange(lunchRange);
+        school.setNumperiods(periods);
+        school.setNumdays(days);
+        school.setSchoolname(schoolName);
+        school.setNumsemesters(semesters);
+        session.save(school);
+        session.getTransaction().commit();
+        session.close();
+        
+    }
 
     public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange) {
         Schools newSchool = new Schools();
