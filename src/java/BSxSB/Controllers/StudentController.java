@@ -30,7 +30,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.ModelAndView;
 
 /**
@@ -178,7 +177,7 @@ public class StudentController {
         model.addAttribute("friends", friends);
         return "studentdisplayfriends";
     }
-    
+
     @RequestMapping(value = "/studenteditassigned", method = RequestMethod.GET)
     public String editAssigned(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -215,22 +214,7 @@ public class StudentController {
         model.addAttribute("courses", courses);
         return "studenteditassigned";
     }
-    
-    @RequestMapping(value = "/coursecheck", method = RequestMethod.POST)
-    @ResponseBody
-    public String courseCheck(@RequestParam String courseidentifier){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Students currentStudent = StudentDAO.getStudent(name);
-        int schoolid = currentStudent.getSchoolid();
-        Courses c = CourseDAO.getCourseCourseIdentifier(schoolid, courseidentifier);
-        String result = "wow";
-        if(c != null){
-            result = c.getCoursename();
-        }
-        System.out.println(result);
-        return result;
-    }
+
     @RequestMapping(value = "/studententercourses", method = RequestMethod.GET)
     public String enterCourses(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -242,9 +226,9 @@ public class StudentController {
         model.addAttribute("numSemesters", currentSchool.getNumsemesters());
         model.addAttribute("numPeriods", currentSchool.getNumperiods());
         model.addAttribute("numDays", currentSchool.getNumdays());
-        System.out.println("SEC");
         return "studententercourses";
     }
+
     @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)
     public String submitAssigned(Model model, @RequestParam(value = "courseidentifier") String courseidentifier,
             @RequestParam(value = "coursename") String coursename,
@@ -256,7 +240,8 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
-                String semString = "";
+        //Build the semester string
+        String semString = "";
         for (int i = 0; i < semesters.length; i++) {
             semString += semesters[i];
             semString += ",";
@@ -273,34 +258,11 @@ public class StudentController {
         daysString = daysString.substring(0, daysString.length() - 1);
         int periodInt = Integer.parseInt(period);
         Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, periodInt, daysString);
-        if(semString.compareTo("") == 0){
-            model.addAttribute("seminvalid", "Please choose semester(s)");
-            return "studententercourses";
-        }
         if (sb == null) {
             model.addAttribute("sbinvalid", "Scheduleblock provided is invalid.");
-            return "studententercourses";
             // return error msg
         } else {
-            
-        }
-        return "studentconfirmassign";
-    }
-    @RequestMapping(value = "/submitassigned2", method = RequestMethod.POST)
-    public String submitAssigned2(Model model, @RequestParam(value = "courseidentifier") String courseidentifier,
-            @RequestParam(value = "coursename") String coursename,
-            @RequestParam(value = "instructor") String instructor,
-            @RequestParam(value = "semesters") String semesters,
-            @RequestParam(value = "period") String period,
-            @RequestParam(value = "days") String days) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Students currentStudent = StudentDAO.getStudent(name);
-        int schoolid = currentStudent.getSchoolid();
-        //Build the semester string
-        int periodInt = Integer.parseInt(period);
-        Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, periodInt, days);
-            Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semesters);
+            Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
             if (c != null) {
                 RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
                 model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
@@ -310,7 +272,7 @@ public class StudentController {
                 int studentid = currentStudent.getStudentid();
                 CourseDAO.addCourse(newCourse, studentid);
                 model.addAttribute("success", "New course successfully added.");
-            
+            }
         }
 
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
@@ -319,7 +281,7 @@ public class StudentController {
         model.addAttribute("numSemesters", currentSchool.getNumsemesters());
         model.addAttribute("numPeriods", currentSchool.getNumperiods());
         model.addAttribute("numDays", currentSchool.getNumdays());
-        return "studentconfirmassign";
+        return "studententercourses";
     }
 
     @RequestMapping(value = "/studentgeneratecourses", method = RequestMethod.GET)
