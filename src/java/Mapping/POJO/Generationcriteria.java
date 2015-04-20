@@ -12,7 +12,15 @@ public class Generationcriteria  implements java.io.Serializable {
      private Integer generationcriteriaid;
      private Integer studentid;
      private String courseids;
+     private String lunch;
 
+    public String getLunch() {
+        return lunch;
+    }
+
+    public void setLunch(String lunch) {
+        this.lunch = lunch;
+    }
 
     public Generationcriteria() {
     }

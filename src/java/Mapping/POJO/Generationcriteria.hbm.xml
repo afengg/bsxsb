@@ -14,5 +14,8 @@
         <property name="courseids" type="string">
             <column name="courseids" />
         </property>
+        <property name="lunch" type="string">
+            <column name="lunch" />
+        </property>
     </class>
 </hibernate-mapping>

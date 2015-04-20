@@ -155,7 +155,7 @@ public class StudentController {
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(schoolYearID);
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
-        List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
@@ -248,7 +248,6 @@ public class StudentController {
         }
         //Get rid of last ','
         semString = semString.substring(0, semString.length() - 1);
-        System.out.println(semString);
         //Build the scheduleblock days
         String daysString = "";
         for (int i = 0; i < days.length; i++) {
@@ -303,9 +302,253 @@ public class StudentController {
         for (String courseid : courseids) {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
-            System.out.print(genCourse.getScheduleblockid());
             genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
         }
+        if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
+            String[] lunch = gencriteria.getLunch().split(",");
+            model.addAttribute("lunch", lunch);
+        }
+        String lunchrange = currentSchool.getLunchrange();
+        model.addAttribute("lunchrange", lunchrange);
+        int numdays = currentSchool.getNumdays();
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        String[] lunchdays2 = lunchdays.split(",");
+        model.addAttribute("lunchdays", lunchdays2);
+        model.addAttribute("genscheduleblocks", genscheduleblocks);
+        model.addAttribute("gencourses", genCourses);
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
+        return "studentgeneratecourses";
+    }
+
+    @RequestMapping(value = "/adddesiredcourse", method = RequestMethod.POST)
+    public String adddesiredcourses(Model model, @RequestParam("id") String id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        GenerationcriteriaDAO.addDesiredCourses(currentStudent.getStudentid(), id);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
+            String[] lunch = gencriteria.getLunch().split(",");
+            model.addAttribute("lunch", lunch);
+        }
+        String lunchrange = currentSchool.getLunchrange();
+        model.addAttribute("lunchrange", lunchrange);
+        int numdays = currentSchool.getNumdays();
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        String[] lunchdays2 = lunchdays.split(",");
+        model.addAttribute("lunchdays", lunchdays2);
+        model.addAttribute("genscheduleblocks", genscheduleblocks);
+        model.addAttribute("gencourses", genCourses);
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
+        return "studentgeneratecourses";
+    }
+
+    @RequestMapping(value = "/removedesiredcourse", method = RequestMethod.POST)
+    public String removedesiredcourses(Model model, @RequestParam("id") String id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        GenerationcriteriaDAO.removeDesiredCourses(currentStudent.getStudentid(), id);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
+            String[] lunch = gencriteria.getLunch().split(",");
+            model.addAttribute("lunch", lunch);
+        }
+        String lunchrange = currentSchool.getLunchrange();
+        model.addAttribute("lunchrange", lunchrange);
+        int numdays = currentSchool.getNumdays();
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        String[] lunchdays2 = lunchdays.split(",");
+        model.addAttribute("lunchdays", lunchdays2);
+        model.addAttribute("genscheduleblocks", genscheduleblocks);
+        model.addAttribute("gencourses", genCourses);
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
+        return "studentgeneratecourses";
+    }
+
+    @RequestMapping(value = "/removelunch", method = RequestMethod.POST)
+    public String removelunch(Model model, @RequestParam("lunch") String lunchday) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        GenerationcriteriaDAO.removeLunch(currentStudent.getStudentid(), lunchday);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
+            String[] lunch = gencriteria.getLunch().split(",");
+            model.addAttribute("lunch", lunch);
+        }
+        String lunchrange = currentSchool.getLunchrange();
+        model.addAttribute("lunchrange", lunchrange);
+        int numdays = currentSchool.getNumdays();
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        String[] lunchdays2 = lunchdays.split(",");
+        model.addAttribute("lunchdays", lunchdays2);
+        model.addAttribute("genscheduleblocks", genscheduleblocks);
+        model.addAttribute("gencourses", genCourses);
+        model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("scheduleblocks", scheduleblocks);
+        model.addAttribute("courses", courses);
+        return "studentgeneratecourses";
+    }
+
+    @RequestMapping(value = "/addlunch", method = RequestMethod.POST)
+    public String addlunch(Model model, @RequestParam("lunch") String lunchday) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        GenerationcriteriaDAO.addLunch(currentStudent.getStudentid(), lunchday);
+        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        List<Scheduleblocks> scheduleblocks = new ArrayList<>();
+        for (Courses course : courses) {
+            scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+        }
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
+            String[] lunch = gencriteria.getLunch().split(",");
+            model.addAttribute("lunch", lunch);
+        }
+        String lunchrange = currentSchool.getLunchrange();
+        model.addAttribute("lunchrange", lunchrange);
+        int numdays = currentSchool.getNumdays();
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        String[] lunchdays2 = lunchdays.split(",");
+        model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
         model.addAttribute("gencourses", genCourses);
         model.addAttribute("schoolyears", schoolyears);
@@ -316,6 +559,17 @@ public class StudentController {
 
     @RequestMapping(value = "/studentviewgenerated", method = RequestMethod.GET)
     public String viewGenerated(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
+        model.addAttribute("schoolyears", schoolyears);
+        return "studentviewgenerated";
+    }
+
+    @RequestMapping(value = "/generateschedule", method = RequestMethod.GET)
+    public String generateSchedule(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
