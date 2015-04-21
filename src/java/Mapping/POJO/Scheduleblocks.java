@@ -65,7 +65,7 @@ public class Scheduleblocks  implements java.io.Serializable {
      */
     @Override
     public String toString(){
-         return "{" + period + ";" + days + "}";
+         return "<" + period + ";" + days + ">";
     }
 
 

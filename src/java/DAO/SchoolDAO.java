@@ -98,4 +98,19 @@ public class SchoolDAO {
         session.getTransaction().commit();
         session.close();
     }
+    public static void editSchool(int schoolID, String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange){
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        Schools school = (Schools)session.get(Schools.class, schoolID);
+        school.setAcademicyear(academicYear);
+        school.setLunchrange(lunchRange);
+        school.setNumperiods(periods);
+        school.setNumdays(days);
+        school.setSchoolname(schoolName);
+        school.setNumsemesters(semesters);
+        session.save(school);
+        session.getTransaction().commit();
+        session.close();
+        
+    }
 }

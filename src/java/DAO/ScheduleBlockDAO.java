@@ -19,8 +19,9 @@ public class ScheduleBlockDAO {
     public static List<Scheduleblocks> getSchoolsScheduleBlocks(int schoolid){
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery(
-                "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = " + schoolid)
-                .addEntity(Scheduleblocks.class);
+                "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = ?")
+                .addEntity(Scheduleblocks.class)
+                .setInteger(0, schoolid);
         List<Scheduleblocks> schoolScheduleBlocks = query.list();
         session.close();
         return schoolScheduleBlocks;
@@ -64,6 +65,20 @@ public class ScheduleBlockDAO {
         sb.setSchoolid(schoolID);
         session.getTransaction().begin();
         session.save(sb);
+        session.getTransaction().commit();
+        session.close();
+    }
+    public static void deleteSchoolScheduleBlocks(int schoolid){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery(
+                "SELECT * FROM scheduleblocks WHERE scheduleblocks.schoolid = ?")
+                .addEntity(Scheduleblocks.class)
+                .setInteger(0, schoolid);
+        List<Scheduleblocks> schoolScheduleBlocks = query.list();
+        session.getTransaction().begin();
+        for(Scheduleblocks s : schoolScheduleBlocks){
+            session.delete(s);
+        }
         session.getTransaction().commit();
         session.close();
     }
