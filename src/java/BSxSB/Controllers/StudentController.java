@@ -27,9 +27,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.ModelAndView;
 
 /**
@@ -76,7 +79,7 @@ public class StudentController {
         return "student";
 
     }
-
+    
     @RequestMapping(value = "/studentmanagefriends", method = RequestMethod.GET)
     public String manageFriends(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -227,6 +230,23 @@ public class StudentController {
         model.addAttribute("numPeriods", currentSchool.getNumperiods());
         model.addAttribute("numDays", currentSchool.getNumdays());
         return "studententercourses";
+    }
+    
+    @RequestMapping(value = "/courseCheck.html", method = RequestMethod.POST)
+    public @ResponseBody String courseCheck(@ModelAttribute(value="identifier") String identifier, 
+                                             @ModelAttribute(value="schoolname") String schoolname, 
+                                             @ModelAttribute(value="academicyear") String academicyear, 
+                                            BindingResult result){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        int schoolid = currentStudent.getSchoolid();
+        Courses course = CourseDAO.getCourseUsingID(schoolid, identifier);
+        String courseName = "";
+        if(course != null){
+            courseName = course.getCoursename();
+        }
+        return courseName;
     }
 
     @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)

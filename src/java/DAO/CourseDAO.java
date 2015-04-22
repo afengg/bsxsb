@@ -41,7 +41,20 @@ public class CourseDAO {
         session.close();
         return studentsCourses;
     }
-
+    public static Courses getCourseUsingID(int schoolid, String courseidentifier) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Query query = session.createSQLQuery("SELECT * FROM courses where schoolid=? AND courseidentifier=?")
+                .addEntity(Courses.class)
+                .setParameter(0, schoolid)
+                .setParameter(1, courseidentifier);
+        List<Courses> courses = query.list();
+        if(courses.isEmpty()){
+            return null;
+        }
+        else{
+            return courses.get(0);
+        }
+    }
     public static Courses getCourse(int courseid) {
         session = HibernateUtil.getSessionFactory().openSession();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseid=?")

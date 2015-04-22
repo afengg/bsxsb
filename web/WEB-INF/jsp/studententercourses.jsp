@@ -7,10 +7,23 @@
         <link href="resources/css/bootstrap.min.css" rel="stylesheet">
         <link href="resources/css/style.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     </head>
 
     <body>
-
+        <script>
+        function courseCheck(){
+            var identifier = $('#courseidentifier').val();
+            $.ajax({
+                type:"POST",
+                url:"courseCheck.html",
+                data:"identifier=" + identifier,
+                success: function(response){
+                    $('#coursename').val(response);
+                }
+            });
+        }    
+        </script>
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -100,7 +113,7 @@
                     <form action="submitassigned.html" method="POST" id="register" novalidate>
                         <div class="text-center">
                             <div class="col-sm-10  registerform">
-                                <input placeholder="Course Identifier" name="courseidentifier" id="courseidentifier" style="width:395px;"> </input>
+                                <input placeholder="Course Identifier" name="courseidentifier" onblur="courseCheck()" id="courseidentifier" style="width:395px;"> </input>
                             </div>
                             <div class="col-sm-10  registerform">
                                 <input placeholder="Course Name" name="coursename" id="coursename" style="width:395px;"> </input>
