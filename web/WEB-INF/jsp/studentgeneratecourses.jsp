@@ -86,8 +86,8 @@
                     </div>
                     <div class="col-sm-8 ">
                         <h1 align="center">Courses</h1>
-                        <div class="col-sm-offset-1 pre-scrollable">
-                            <table class="table ">
+                        <div class="col-sm-offset-1 pre-scrollable" style="height:300px">
+                            <table class="table" >
                                 <thead>
                                     <tr>
                                         <th>Course Name</th>
@@ -111,7 +111,7 @@
                                             <td> ${scheduleblocks[index].getDays()}</td>
                                             <td>${courses.getInstructor()}</td>
                                             <c:set var="index" value="${index + 1}" />
-                                    <form action="rn.html" method="POST">
+                                    <form action="adddesiredcourse.html" method="POST">
                                         <td><button class="btn btn-xs btn-success" type="submit" name="id" value="${courses.getCourseid()}">Add Course</button></td>
                                     </form>      
                                     </tr>
@@ -122,8 +122,8 @@
                         </div>
 
                         <h1 align="center">Desired Courses</h1>
-                        <div class="col-sm-offset-1">
-                            <table class="table  "style=" width:700px;">
+                        <div class="col-sm-offset-1 pre-scrollable" style="height:300px">
+                            <table class="table  ">
                                 <thead>
                                 <th>Course Name</th>
                                 <th>Course Identifier</th>
@@ -145,32 +145,48 @@
                                             <td> ${genscheduleblocks[genindex].getDays()}</td>
                                             <td>${gencourses.getInstructor()}</td>
                                             <c:set var="genindex" value="${genindex + 1}" />
-                                    <form action="rn.html" method="POST">
+                                    <form action="removedesiredcourse.html" method="POST">
                                         <td><button class="btn btn-xs btn-danger" type="submit" name="id" value="${gencourses.getCourseid()}">Remove Course</button></td>
                                     </form>      
                                     </tr>
                                 </c:forEach>
                                 </tbody>
 
-                            </table>
-                            <button class="btn btn-xs btn-info">Generate Schedule</button>
-                        </div>	
-                    </div>
+                            </table> 
+                        </div>
+                    </div>            
+
+                    <h3 class="col-sm-2">Current Lunch Period:${lunchrange}</h3>
+                    <c:forEach items="${lunch}" var="lunch">
+                        <div class="col-sm-1">${lunch}</div>
+                        <div class="col-sm-1" style="padding-top:5px;">    <form action="removelunch.html" method="POST"> 
+                                <td><button class="btn btn-xs btn-danger" type="submit" name="lunch" value="${lunch}">Remove</button></td>
+                            </form>   
+                        </div>
+                    </c:forEach>
                     <div class="col-sm-2">
                         <h3>Add Lunch</h3>	
                         <div class="btn-group">
                             <a href="#" class="btn btn-warning dropdown-toggle btn-xs" data-toggle="dropdown">Pick a Day<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Monday</a></li>
-                                <li><a href="#">Tuesday</a></li>
-                                <li><a href="#">Wednesday</a></li>
-                                <li><a href="#">Thursday</a></li>
-                                <li><a href="#">Friday</a></li>
+                                <form action="addlunch.html" method="POST">
+                                  
+                                    <c:forEach items="${lunchdays}" var="lunchdays">
+                                          <li><button class="btn btn-link" type="submit" name="lunch"  value="${lunchdays}">${lunchdays}</button></li>
+                                    </c:forEach>
+   
+                                </form>
 
 
                             </ul>
                         </div>
-                    </div>			
+                <div  style="padding-top:30px;">
+                            <form action="generateschedule.html"method="GET">
+                                <button class="btn btn-xs btn-info">Generate Schedule</button>
+                            </form>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
