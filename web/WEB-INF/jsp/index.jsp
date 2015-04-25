@@ -97,10 +97,7 @@
             </div>
         </div>
         <div class="container" >
-
         </div>
-
-
         <script src="resources/js/jquery.js"></script>
         <script src="resources/js/bootstrap.min.js"></script>
     </body>

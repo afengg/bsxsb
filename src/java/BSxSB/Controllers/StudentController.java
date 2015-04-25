@@ -308,12 +308,12 @@ public class StudentController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
-        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
         String[] courseids = gencriteria.getCourseids().split(",");
@@ -323,7 +323,7 @@ public class StudentController {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
             System.out.print(genCourse.getScheduleblockid());
-        }        
+        }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
             model.addAttribute("lunch", lunch);
@@ -363,12 +363,12 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.addDesiredCourses(currentStudent.getStudentid(), id);
-        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
         String[] courseids = gencriteria.getCourseids().split(",");
@@ -418,12 +418,12 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.removeDesiredCourses(currentStudent.getStudentid(), id);
-        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
         String[] courseids = gencriteria.getCourseids().split(",");
@@ -472,13 +472,12 @@ public class StudentController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
-        GenerationcriteriaDAO.removeLunch(currentStudent.getStudentid(), lunchday);
-        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
         String[] courseids = gencriteria.getCourseids().split(",");
@@ -528,12 +527,12 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.addLunch(currentStudent.getStudentid(), lunchday);
-        List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
+        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
         }
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
         String[] courseids = gencriteria.getCourseids().split(",");
@@ -587,18 +586,64 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         return "studentviewgenerated";
     }
-    
+
     @RequestMapping(value = "/generateschedule", method = RequestMethod.GET)
     public String generateSchedule(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        Generationcriteria gencriteria = GenerationcriteriaDAO.getGenerationCriteria(currentStudent.getStudentid());
+        String[] courseids = gencriteria.getCourseids().split(",");
+        List<Courses> genCourses = new ArrayList<>();
+        List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        for (String courseid : courseids) {
+            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+            genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
+        System.out.print(genscheduleblocks.size()+""+genCourses.size());
+        List<List<Courses>> conflictCourses = new ArrayList<>();
+        for (int i = 0; i < genscheduleblocks.size(); i++) {
+            Scheduleblocks firstBlock = genscheduleblocks.get(i);
+            for (int i2 = i + 1; i2 < genscheduleblocks.size(); i2++) {
+                Scheduleblocks secondBlock = genscheduleblocks.get(i2);
+                checkConflict:
+                {
+                    if (firstBlock.getPeriod().equals(secondBlock.getPeriod())) {
+                        String[] days = firstBlock.getDays().split(",");
+                        String[] days2 = secondBlock.getDays().split(",");
+                        for (String d : days) {
+                            for (String d2 : days2) {
+                                if (d.equals(d2)) {
+                                    Courses genCourse = genCourses.get(i);
+                                    Courses genCourse2 = genCourses.get(i2);
+                                    String[] semesters = genCourse.getSemester().split(",");
+                                    String[] semesters2 = genCourse2.getSemester().split(",");
+                                    for (String s : semesters) {
+                                        for (String s2 : semesters2) {
+                                            if (s.equals(s2)) {
+                                                List<Courses> conflictCourse = new ArrayList<>();
+                                                conflictCourse.add(genCourse);
+                                                conflictCourse.add(genCourse2);
+                                                conflictCourses.add(conflictCourse);
+                                                break checkConflict;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
+        model.addAttribute("conflictCourses", conflictCourses);
         return "studentviewgenerated";
     }
-    
+
     @RequestMapping(value = "/acceptfriend", method = RequestMethod.POST)
     public String acceptfriend(Model model, @RequestParam(value = "id") int id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

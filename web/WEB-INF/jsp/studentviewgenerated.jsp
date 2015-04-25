@@ -8,30 +8,21 @@
         <link href="resources/css/style.css" rel="stylesheet">
         <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     </head>
-
     <body>
-
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-
-
-
-
                     <button class="navbar-toggle " data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
-
                         <li>
                             <a href="j_spring_security_logout">Sign Out</a>
                         </li>
-
                     </ul>
                 </div>
 
@@ -69,7 +60,7 @@
                                     Course Offerings<span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
-                                     <c:forEach items="${schoolyears}" var="schoolyears">
+                                    <c:forEach items="${schoolyears}" var="schoolyears">
                                         <form action="studentcourseofferings.html" method="get">
                                             <li>
                                                 <button class="btn btn-link" type="submit" name="year" value="${schoolyears.getAcademicyear()}">
@@ -93,110 +84,52 @@
                         </ul>
                         </ul>
                     </div>
-                    <div class="col-sm-8 ">
-                        <h1 align="center">Generated Courses</h1>
-                        <div class="col-sm-offset-1">
-                            <table class="table  "style=" width:700px;">
-                                <thead>
-                                    <tr>
-                                        <th>Period</th>
-                                        <th>Monday</th>
-                                        <th>Tuesday</th>
-                                        <th>Wednesday</th>
-                                        <th>Thursday</th>
-                                        <th>Friday</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>CSE 310</td>
-                                        <td>CSE 310</td>
-                                        <td>CSE 310</td>
-                                        <td>CSE 310</td>
-                                        <td>CSE 310</td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>CSE 308</td>
-                                        <td>CSE 308</td>
-                                        <td>CSE 308</td>
-                                        <td>CSE 308</td>
-                                        <td>CSE 308</td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>CSE 305</td>
-                                        <td>CSE 305</td>
-                                        <td>CSE 305</td>
-                                        <td>CSE 305</td>
-                                        <td>CSE 305</td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Lunch</td>
-                                        <td>Lunch</td>
-                                        <td>Lunch</td>
-                                        <td>Lunch</td>
-                                        <td>Lunch</td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>CSE 320</td>
-                                        <td>CSE 320</td>
-                                        <td>CSE 320</td>
-                                        <td>CSE 320</td>
-                                        <td>CSE 320</td>
-                                    </tr>
-                                    <tr>
-                                        <td>6</td>
-                                        <td>CSE 373</td>
-                                        <td>CSE 373</td>
-                                        <td>CSE 373</td>
-                                        <td>CSE 373</td>
-                                        <td>CSE 373</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-
+                    <div class="col-sm-8">
+                        <h5 style="padding-top:25px;">The following Courses have conflicting schedules:</h5>
+                        <c:if test = "${not empty conflictCourses}">
+                            <c:forEach items="${conflictCourses}" var="conflictCourses">
+                                <div class="col-sm-8" style="padding-top:10px;">
+                                    <c:forEach items="${conflictCourses}" var="courses">
+                                       <div class="col-sm-4" align="right"> 
+                                            ${courses.getCoursename()}
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:forEach>
+                        </c:if>
                     </div>
-                    <div style="margin-top:30px;">
-                        <button class="btn btn-success btn-xs">With friend</button>
-                        <button class="btn btn-danger btn-xs">Without friend</button>	
-                    </div>
-                </div>
 
 
-            </div>
-        </div>
 
 
-        <footer class="text-center">
-            <div class="footer-above">
-                <div class="container">
-                    <div class="row">
-
-                        <div class="col-lg-12">
-                            &copy; BSxSB
-                        </div>
-
-                    </div>
                 </div>
             </div>
-            <div class="footer-below">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            Lun Zhang, Alvin Feng, Chris Mak
+
+
+            <footer class="text-center">
+                <div class="footer-above">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                &copy; BSxSB
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-        <script src="resources/js/jquery.js"></script>
-        <script src="resources/js/bootstrap.min.js"></script>
+                <div class="footer-below">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                Lun Zhang, Alvin Feng, Chris Mak
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <script src="resources/js/jquery.js"></script>
+            <script src="resources/js/bootstrap.min.js"></script>
     </body>
 
 

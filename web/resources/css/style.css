@@ -1,38 +1,30 @@
 .navbarinput {
     margin-right:15px;
     margin-top:15px;
-
 }
 .resetpass {
     margin-top:5px;
     width:156px;
-
 }
 .nav-header {
     margin-top:15px;
     font-size:45px;
-
 }
 .registerform {
     padding-top:20px;
 }
-
 .nav-pills>li>a:hover {
 
 }
 .nav-pills>li>a:active {
-
 }
 .nav-pills>li>a {
     margin-top:20px;
 }
-
 .dropdown-menu > li > a {
-
 }
 .dropdown-menu > li > a:hover,
 .dropdown-menu > li > a:focus {
-
 }
 .jumbotron {
     min-height:510px;
@@ -43,9 +35,6 @@
     overflow-x:hidden;
     overflow-y: scroll;
 }
-
 .footer-lun {
-
     max-height:100px;
-
 }

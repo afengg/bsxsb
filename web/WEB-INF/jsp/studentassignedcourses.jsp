@@ -99,7 +99,7 @@
                     <div class="col-sm-9 ">
                         <h1 align="center">Assigned Courses</h1>
                         <c:set var="sem" value="1" />
-                        <c:forEach items="${semester}" var="semester">
+                        <c:forEach items="${semester}" var="semester2">
                             <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
                                 <h3 align="center">Semester ${sem}</h3>
                                 <table class="table  "style=" width:700px;">
@@ -117,7 +117,7 @@
                                     </thead>
                                     <tbody>
                                         <c:set var="index" value="1" />
-                                        <c:forEach items="${semester}" var="schedule">
+                                        <c:forEach items="${semester2}" var="schedule">
                                             <tr>
                                                 <td>
                                                     ${index}
