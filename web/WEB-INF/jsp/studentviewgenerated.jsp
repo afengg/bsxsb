@@ -85,12 +85,12 @@
                         </ul>
                     </div>
                     <div class="col-sm-8">
-                        <h5 style="padding-top:25px;">The following Courses have conflicting schedules:</h5>
                         <c:if test = "${not empty conflictCourses}">
+                            <h5 style="padding-top:25px;">The following pairs have conflicting schedules:</h5>
                             <c:forEach items="${conflictCourses}" var="conflictCourses">
                                 <div class="col-sm-8" style="padding-top:10px;">
                                     <c:forEach items="${conflictCourses}" var="courses">
-                                       <div class="col-sm-4" align="right"> 
+                                        <div class="col-sm-4" align="right"> 
                                             ${courses.getCoursename()}
                                         </div>
                                     </c:forEach>
