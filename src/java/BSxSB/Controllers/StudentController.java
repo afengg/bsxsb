@@ -79,7 +79,7 @@ public class StudentController {
         return "student";
 
     }
-    
+
     @RequestMapping(value = "/studentmanagefriends", method = RequestMethod.GET)
     public String manageFriends(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -231,19 +231,20 @@ public class StudentController {
         model.addAttribute("numDays", currentSchool.getNumdays());
         return "studententercourses";
     }
-    
+
     @RequestMapping(value = "/courseCheck.html", method = RequestMethod.POST)
-    public @ResponseBody String courseCheck(@ModelAttribute(value="identifier") String identifier, 
-                                             @ModelAttribute(value="schoolname") String schoolname, 
-                                             @ModelAttribute(value="academicyear") String academicyear, 
-                                            BindingResult result){
+    public @ResponseBody
+    String courseCheck(@ModelAttribute(value = "identifier") String identifier,
+            @ModelAttribute(value = "schoolname") String schoolname,
+            @ModelAttribute(value = "academicyear") String academicyear,
+            BindingResult result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
         Courses course = CourseDAO.getCourseUsingID(schoolid, identifier);
         String courseName = "";
-        if(course != null){
+        if (course != null) {
             courseName = course.getCoursename();
         }
         return courseName;
@@ -322,7 +323,6 @@ public class StudentController {
         for (String courseid : courseids) {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
-            System.out.print(genCourse.getScheduleblockid());
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
@@ -331,22 +331,7 @@ public class StudentController {
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
-        String lunchdays = "";
-        if (numdays == 1) {
-            lunchdays = "monday,";
-        } else if (numdays == 2) {
-            lunchdays = "monday,tuesday,";
-        } else if (numdays == 3) {
-            lunchdays = "monday,tuesday,wednesday,";
-        } else if (numdays == 4) {
-            lunchdays = "monday,tuesday,wednesday,thursday,";
-        } else if (numdays == 5) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
-        } else if (numdays == 6) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
-        } else if (numdays == 7) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
-        }
+        String lunchdays = lunchToText(numdays);
         String[] lunchdays2 = lunchdays.split(",");
         model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
@@ -386,22 +371,7 @@ public class StudentController {
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
-        String lunchdays = "";
-        if (numdays == 1) {
-            lunchdays = "monday,";
-        } else if (numdays == 2) {
-            lunchdays = "monday,tuesday,";
-        } else if (numdays == 3) {
-            lunchdays = "monday,tuesday,wednesday,";
-        } else if (numdays == 4) {
-            lunchdays = "monday,tuesday,wednesday,thursday,";
-        } else if (numdays == 5) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
-        } else if (numdays == 6) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
-        } else if (numdays == 7) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
-        }
+        String lunchdays = lunchToText(numdays);
         String[] lunchdays2 = lunchdays.split(",");
         model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
@@ -441,22 +411,7 @@ public class StudentController {
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
-        String lunchdays = "";
-        if (numdays == 1) {
-            lunchdays = "monday,";
-        } else if (numdays == 2) {
-            lunchdays = "monday,tuesday,";
-        } else if (numdays == 3) {
-            lunchdays = "monday,tuesday,wednesday,";
-        } else if (numdays == 4) {
-            lunchdays = "monday,tuesday,wednesday,thursday,";
-        } else if (numdays == 5) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
-        } else if (numdays == 6) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
-        } else if (numdays == 7) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
-        }
+        String lunchdays = lunchToText(numdays);
         String[] lunchdays2 = lunchdays.split(",");
         model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
@@ -495,22 +450,7 @@ public class StudentController {
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
-        String lunchdays = "";
-        if (numdays == 1) {
-            lunchdays = "monday,";
-        } else if (numdays == 2) {
-            lunchdays = "monday,tuesday,";
-        } else if (numdays == 3) {
-            lunchdays = "monday,tuesday,wednesday,";
-        } else if (numdays == 4) {
-            lunchdays = "monday,tuesday,wednesday,thursday,";
-        } else if (numdays == 5) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
-        } else if (numdays == 6) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
-        } else if (numdays == 7) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
-        }
+        String lunchdays = lunchToText(numdays);
         String[] lunchdays2 = lunchdays.split(",");
         model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
@@ -550,22 +490,7 @@ public class StudentController {
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
-        String lunchdays = "";
-        if (numdays == 1) {
-            lunchdays = "monday,";
-        } else if (numdays == 2) {
-            lunchdays = "monday,tuesday,";
-        } else if (numdays == 3) {
-            lunchdays = "monday,tuesday,wednesday,";
-        } else if (numdays == 4) {
-            lunchdays = "monday,tuesday,wednesday,thursday,";
-        } else if (numdays == 5) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
-        } else if (numdays == 6) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
-        } else if (numdays == 7) {
-            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
-        }
+        String lunchdays = lunchToText(numdays);
         String[] lunchdays2 = lunchdays.split(",");
         model.addAttribute("lunchdays", lunchdays2);
         model.addAttribute("genscheduleblocks", genscheduleblocks);
@@ -602,10 +527,57 @@ public class StudentController {
             genCourses.add(genCourse);
             genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
         }
-        System.out.print(genscheduleblocks.size()+""+genCourses.size());
         List<List<Courses>> conflictCourses = new ArrayList<>();
+        String lunches = gencriteria.getLunch();
+        String[] lunch = lunches.split(",");
+        for (int i = 0; i < lunch.length; i++) {
+            if (lunch[i].equals("monday")) {
+                lunch[i] = "1";
+            } else if (lunch[i].equals("tuesday")) {
+                lunch[i] = "2";
+            } else if (lunch[i].equals("wednesday")) {
+                lunch[i] = "3";
+            } else if (lunch[i].equals("thursday")) {
+                lunch[i] = "4";
+            } else if (lunch[i].equals("friday")) {
+                lunch[i] = "5";
+            } else if (lunch[i].equals("saturday")) {
+                lunch[i] = "6";
+            } else if (lunch[i].equals("sunday")) {
+                lunch[i] = "7";
+            }
+        }
+        String lunchperiods = currentSchool.getLunchrange();
+        String[] temp = lunchperiods.split("-");
+        int length = Integer.parseInt(temp[1]) - Integer.parseInt(temp[0]);
+        int[] lunchperiod = new int[length + 1];
+        int low = Integer.parseInt(temp[0]);
+        for (int i = 0; i <= length; i++) {
+            lunchperiod[i] = low;
+            low++;
+        }
         for (int i = 0; i < genscheduleblocks.size(); i++) {
             Scheduleblocks firstBlock = genscheduleblocks.get(i);
+            conflictLunch:
+            {
+                for (int period : lunchperiod) {
+                    if (firstBlock.getPeriod().equals(period)) {
+                        String[] gendays = firstBlock.getDays().split(",");
+                        for (String days : lunch) {
+                            for (String genday : gendays) {
+                                if (days.equals(genday)) {
+                                    List<Courses> conflictCourse = new ArrayList<>();
+                                    conflictCourse.add(genCourses.get(i));
+                                    Courses lunchCourse = new Courses(0, "lunch", "", "", 0);
+                                    conflictCourse.add(lunchCourse);
+                                    conflictCourses.add(conflictCourse);
+                                    break conflictLunch;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             for (int i2 = i + 1; i2 < genscheduleblocks.size(); i2++) {
                 Scheduleblocks secondBlock = genscheduleblocks.get(i2);
                 checkConflict:
@@ -638,9 +610,13 @@ public class StudentController {
                 }
             }
         }
+        if (conflictCourses.isEmpty()) {
+
+        } else {
+            model.addAttribute("conflictCourses", conflictCourses);
+        }
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
-        model.addAttribute("conflictCourses", conflictCourses);
         return "studentviewgenerated";
     }
 
@@ -707,5 +683,25 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
+    }
+
+    public String lunchToText(int numdays) {
+        String lunchdays = "";
+        if (numdays == 1) {
+            lunchdays = "monday,";
+        } else if (numdays == 2) {
+            lunchdays = "monday,tuesday,";
+        } else if (numdays == 3) {
+            lunchdays = "monday,tuesday,wednesday,";
+        } else if (numdays == 4) {
+            lunchdays = "monday,tuesday,wednesday,thursday,";
+        } else if (numdays == 5) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,";
+        } else if (numdays == 6) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,";
+        } else if (numdays == 7) {
+            lunchdays = "monday,tuesday,wednesday,thursday,friday,saturday,sunday,";
+        }
+        return lunchdays;
     }
 }
