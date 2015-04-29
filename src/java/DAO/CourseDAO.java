@@ -48,6 +48,7 @@ public class CourseDAO {
                 .setParameter(0, schoolid)
                 .setParameter(1, courseidentifier);
         List<Courses> courses = query.list();
+        session.close();
         if(courses.isEmpty()){
             return null;
         }
@@ -76,6 +77,7 @@ public class CourseDAO {
                 .setParameter(4, instructor)
                 .setParameter(5, semesters);
         List<Courses> course = query.list();
+        session.close();
         if(course.isEmpty()){
             return null;
         }
