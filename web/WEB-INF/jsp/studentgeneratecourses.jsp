@@ -141,8 +141,8 @@
                                             <td>${gencourses.getCourseidentifier()}</td>
                                             <td>${gencourses.getNumstudents()}</td>
                                             <td>${gencourses.getSemester()}</td>
-                                            <td> ${genscheduleblocks[genindex].getPeriod()}</td>
-                                            <td> ${genscheduleblocks[genindex].getDays()}</td>
+                                            <td>${genscheduleblocks[genindex].getPeriod()}</td>
+                                            <td>${genscheduleblocks[genindex].getDays()}</td>
                                             <td>${gencourses.getInstructor()}</td>
                                             <c:set var="genindex" value="${genindex + 1}" />
                                     <form action="removedesiredcourse.html" method="POST">
@@ -170,19 +170,20 @@
                             <a href="#" class="btn btn-warning dropdown-toggle btn-xs" data-toggle="dropdown">Pick a Day<span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <form action="addlunch.html" method="POST">
-                                  
                                     <c:forEach items="${lunchdays}" var="lunchdays">
                                           <li><button class="btn btn-link" type="submit" name="lunch"  value="${lunchdays}">${lunchdays}</button></li>
                                     </c:forEach>
-   
                                 </form>
-
-
                             </ul>
                         </div>
+
                 <div  style="padding-top:30px;">
                             <form action="generateschedule.html"method="GET">
+                                Preferred Instructors
+                                <input placeHolder="exe: Lun,Alvin,Chris" name="instructors"/>
+                                <div style="padding-top:15px;">
                                 <button class="btn btn-xs btn-info">Generate Schedule</button>
+                                </div>
                             </form>
                         </div>
                     </div>

@@ -79,5 +79,15 @@ public class FriendshipsDAO {
         session.delete(friendship);
         session.getTransaction().commit();
         session.close();
+        session = HibernateUtil.getSessionFactory().openSession();
+        session.getTransaction().begin();
+        FriendshipsId friendshipid2 = new FriendshipsId();
+        friendshipid2.setFriend2(userid);
+        friendshipid2.setFriend1(friendid);
+        Friendships friendship2 = new Friendships();
+        friendship2.setId(friendshipid2);
+        session.delete(friendship2);
+        session.getTransaction().commit();
+        session.close();
     }
 }

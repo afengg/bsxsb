@@ -323,6 +323,7 @@ public class StudentController {
         for (String courseid : courseids) {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
+            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
@@ -428,6 +429,7 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
+        GenerationcriteriaDAO.removeLunch(currentStudent.getStudentid(), lunchday);
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
@@ -513,7 +515,7 @@ public class StudentController {
     }
 
     @RequestMapping(value = "/generateschedule", method = RequestMethod.GET)
-    public String generateSchedule(Model model) {
+    public String generateSchedule(Model model, @RequestParam("instructors") String instructors) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -611,10 +613,116 @@ public class StudentController {
             }
         }
         if (conflictCourses.isEmpty()) {
+            String[] instructor = instructors.split(",");
+            for (int i = 0; i < genCourses.size(); i++) {
+                Courses course1 = genCourses.get(i);
+                String courseiden = course1.getCourseidentifier();
+                for (int i2 = i + 1; i2 < genCourses.size(); i2++) {
+                    Courses course2 = genCourses.get(i2);
+                    checkCourse:
+                    {
+                        if (courseiden.equals(course2.getCourseidentifier())) {
+                            if (instructors.isEmpty()) {
+                                List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+                                int friendcourse1 = 0;
+                                int friendcourse2 = 0;
+                                for (Students friend : friends) {
+                                    if (RegistrationDAO.isRegistered(course1, friend)) {
+                                        friendcourse1++;
+                                    } else if (RegistrationDAO.isRegistered(course2, friend)) {
+                                        friendcourse2++;
+                                    }
+                                }
+                                if (friendcourse1 >= friendcourse2) {
+                                    genCourses.remove(i2);
+                                    break checkCourse;
+                                } else if (friendcourse1 < friendcourse2) {
+                                    genCourses.remove(i);
+                                    break checkCourse;
+                                } else {
+                                    genCourses.remove(i);
+                                    break checkCourse;
+                                }
+                            } else {
+                                for (String inst : instructor) {
+                                    if (course1.getInstructor().equals(inst)) {
+                                        genCourses.remove(i2);
+                                        break checkCourse;
+                                    } else if (course2.getInstructor().equals(inst)) {
+                                        genCourses.remove(i);
+                                        break checkCourse;
+                                    } else {
+                                        List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+                                        int friendcourse1 = 0;
+                                        int friendcourse2 = 0;
+                                        for (Students friend : friends) {
+                                            if (RegistrationDAO.isRegistered(course1, friend)) {
+                                                friendcourse1++;
+                                            } else if (RegistrationDAO.isRegistered(course2, friend)) {
+                                                friendcourse2++;
+                                            }
+                                        }
+                                        if (friendcourse1 >= friendcourse2) {
+                                            genCourses.remove(i2);
+                                            break checkCourse;
+                                        } else if (friendcourse1 < friendcourse2) {
+                                            genCourses.remove(i);
+                                            break checkCourse;
+                                        } else {
+                                            genCourses.remove(i);
+                                            break checkCourse;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
+            List<List<Courses[]>> semesters = new ArrayList<>();
+            List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
+            for (Courses course : genCourses) {
+                for (Students friend : friends) {
+                    List<Courses> friendCourses = CourseDAO.getCoursesForStudent(friend.getStudentid());
+                    for (Courses friendCourse : friendCourses) {
+                        if (friendCourse.getCourseid() == (course.getCourseid())) {
+                            if (course.getFriends() != null) {
+                                course.setFriends(course.getFriends() + " " + friend.getFirstname() + " " + friend.getLastname());
+                            } else {
+                                course.setFriends(friend.getFirstname() + " " + friend.getLastname());
+                            }
+                        }
+                    }
+                }
+            }
+            for (int s = 0; s < currentSchool.getNumsemesters(); s++) {
+                List<Courses[]> schedule = new ArrayList<>();
+                for (int i = 0; i < currentSchool.getNumperiods(); i++) {
+                    Courses[] period = new Courses[7];
+                    for (Courses course : genCourses) {
+                        Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid());
+                        if (sb.getPeriod() == i + 1) {
+                            String[] days = sb.getDays().split(",");
+                            String[] semester = course.getSemester().split(",");
+                            for (String sem : semester) {
+                                if (Integer.parseInt(sem) == s + 1) {
+                                    for (String day : days) {
+                                        period[Integer.parseInt(day) - 1] = course;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    schedule.add(period);
+                }
+                semesters.add(schedule);
+            }
+            model.addAttribute("semester", semesters);
         } else {
             model.addAttribute("conflictCourses", conflictCourses);
         }
+
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         return "studentviewgenerated";

@@ -26,7 +26,6 @@
                class="SpringSecurity.UserService" />
     <authentication-manager>
        <authentication-provider user-service-ref="UserService">
-          
         </authentication-provider>
     </authentication-manager>
  
