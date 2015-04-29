@@ -41,6 +41,7 @@ public class RegistrationDAO {
                 .setInteger(0, course.getCourseid())
                 .setInteger(1, student.getStudentid());
         List<Registrations> reg = query.list();
+        session.close();
         if(reg.isEmpty()){
             return false;
         }
