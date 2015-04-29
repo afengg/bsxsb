@@ -66,74 +66,33 @@
 
                         </ul>
                     </div>
-                    <div class="col-sm-10 ">
-                        <h1 align="center">Schools</h1>
+                    <div class="col-sm-7 ">
+                        <h1 align="center">${school.getSchoolname()}'s Schedule Blocks</h1>
                         <div >
                             <table class="table "style=" ">
                                 <thead>
                                     <tr>
                                         <th>
-                                            School Name
-                                        </th>
-                                        <th>
-                                            Academic Year
-                                        </th>
-                                        <th>
-                                            Semesters
+                                            Period
                                         </th>
                                         <th>
                                             Days
                                         </th>
-                                        <th>
-                                            Periods
-                                        </th>	
-                                        <th>
-                                            Lunch Range
-                                        </th>
-                                        <th>
-                                            Schedule Blocks
-                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody style="text-align:left;">
-                                    <c:forEach items="${school}" var="school">
+                                    <c:forEach items="${scheduleblocks}" var="sb">
                                         <tr>
                                             <td>
-                                                ${school.getSchoolname()}
+                                                ${sb.getPeriod()}
                                             </td>
                                             <td>
-                                                ${school.getAcademicyear()}
+                                                ${sb.getDays()}
                                             </td>
                                             <td>
-                                                ${school.getNumsemesters()}
-                                            </td>
-                                            <td>
-                                                ${school.getNumdays()}
-                                            </td>
-                                            <td>
-                                                ${school.getNumperiods()}
-                                            </td>
-                                            <td>
-                                                ${school.getLunchrange()}
-                                            </td>
-                                            <td>
-                                                ${school.getScheduleblocks()}
-                                            </td>
-                                            <td>
-                                                <form action="deleteschool.html" method="POST">
-                                                <button class="btn btn-danger btn-xs" type="submit" name="schoolID" value="${school.getSchoolid()}">Delete School </button>
-                                                </form>
-                                            </td>
-                                                                                    <td>
-                                                <form action="admineditschool.html" method="POST">
-                                                <input type="hidden" name="schoolID" value="${school.getSchoolid()}"/>
-                                                <button class="btn btn-warning btn-xs" type="submit">Edit School </button>
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form action="admineditscheduleblocks.html" method="POST">
-                                                <input type="hidden" name="schoolID" value="${school.getSchoolid()}" />
-                                                <button class="btn btn-warning btn-xs">Edit Schedule Blocks </button>
+                                                <form action="deletescheduleblock.html" method="POST">
+                                                    <input type="hidden" name="schoolid" id="schoolid" value="${school.getSchoolid()}"</input>
+                                                <button class="btn btn-danger btn-xs" type="submit" id="scheduleblockID" name="scheduleblockID" value="${sb.getScheduleblockid()}">Remove</button>
                                                 </form>
                                             </td>
 </div>
@@ -144,7 +103,49 @@
                             </table>
                         </div>	
                     </div>
-
+                        <div class="col-sm-3" style="padding-top:20px;">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">New Schedule Block</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <form action="addscheduleblock.html" method="POST">
+                                    <div>
+                                    <span class="label label-primary">Period</span>
+                                <c:forEach begin="1" end ="${school.getNumperiods()}" var = "val2">
+                                    <span style="padding:2px;">
+                                <input type="radio" name="period" id="period" value=${val2}>${val2}</input>
+                                    </span>
+                                </c:forEach>
+                                    </div>
+                                    <div>
+                                    <span class="label label-warning">Days</span>
+                                    <c:forEach begin="1" end ="${school.getNumdays()}" var = "val3">
+                                    <span style="padding-left:2px;">
+                                <input type="checkbox" name="days" id="days" value=${val3}>${val3}</input>
+                                    </span>
+                                </c:forEach>
+                                    </div>
+                                    <div style="padding-top:5px;">
+                                    <input type="hidden" name="schoolid" id="schoolid" value="${school.getSchoolid()}"</input>
+                                    <button class="btn btn-success" type="submit" name="addSB">Add</button>
+                                    </div>
+                                    </form>
+                                    <div>
+                                <c:if test="${not empty sbexists}">
+                                <span class="label label-danger">${sbexists}</span>
+                                </c:if>
+                                <c:if test="${not empty sbempty}">
+                                    <span class="label label-danger">${sbempty}</span>
+                                </c:if>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="alert alert-dismissible alert-warning">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                                <p>Removing a schedule block will delete all existing courses that are associated with it!</p>
+                        </div>
+                        </div>
                 </div>
 
             </div>

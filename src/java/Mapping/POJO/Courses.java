@@ -36,6 +36,14 @@ public class Courses implements java.io.Serializable {
     public Courses() {
     }
 
+    public Courses(int schoolid, String coursename, String courseidentifier, String instructor, int scheduleblockid, String semester){
+        this.schoolid = schoolid;
+        this.coursename = coursename;
+        this.courseidentifier = courseidentifier;
+        this.instructor = instructor;
+        this.scheduleblockid = scheduleblockid;
+        this.semester = semester;
+    }
     public Courses(int schoolid, String coursename, String courseidentifier, String instructor, int scheduleblockid){
         this.schoolid = schoolid;
         this.coursename = coursename;

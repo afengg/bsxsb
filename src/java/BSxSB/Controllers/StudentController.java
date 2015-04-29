@@ -205,6 +205,7 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         RegistrationDAO.removereg(id, currentStudent.getStudentid());
+        CourseDAO.decrementCourseStudentsAndDelete(id);
         List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
         for (Courses course : courses) {
@@ -285,10 +286,12 @@ public class StudentController {
             Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
             if (c != null) {
                 RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
+                CourseDAO.incrementCourseStudents(c.getCourseid());
                 model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
             } else {
                 int sbid = sb.getScheduleblockid();
-                Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid);
+                Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid, semString);
+                newCourse.setNumstudents(1);
                 int studentid = currentStudent.getStudentid();
                 CourseDAO.addCourse(newCourse, studentid);
                 model.addAttribute("success", "New course successfully added.");

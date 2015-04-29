@@ -65,33 +65,22 @@
 			
 			</ul>
 				</div>
-                    <div class="col-sm-6 container">
-                        <h3>Current Information</h3>
-                        <h4><p>School Name: ${school.getSchoolname()}</p>
-                            <p>Academic Year: ${school.getAcademicyear()}</p>
-                            <p>Semesters: ${currentsemesters}</p>
-                            <p>Periods: ${currentperiods}</p>
-                            <p>Days: ${currentdays}</p>
-                            <p>Lunch Range: ${school.getLunchrange()}</p>
-                            <p>Legal Blocks: ${school.getScheduleblocks()}</p>
-                        </h4>
                             
-                    </div>
-			<div class="col-sm-10 text-center">
+			<div class="col-sm-8 text-center">
 			<h1>Edit School</h1>
 			<form action="editschool.html" method="POST">
                             <input type="hidden" id="schoolID" name="schoolID" value="${school.getSchoolid()}"></input>
-			<div class="col-sm-12 registerform">
-			<input name="schoolname" id="firstName" style="width:395px;" value="${school.getSchoolname()}"></input>
+			<div class="col-sm-8 registerform">
+			<input name="schoolname" id="firstName" value="${school.getSchoolname()}"></input>
 			</div>
-			<div class="col-sm-12 registerform">
-			<input name="academicyear" id="lastName" style="width:395px;" value="${school.getAcademicyear()}"></input>
+			<div class="col-sm-8 registerform">
+			<input name="academicyear" id="lastName" value="${school.getAcademicyear()}"></input>
 			</div>
 		
-			<div class="col-sm-12 registerform" style="margin-left:93px;">
+			<div class="col-sm-8 registerform">
 			
-      <label for="select" class="col-sm-2 control-label">Semesters</label>
-      <div class="col-lg-10" style="width:425px;">
+      <label for="select" class="col-sm-8 control-label">Semesters</label>
+      <div class="col-sm-8">
         <select class="form-control" name="numsemesters" id="select">
             <option ${currentsemesters == "1" ? 'selected="selected"' : ' '}> 1</option>
           <option ${currentsemesters == "2" ? 'selected="selected"' : ' '}>2</option>
@@ -101,8 +90,8 @@
 			</div>
 		
 			</div>
-        <div class="col-sm-12 registerform" style="margin-left:106px;">
-      <label for="select" class="col-sm-2 control-label" >Days</label>  
+        <div class="col-sm-8 registerform">
+      <label for="select" class="col-sm-8 control-label" >Days</label>  
         <select class="form-control" name="numdays" id="select" style="height:40px; width:395px;">
           <option ${currentdays == "1" ? 'selected="selected"' : ' '}>1</option>
           <option ${currentdays == "2" ? 'selected="selected"' : ' '}>2</option>
@@ -113,8 +102,8 @@
           <option ${currentdays == "7" ? 'selected="selected"' : ' '}>7</option>
         </select>
 	</div>
-        <div class="col-sm-12 registerform" style="margin-left:106px;">
-		<label for="select" class="col-sm-2 control-label">Periods</label>
+        <div class="col-sm-8 registerform" >
+		<label for="select" class="col-sm-8 control-label">Periods</label>
         <select class=" form-control" name="numperiods" id="select" style="height:40px; width:395px;">
           <option ${currentperiods == "6" ? 'selected="selected"' : ' '}>6</option>
           <option ${currentperiods == "7" ? 'selected="selected"' : ' '}>7</option>
@@ -126,16 +115,12 @@
         </select>
         </div>
 	  </div>		
-        <div class="col-sm-12 registerform" style="margin-left:50px;">
-            <label for="lunchrange" class="col-sm-2 control-label" style="margin-left:60px;">Lunch Range</label>
-			<input  name="lunchrange" id="lunchrange" style="width:395px;" value="${school.getLunchrange()}"></input>
+        <div class="col-sm-8 registerform">
+            <label for="lunchrange" class="col-sm-8 control-label">Lunch Range</label>
+			<input  name="lunchrange" id="lunchrange" value="${school.getLunchrange()}"></input>
         </div>
-			<div class="col-sm-12 registerform" style="margin-left:50px;">
-                            <label for="legalblocks" class="col-sm-2 control-label" style="margin-left:60px">Legal Blocks</label>
-                            <textarea  name="legalblocks" id="legalblocks" style="width:395px;">${school.getScheduleblocks()}</textarea>
-			</div>
-	<div class="col-sm-12 registerform" >
-   <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-left:300px;">
+	<div class="col-sm-8 registerform" >
+   <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">
      Add School 
    </button>
 			</div>
@@ -159,6 +144,19 @@
 			<c:if test="${not empty added}">
                 <div class="added">${added}</div>
             </c:if>
+                        </div>
+                        <div class="col-sm-2">
+                        <h3>Current Information</h3>
+                        <div>
+                        <h4><p>School Name: ${school.getSchoolname()}</p>
+                            <p>Academic Year: ${school.getAcademicyear()}</p>
+                            <p>Semesters: ${currentsemesters}</p>
+                            <p>Periods: ${currentperiods}</p>
+                            <p>Days: ${currentdays}</p>
+                            <p>Lunch Range: ${school.getLunchrange()}</p>
+                            <p>Legal Blocks: ${school.getScheduleblocks()}</p>
+                        </h4>
+                        </div>
                         </div>
 			</div>
 

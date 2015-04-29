@@ -82,4 +82,12 @@ public class ScheduleBlockDAO {
         session.getTransaction().commit();
         session.close();
     }
+    public static void deleteScheduleBlock(int scheduleblockID){
+        session = HibernateUtil.getSessionFactory().openSession();
+        Scheduleblocks sb = (Scheduleblocks)session.get(Scheduleblocks.class, scheduleblockID);
+        session.getTransaction().begin();
+        session.delete(sb);
+        session.getTransaction().commit();
+        session.close();
+    }
 }

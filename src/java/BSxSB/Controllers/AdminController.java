@@ -77,6 +77,49 @@ public class AdminController {
         
         return "admineditschool";
     }
+    @RequestMapping(value = "/admineditscheduleblocks", method = RequestMethod.POST)
+    public String editScheduleBlocks(Model model, @RequestParam(value="schoolID") String schoolID){
+        int schoolID2 = Integer.parseInt(schoolID);
+        Schools school = SchoolDAO.getSchool(schoolID2);
+        List<Scheduleblocks> sbs = ScheduleBlockDAO.getSchoolsScheduleBlocks(schoolID2);
+        model.addAttribute("school", school);
+        model.addAttribute("scheduleblocks", sbs);
+        return "admineditscheduleblocks";
+    }
+    
+    @RequestMapping(value = "/addscheduleblock", method = RequestMethod.POST)
+    public String addScheduleBlock(Model model,
+                                                @RequestParam(value="schoolid") String schoolID,
+                                                @RequestParam(value="period") String period,
+                                                @RequestParam(value="days") String[] days){
+        int schoolID2 = Integer.parseInt(schoolID);
+        if(period.isEmpty() || days.length == 0){
+            model.addAttribute("sbempty", "A field is empty");
+        }
+        int periodInt = Integer.parseInt(period);
+        String daysString = "";
+        for(String x : days){
+            daysString += x;
+            daysString += ",";
+        }
+        daysString = daysString.substring(0, daysString.length()-1);
+        Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolID2, periodInt, daysString);
+        if(sb != null){
+            model.addAttribute("sbexists", "This scheduleblock exists");
+        }
+        else{
+        ScheduleBlockDAO.addScheduleBlock(schoolID2, periodInt, daysString);
+        }
+        return editScheduleBlocks(model, schoolID);
+    }
+    
+    @RequestMapping(value = "/deletescheduleblock", method = RequestMethod.POST)
+    public String deleteScheduleBlocks(Model model, @RequestParam(value="scheduleblockID") String scheduleblockID,
+                                                       @RequestParam(value="schoolid") String schoolid) {
+        int sbid = Integer.parseInt(scheduleblockID);
+        ScheduleBlockDAO.deleteScheduleBlock(sbid);
+        return editScheduleBlocks(model, schoolid);
+    }
     @RequestMapping(value = "/editschool", method = RequestMethod.POST)
     public String editSchool(Model model, @RequestParam(value="schoolID") String schoolID,
                                            @RequestParam(value="schoolname") String schoolName,
@@ -84,10 +127,9 @@ public class AdminController {
                                            @RequestParam(value="numsemesters") String numSemesters,
                                            @RequestParam(value="numdays") String numDays,
                                            @RequestParam(value="numperiods") String numPeriods,
-                                           @RequestParam(value="lunchrange") String lunchRange,
-                                           @RequestParam(value="legalblocks") String legalBlocks){
+                                           @RequestParam(value="lunchrange") String lunchRange){
         boolean valid = true;
-        if (schoolName.isEmpty() || academicYear.isEmpty() || numSemesters.isEmpty() || numPeriods.isEmpty() || legalBlocks.isEmpty() || lunchRange.isEmpty()) {
+        if (schoolName.isEmpty() || academicYear.isEmpty() || numSemesters.isEmpty() || numPeriods.isEmpty() || lunchRange.isEmpty()) {
             model.addAttribute("fillout", "Please fill out all Required Fields");
             valid = false;
         }
@@ -97,8 +139,10 @@ public class AdminController {
         int periods = Integer.parseInt(numPeriods);
         int days = Integer.parseInt(numDays);
         int semesters = Integer.parseInt(numSemesters);
+        /*
         String legalBlockRegex = "(<[1-" + periods + "];([1-" + days + "](,[1-" + days + "]){0," + days + "})>)"
                + "(#<[1-" + periods + "];([1-" + days + "](,[1-" + days + "]){0," + days + "})>)*";
+                */
         if (!academicYear.matches(academicYearRegex)) {
             model.addAttribute("ayregex", "Academic Year is invalid.");
             valid = false;
@@ -107,26 +151,10 @@ public class AdminController {
             model.addAttribute("lrregex", "Lunch Range is invalid.");
             valid = false;
         }
-        if (periods <= 9) {
-            if (!legalBlocks.matches(legalBlockRegex)) {
-                model.addAttribute("lbregex", "Legal Block set is invalid.");
-                System.out.println(legalBlocks);
-                valid = false;
-           }
-        }
         if (valid == true) {
             SchoolDAO.editSchool(schoolid2, schoolName, academicYear, semesters, days, periods, lunchRange);
+            //Check if scheduleblock string changed. If it didn't, then do NOT delete
             //Delete all existing scheduleblocks
-            ScheduleBlockDAO.deleteSchoolScheduleBlocks(schoolid2);
-            //Add new scheduleblocks
-            String[] lbArray = legalBlocks.split("#");
-            //Array of strings in the format ({1;1,2,3}
-            for (String s : lbArray) {
-                String temp = s.substring(1, s.length() - 1);
-                String[] tempArray = temp.split(";");
-                int pd = Integer.parseInt(tempArray[0]);
-                ScheduleBlockDAO.addScheduleBlock(schoolid2, pd, tempArray[1]);
-            }
  
             model.addAttribute("added", "School has been successfully edited.");
         }
