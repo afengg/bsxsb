@@ -66,7 +66,7 @@
 
                         </ul>
                     </div>
-                    <div class="col-sm-7 ">
+                    <div class="col-sm-6 ">
                         <h1 align="center">${school.getSchoolname()}'s Schedule Blocks</h1>
                         <div >
                             <table class="table "style=" ">
@@ -103,7 +103,7 @@
                             </table>
                         </div>	
                     </div>
-                        <div class="col-sm-3" style="padding-top:20px;">
+                        <div class="col-sm-4" style="padding-top:20px;">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
                                     <h3 class="panel-title">New Schedule Block</h3>

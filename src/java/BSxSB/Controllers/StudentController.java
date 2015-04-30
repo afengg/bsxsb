@@ -285,9 +285,14 @@ public class StudentController {
         } else {
             Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
             if (c != null) {
-                RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
-                CourseDAO.incrementCourseStudents(c.getCourseid());
-                model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
+                if(RegistrationDAO.isRegistered(c, currentStudent)){
+                    model.addAttribute("alreadyreg", "You are already registered for this course");
+                }
+                else{
+                    RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
+                    CourseDAO.incrementCourseStudents(c.getCourseid());
+                    model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
+                }
             } else {
                 int sbid = sb.getScheduleblockid();
                 Courses newCourse = new Courses(schoolid, coursename, courseidentifier, instructor, sbid, semString);

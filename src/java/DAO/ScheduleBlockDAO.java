@@ -49,8 +49,8 @@ public class ScheduleBlockDAO {
                 .setInteger(0, schoolid)
                 .setInteger(1, period)
                 .setParameter(2, days);
-        session.close();
         List<Scheduleblocks> sb = query.list();
+        session.close();
         if(sb.isEmpty()){
             return null;
         }

@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Add School</title>
+        <title>Edit School</title>
 		 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
 		  <link href="resources/css/style.css" rel="stylesheet">
 		  <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -64,23 +64,30 @@
 			
 			
 			</ul>
-				</div>
+            </div>
                             
-			<div class="col-sm-8 text-center">
+            <div class="col-sm-7 text-center">
 			<h1>Edit School</h1>
-			<form action="editschool.html" method="POST">
+			<form class="form-horizontal" action="editschool.html" method="POST">
+                            <fieldset>
                             <input type="hidden" id="schoolID" name="schoolID" value="${school.getSchoolid()}"></input>
-			<div class="col-sm-8 registerform">
-			<input name="schoolname" id="firstName" value="${school.getSchoolname()}"></input>
+			<div class="form-group">
+                            <label for="schoolname" class="col-lg-3 control-label">School Name</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" name="schoolname" id="schoolname" value="${school.getSchoolname()}"></input>
+                            </div>
 			</div>
-			<div class="col-sm-8 registerform">
-			<input name="academicyear" id="lastName" value="${school.getAcademicyear()}"></input>
+			<div class="form-group">
+                            <label for="academicyear" class="col-lg-3 control-label">Academic Year</label>
+                            <div class="col-lg-8">
+                            <input class="form-control" name="academicyear" id="academicyear" value="${school.getAcademicyear()}"></input>
+                            </div>
 			</div>
 		
-			<div class="col-sm-8 registerform">
+			<div class="form-group">
 			
-      <label for="select" class="col-sm-8 control-label">Semesters</label>
-      <div class="col-sm-8">
+      <label for="select" class="col-lg-3 control-label">Semesters</label>
+      <div class="col-lg-8">
         <select class="form-control" name="numsemesters" id="select">
             <option ${currentsemesters == "1" ? 'selected="selected"' : ' '}> 1</option>
           <option ${currentsemesters == "2" ? 'selected="selected"' : ' '}>2</option>
@@ -90,9 +97,10 @@
 			</div>
 		
 			</div>
-        <div class="col-sm-8 registerform">
-      <label for="select" class="col-sm-8 control-label" >Days</label>  
-        <select class="form-control" name="numdays" id="select" style="height:40px; width:395px;">
+        <div class="form-group">
+      <label for="select" class="col-lg-3 control-label" >Days</label>
+      <div class="col-lg-8">
+        <select class="form-control" name="numdays" id="select">
           <option ${currentdays == "1" ? 'selected="selected"' : ' '}>1</option>
           <option ${currentdays == "2" ? 'selected="selected"' : ' '}>2</option>
           <option ${currentdays == "3" ? 'selected="selected"' : ' '}>3</option>
@@ -101,10 +109,12 @@
           <option ${currentdays == "6" ? 'selected="selected"' : ' '}>6</option>
           <option ${currentdays == "7" ? 'selected="selected"' : ' '}>7</option>
         </select>
+      </div>
 	</div>
-        <div class="col-sm-8 registerform" >
-		<label for="select" class="col-sm-8 control-label">Periods</label>
-        <select class=" form-control" name="numperiods" id="select" style="height:40px; width:395px;">
+        <div class="form-group" >
+		<label class="col-lg-3 control-label" for="select" class="col-sm- control-label">Periods</label>
+                <div class="col-lg-8">
+        <select class=" form-control" name="numperiods" id="select">
           <option ${currentperiods == "6" ? 'selected="selected"' : ' '}>6</option>
           <option ${currentperiods == "7" ? 'selected="selected"' : ' '}>7</option>
           <option ${currentperiods == "8" ? 'selected="selected"' : ' '}>8</option>
@@ -113,49 +123,56 @@
           <option ${currentperiods == "11" ? 'selected="selected"' : ' '}>11</option>
           <option ${currentperiods == "12" ? 'selected="selected"' : ' '}>12</option>
         </select>
+                </div>
+        </div>	
+        <div class="form-group">
+            <label for="lunchrange" class="col-lg-3 control-label">Lunch Range</label>
+            <div class="col-lg-8">
+            <input class="form-control" name="lunchrange" id="lunchrange" value="${school.getLunchrange()}"></input>
+            </div>
         </div>
-	  </div>		
-        <div class="col-sm-8 registerform">
-            <label for="lunchrange" class="col-sm-8 control-label">Lunch Range</label>
-			<input  name="lunchrange" id="lunchrange" value="${school.getLunchrange()}"></input>
-        </div>
-	<div class="col-sm-8 registerform" >
-   <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px;">
-     Add School 
+	<div class="col-lg-12 registerform" >
+   <button type="submit" class="btn btn-success dropdown-toggle btn-sm" style="width:180px;">
+     Save Changes 
    </button>
-			</div>
-			</form>
-                        <div>
+            <div>
             <c:if test = "${not empty fillout}">
-                <div class="fillout">${fillout}</div>
+                <div class="label label-danger">${fillout}</div><br>
             </c:if>
             <c:if test="${not empty taken}">
-                <div class="taken">${taken}</div>
+                <div class="label label-danger">${taken}</div><br>
             </c:if>
             <c:if test="${not empty ayregex}">
-                <div class="ayregex">${ayregex}</div>
+                <div class="label label-danger">${ayregex}</div><br>
             </c:if>
             <c:if test="${not empty lrregex}">
-                <div class="lrregex">${lrregex}</div>
+                <div class="label label-danger">${lrregex}</div><br>
             </c:if>
             <c:if test="${not empty lbregex}">
-                <div class="lbregex">${lbregex}</div>
+                <div class="label label-danger">${lbregex}</div><br>
             </c:if>
-			<c:if test="${not empty added}">
-                <div class="added">${added}</div>
+            <c:if test="${not empty added}">
+                <div class="label label-danger">${added}</div>
             </c:if>
-                        </div>
-                        <div class="col-sm-2">
-                        <h3>Current Information</h3>
-                        <div>
-                        <h4><p>School Name: ${school.getSchoolname()}</p>
-                            <p>Academic Year: ${school.getAcademicyear()}</p>
-                            <p>Semesters: ${currentsemesters}</p>
-                            <p>Periods: ${currentperiods}</p>
-                            <p>Days: ${currentdays}</p>
-                            <p>Lunch Range: ${school.getLunchrange()}</p>
-                            <p>Legal Blocks: ${school.getScheduleblocks()}</p>
-                        </h4>
+	</div>
+            </div>
+            <fieldset>
+            </form>
+            </div>
+                        <div class="col-sm-3" style="padding-top:20px;">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Current Information</h3>
+                                </div>
+                            <div class="panel-body">
+                                <div>School Name: ${school.getSchoolname()}</div>
+                                <div>Academic Year: ${school.getAcademicyear()}</div>
+                                <div>Semesters: ${currentsemesters}</div>
+                                <div>Periods: ${currentperiods}</div>
+                                <div>Days: ${currentdays}</div>
+                                <div>Lunch Range: ${school.getLunchrange()}</div>
+                                <div>Legal Blocks: ${school.getScheduleblocks()}</div>
+                            </div>
                         </div>
                         </div>
 			</div>

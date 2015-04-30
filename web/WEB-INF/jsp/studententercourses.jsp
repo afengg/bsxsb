@@ -163,6 +163,9 @@
                     <c:if test="${not empty success}">
                         <div class="success">${success}</div>
                     </c:if>
+                        <c:if test="${not empty alreadyreg}">
+                            <div class="alreadyreg">${alreadyreg}</div>
+                        </c:if>
 
 
 
