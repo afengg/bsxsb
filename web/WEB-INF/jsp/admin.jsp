@@ -133,7 +133,7 @@
                                             <td>
                                                 <form action="admineditscheduleblocks.html" method="POST">
                                                 <input type="hidden" name="schoolID" value="${school.getSchoolid()}" />
-                                                <button class="btn btn-warning btn-xs">Edit Schedule Blocks </button>
+                                                <button class="btn btn-info btn-xs">Edit Schedule Blocks </button>
                                                 </form>
                                             </td>
 </div>
