@@ -107,52 +107,63 @@
 
                         </ul>
                     </div>
-                    <div class="text-center col-sm-10">
+                    <div class="col-sm-7 text-center">
                         <h1>Enter Course</h1>
-                    </div>
-                    <form action="submitassigned.html" method="POST" id="register" novalidate>
-                        <div class="text-center">
-                            <div class="col-sm-10  registerform">
-                                <input placeholder="Course Identifier" name="courseidentifier" onblur="courseCheck()" id="courseidentifier" style="width:395px;"> </input>
+                    <form class="form-horizontal" action="submitassigned.html" method="POST" id="register" novalidate>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="courseidentifier" class="col-lg-3 control-label">Course ID</label>
+                                <div class="col-lg-8">
+                                <input class="form-control" name="courseidentifier" onblur="courseCheck()" id="courseidentifier" style="width:395px;"> </input>
+                                </div>
                             </div>
-                            <div class="col-sm-10  registerform">
-                                <input placeholder="Course Name" name="coursename" id="coursename" style="width:395px;"> </input>
+                            <div class="form-group">
+                                <label for="coursename" class="col-lg-3 control-label">Course Name</label>
+                                <div class="col-lg-8">
+                                <input class="form-control" name="coursename" id="coursename" style="width:395px;"> </input>
+                                </div>
                             </div>
-                            <div class="col-sm-7  registerform">
-                                <div>
-                                <p>Semesters</p>
-                            </div>
-                            <div>
+                            <div class="form-group">
+                                <label for="semesters" class="col-lg-3 control-label">Semesters</label>
+                            <div class="col-lg-8 text-left checkbox">
                                 <c:forEach begin="1" end="${numSemesters}" var = "val">
-                                    <input type="checkbox" name="semesters" value=${val}>${val}</input>
+                                    <span style="padding-right:10px;"><label><input type="checkbox" name="semesters" value=${val}>${val}</input></label></span>
                                 </c:forEach>
                             </div>
                             </div>
-                            <div class="col-sm-10 registerform">
-                                <div><p>Period<p></div>
-                                <select placeholder="Period" name="period" id="period" style="width:395px;">
+                            <div class="form-group">
+                                <label for="period" class="col-lg-3 control-label">Period</label>
+                                <div class="col-lg-8">
+                                <select class="form-control" placeholder="Period" name="period" id="period" style="width:395px;">
                                 <c:forEach begin="1" end ="${numPeriods}" var = "val2">
                                 <option value="${val2}">${val2}</option>
                                 </c:forEach>
                                 </select>
+                                </div>
                             </div>
-                            <div class="col-sm-7 registerform">
-                                <div><p>Days</p></div>
-                                <div style="margin-left:20px;">
+                            <div class="form-group">
+                                <label for="days" class="col-lg-3 control-label">Days</label>
+                                <div class="col-lg-8 text-left checkbox">
                                 <c:forEach begin="1" end="${numDays}" var = "val3">
-                                <input type="checkbox" name="days" id="days" value=${val3}>${val3}</input>
+                                    <span style="padding-right:10px;"><label><input type="checkbox" name="days" id="days" value=${val3}>${val3}</input></label></span>
                                 </c:forEach>
                                 </div>
                             </div>
-                            <div class="col-sm-10 col-sm-offset-2 registerform">
-                                <input placeholder="Instructor" name="instructor" id="instructor"  style="width:395px;"> </input>
+                            <div class="form-group">
+                                <label for="instructor" class="col-lg-3 control-label">Instructor</label>
+                                <div class="col-lg-8">
+                                <input class="form-control" name="instructor" id="instructor"  style="width:395px;"> </input>
+                                </div>
                             </div>
-                            <div class="col-sm-10 registerform" >
+                            <div class="form-group">
+                                <div class="col-lg-6">
                                 <button type="submit" class="btn btn-danger dropdown-toggle btn-sm" style="width:180px; margin-left:170px;">
                                     Add Course
                                 </button>
+                                </div>
                             </div>
-                        </div>
+                         </div>
+                        </fieldset>
                     </form>
                     <c:if test="${not empty sbinvalid}">
                         <div class="sbinvalid">${sbinvalid}</div>

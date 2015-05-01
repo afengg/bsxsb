@@ -106,7 +106,7 @@
                         <div class="col-sm-4" style="padding-top:20px;">
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">New Schedule Block</h3>
+                                    <h3 class="panel-title text-center">New Schedule Block</h3>
                                 </div>
                                 <div class="panel-body">
                                     <form action="addscheduleblock.html" method="POST">

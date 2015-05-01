@@ -51,23 +51,23 @@
                             <div class="col-sm-12" >
                                 <h1>Register Now</h1>
 
-                            </div>
 
-                            <form action="register.html" method="POST">
-                                <div class="col-sm-12">
-                                    <input placeholder="First Name" name="firstName" style="width:360px;"> 
+                            <form class="form-horizontal" action="register.html" method="POST">
+                                <fieldset>
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    <input class="form-control" placeholder="First Name" name="firstName" style="width:360px;"> 
                                 </div>
-                                <div class="col-sm-12 registerform">
-                                    <input placeholder="Last Name" name="lastName" style="width:360px;"> 
+                                <div class="col-sm-10 col-sm-offset-2 registerform">
+                                    <input  class="form-control" placeholder="Last Name" name="lastName" style="width:360px;"> 
                                 </div>
-                                <div class="col-sm-12 registerform">
-                                    <input placeholder="Email Address" name="email" style="width:360px;" >
+                                <div class="col-sm-10 col-sm-offset-2 registerform">
+                                    <input class="form-control" placeholder="Email Address" name="email" style="width:360px;" >
                                 </div>
-                                <div class="col-sm-12 registerform">
-                                    <input placeholder="Password" name="password" style="width:360px;"> 
+                                <div class="col-sm-10 col-sm-offset-2 registerform">
+                                    <input class="form-control" placeholder="Password" name="password" style="width:360px;"> 
                                 </div>
                                 <div class="col-sm-2 registerform" >
-                                    <label for="select" class="control-label">School</label>
+                                    <label for="school" class="control-label">School</label>
                                 </div>
                                 <div class="col-sm-10 registerform" >            
                                     <select class="form-control" name="school" style="width:360px;" >
@@ -81,7 +81,9 @@
                                         Register 
                                     </button>
                                 </div>
+                                </fieldset>
                             </form>
+                                
                             <c:if test="${not empty taken}">
                                 <div class="taken">${taken}</div>
                             </c:if>
@@ -92,6 +94,7 @@
                                 <div class="registered">${registered}</div>
                             </c:if>
                         </div>
+                            </div>
                     </div>
                 </div>
             </div>
