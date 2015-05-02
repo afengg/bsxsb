@@ -337,12 +337,12 @@ public class StudentController {
         String[] courseids = gencriteria.getCourseids().split(",");
         List<Courses> genCourses = new ArrayList<>();
         List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
-        if(!gencriteria.getCourseids().isEmpty()){
-        for (String courseid : courseids) {
-            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
-            genCourses.add(genCourse);
-            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
-        }
+        if (!gencriteria.getCourseids().isEmpty()) {
+            for (String courseid : courseids) {
+                Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+                genCourses.add(genCourse);
+                genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+            }
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
@@ -419,12 +419,12 @@ public class StudentController {
         String[] courseids = gencriteria.getCourseids().split(",");
         List<Courses> genCourses = new ArrayList<>();
         List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
-        if(!gencriteria.getCourseids().isEmpty()){
-        for (String courseid : courseids) {
-            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
-            genCourses.add(genCourse);
-            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
-        }
+        if (!gencriteria.getCourseids().isEmpty()) {
+            for (String courseid : courseids) {
+                Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+                genCourses.add(genCourse);
+                genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+            }
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
@@ -534,10 +534,12 @@ public class StudentController {
         String[] courseids = gencriteria.getCourseids().split(",");
         List<Courses> genCourses = new ArrayList<>();
         List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
-        for (String courseid : courseids) {
-            Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
-            genCourses.add(genCourse);
-            genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        if (!gencriteria.getCourseids().isEmpty()) {
+            for (String courseid : courseids) {
+                Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
+                genCourses.add(genCourse);
+                genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+            }
         }
         List<List<Courses>> conflictCourses = new ArrayList<>();
         String lunches = gencriteria.getLunch();
@@ -803,23 +805,22 @@ public class StudentController {
         return "studentmanagefriends";
     }
 
-@RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public void doDownload(HttpServletRequest request,
             HttpServletResponse response) throws IOException {
 
-             
-     int BUFFER_SIZE = 4096;
-   String filePath = "/WEB-INF/jsp/studentviewgenerated.jsp";
+        int BUFFER_SIZE = 4096;
+        String filePath = "/WEB-INF/jsp/studentviewgenerated.jsp";
         // get absolute path of the application
         ServletContext context = request.getServletContext();
         String appPath = context.getRealPath("");
         System.out.println("appPath = " + appPath);
- 
+
         // construct the complete absolute path of the file
-        String fullPath = appPath + filePath;      
+        String fullPath = appPath + filePath;
         File downloadFile = new File(fullPath);
         FileInputStream inputStream = new FileInputStream(downloadFile);
-         
+
         // get MIME type of the file
         String mimeType = context.getMimeType(fullPath);
         if (mimeType == null) {
@@ -827,31 +828,31 @@ public class StudentController {
             mimeType = "application/octet-stream";
         }
         System.out.println("MIME type: " + mimeType);
- 
+
         // set content attributes for the response
         response.setContentType(mimeType);
         response.setContentLength((int) downloadFile.length());
- 
+
         // set headers for the response
         String headerKey = "Content-Disposition";
         String headerValue = String.format("attachment; filename=\"%s\"",
                 downloadFile.getName());
         response.setHeader(headerKey, headerValue);
- 
+
         // get output stream of the response
         OutputStream outStream = response.getOutputStream();
- 
+
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead = -1;
- 
+
         // write bytes read from the input stream into the output stream
         while ((bytesRead = inputStream.read(buffer)) != -1) {
             outStream.write(buffer, 0, bytesRead);
         }
- 
+
         inputStream.close();
         outStream.close();
- 
+
     }
 
     public String lunchToText(int numdays) {
