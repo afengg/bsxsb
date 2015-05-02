@@ -261,6 +261,22 @@ public class StudentController {
         return courseName;
     }
 
+    @RequestMapping(value = "/courseCheck2.html", method = RequestMethod.POST)
+    public @ResponseBody
+    String courseCheck2(@ModelAttribute(value = "identifier") String identifier,
+            BindingResult result) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        Students currentStudent = StudentDAO.getStudent(name);
+        int schoolid = currentStudent.getSchoolid();
+        Courses course = CourseDAO.getCourseUsingID(schoolid, identifier);
+        String courseName = "";
+        if (course != null) {
+            courseName = course.getCoursename();
+        }
+        return courseName;
+    }
+    
     @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)
     public String submitAssigned(Model model, @RequestParam(value = "courseidentifier") String courseidentifier,
             @RequestParam(value = "coursename") String coursename,
@@ -268,13 +284,17 @@ public class StudentController {
             @RequestParam(value = "semesters") String[] semesters,
             @RequestParam(value = "period") String period,
             @RequestParam(value = "days") String[] days) {
+        if(coursename.isEmpty() || instructor.isEmpty() || semesters[0].matches("noinput")  || period.isEmpty() || days[0].matches("noinput")){
+            model.addAttribute("fieldempty", "Please fill out all required fields.");
+            return enterCourses(model);
+        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
         //Build the semester string
         String semString = "";
-        for (int i = 0; i < semesters.length; i++) {
+        for (int i = 0; i < semesters.length-1; i++) {
             semString += semesters[i];
             semString += ",";
         }
@@ -282,7 +302,7 @@ public class StudentController {
         semString = semString.substring(0, semString.length() - 1);
         //Build the scheduleblock days
         String daysString = "";
-        for (int i = 0; i < days.length; i++) {
+        for (int i = 0; i < days.length-1; i++) {
             daysString += days[i];
             daysString += ",";
         }

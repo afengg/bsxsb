@@ -123,8 +123,7 @@ public class CourseDAO {
                 .setParameter(4, newCourse.getInstructor())
                 .setParameter(5, newCourse.getSemester());
         List<Courses> course = query.list();
-        if(course.isEmpty()){
-            return;
+        if(course == null){
         }
         else{
             Courses c = course.get(0);

@@ -42,17 +42,20 @@ public class FriendshipsDAO {
         List<Students> friendrequested = StudentDAO.getFriendRequests(addfriend.getStudentid());
         for (Students friend : friends) {
             if (friend.getStudentid() == addfriend.getStudentid()) {
+                session.close();
                 return "You are already friends with this student";
             }
         }
         for (Students friend : friendrequests) {
             
             if (friend.getStudentid() == addfriend.getStudentid()) {
+                session.close();
                 return "This student have already friend requested you.  Accept or Reject the friend request";
             }
         }
         for (Students friend : friendrequested) {
             if (friend.getStudentid()==(currentStudent.getStudentid())) {
+                session.close();
                 return "You have sent a friend request to this student please wait!";
             }
         }

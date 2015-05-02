@@ -22,7 +22,34 @@
                     $('#coursename').val(response);
                 }
             });
-        }    
+        }
+        </script>
+        <script>
+        $('#findinstructor').click(function() {
+            var checkedVals = $('.semclass:checkbox:checked').map(function() {
+            return this.value;
+            }).get();
+            alert("hi");
+        });
+        </script>
+        <script>
+        $(document).ready(function(){
+            if($('#days').is(':checked')){
+                $('#daysHidden').val("hasinput");
+            }
+            else{
+                $('#daysHidden').val("noinput");
+            }
+        });
+        $(document).ready(function(){
+           if($('#semesters').is(':checked')){
+               $('#semHidden').val("hasinput");
+           }
+           
+           else{
+               $('#semHidden').val("noinput");
+           }
+        });
         </script>
         <div class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -125,8 +152,9 @@
                                 <label for="semesters" class="col-lg-3 control-label">Semesters</label>
                             <div class="col-lg-8 text-left checkbox">
                                 <c:forEach begin="1" end="${numSemesters}" var = "val">
-                                    <span style="padding-right:10px;"><label><input type="checkbox" name="semesters" value=${val}>${val}</input></label></span>
+                                    <span style="padding-right:10px;"><label><input class="semclass" type="checkbox" name="semesters" value=${val}>${val}</input></label></span>
                                 </c:forEach>
+                                    <span><input type="checkbox" style="visibility:hidden" checked="checked" name="semesters" id="semesters" value="noinput"></input></span>
                             </div>
                             </div>
                             <div class="form-group">
@@ -143,15 +171,17 @@
                                 <label for="days" class="col-lg-3 control-label">Days</label>
                                 <div class="col-lg-8 text-left checkbox">
                                 <c:forEach begin="1" end="${numDays}" var = "val3">
-                                    <span style="padding-right:10px;"><label><input type="checkbox" name="days" id="days" value=${val3}>${val3}</input></label></span>
+                                    <span style="padding-right:10px;"><label><input type="checkbox" class="daysclass" name="days" id="days" value=${val3}>${val3}</input></label></span>
                                 </c:forEach>
+                                    <span><input type="checkbox" style="visibility:hidden" name="days" checked="checked" id="semesters" value="noinput"></input></span>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="instructor" class="col-lg-3 control-label">Instructor</label>
                                 <div class="col-lg-8">
+                                <button type="button" name="findinstructor" id="findinstructor" class="btn btn-primary btn-xs col-lg-3">Find Instructor</button> 
                                 <input class="form-control" name="instructor" id="instructor"  style="width:395px;"> </input>
-                                </div>
+                                </div>                                
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-6">
@@ -160,9 +190,11 @@
                                 </button>
                                 </div>
                             </div>
-                         </div>
                         </fieldset>
                     </form>
+                    <c:if test="${not empty fieldempty}">
+                        <div class="fieldempty">${fieldempty}</div>
+                    </c:if>
                     <c:if test="${not empty sbinvalid}">
                         <div class="sbinvalid">${sbinvalid}</div>
                     </c:if>
@@ -175,7 +207,7 @@
                         <c:if test="${not empty alreadyreg}">
                             <div class="alreadyreg">${alreadyreg}</div>
                         </c:if>
-
+                    </div>                
 
 
 
