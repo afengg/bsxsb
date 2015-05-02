@@ -25,11 +25,29 @@
         }
         </script>
         <script>
-        $('#findinstructor').click(function() {
-            var checkedVals = $('.semclass:checkbox:checked').map(function() {
-            return this.value;
-            }).get();
-            alert("hi");
+        $(document).ready(function(){
+            $('#findinstructor').click(function() {
+                var identifier = $('#courseidentifier').val();
+                var coursename = $('#coursename').val();
+                var period = $('#period').val();
+                var checkedVals = $('.semclass:checkbox:checked').map(function(){
+                    return this.value;
+                }).get();
+                var semString = checkedVals.join(',');
+                var checkedVals2 = $('.daysclass:checkbox:checked').map(function(){
+                    return this.value;
+                }).get();
+                var daysString = checkedVals2.join(',');
+                var criteria = identifier + "/" + coursename + "/" + semString + "/" + period + "/" + daysString;
+                $.ajax({
+                    type:"POST",
+                    url:"courseCheck2.html",
+                    data:"criteria=" + criteria,                  
+                     success: function(response){
+                        $('#instructor').val(response);
+                    }
+                });
+            });
         });
         </script>
         <script>

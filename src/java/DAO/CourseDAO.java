@@ -66,6 +66,24 @@ public class CourseDAO {
         session.close();
         return course;
     }
+    public static Courses getCourseNoInstructor(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String semesters){
+        session = HibernateUtil.getSessionFactory().openSession();
+                Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND semester = ?")
+                .addEntity(Courses.class)
+                .setParameter(0, courseIdentifier)
+                .setParameter(1, courseName)
+                .setParameter(2, scheduleblockid)
+                .setParameter(3, schoolid)
+                .setParameter(4, semesters);
+        List<Courses> course = query.list();
+        session.close();
+        if(course.isEmpty()){
+            return null;
+        }
+        else{
+            return course.get(0);
+        }
+    }
     public static Courses getCourse(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String instructor, String semesters){
                 session = HibernateUtil.getSessionFactory().openSession();
                 Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
