@@ -22,13 +22,12 @@
             }
 
             function downloadCurrentDocument() {
-                var base64doc = btoa(unescape(encodeURIComponent(document.getElementById('1').innerHTML))),
-                        a = document.createElement('a'),
-                        e = document.createEvent("HTMLEvents");
-                a.download = 'generatedschedule.html';
-                a.href = 'data:text/html;base64,' + base64doc;
-                e.initEvent('click');
-                a.dispatchEvent(e);
+                var link = document.createElement('a');
+                var event = document.createEvent("HTMLEvents");
+                link.download = 'generatedschedule.html';
+                link.href = 'data:text/html,' + document.getElementById('generatedschedule').innerHTML;
+                event.initEvent('click');
+                link.dispatchEvent(event);
             }
 
         </script>
@@ -128,7 +127,7 @@
                                 </div>
                             </c:forEach>
                         </c:if>
-                        <div id="1">
+                        <div id="generatedschedule">
                             <c:if test = "${not empty semester}">
 
                                 <h1 align="center">Generated Courses</h1>

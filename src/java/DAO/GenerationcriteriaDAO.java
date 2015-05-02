@@ -60,7 +60,7 @@ public class GenerationcriteriaDAO {
         List<Generationcriteria> gencriterias = query.list();
         Generationcriteria gencriteria = gencriterias.get(0);
         StringBuilder sb = new StringBuilder(gencriteria.getCourseids());
-        sb.delete(sb.indexOf(courseid), sb.indexOf(courseid) + 2);
+        sb.delete(sb.indexOf(courseid), sb.indexOf(courseid) + courseid.length()+1);
         String newcourseids = sb.toString();
         gencriteria.setCourseids(newcourseids);
         session.update(gencriteria);

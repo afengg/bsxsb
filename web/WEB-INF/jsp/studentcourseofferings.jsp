@@ -86,8 +86,6 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
-                                    <li><a href="studentviewcourses.html">View Desired Courses</a></li>
-                                    <li><a href="studentviewcourses.html">Export Desired Courses</a></li>
                                 </ul>
                             </li>
                         </ul>

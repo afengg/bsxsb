@@ -337,10 +337,12 @@ public class StudentController {
         String[] courseids = gencriteria.getCourseids().split(",");
         List<Courses> genCourses = new ArrayList<>();
         List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        if(!gencriteria.getCourseids().isEmpty()){
         for (String courseid : courseids) {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
             genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
@@ -417,10 +419,12 @@ public class StudentController {
         String[] courseids = gencriteria.getCourseids().split(",");
         List<Courses> genCourses = new ArrayList<>();
         List<Scheduleblocks> genscheduleblocks = new ArrayList<>();
+        if(!gencriteria.getCourseids().isEmpty()){
         for (String courseid : courseids) {
             Courses genCourse = CourseDAO.getCourse(Integer.parseInt(courseid));
             genCourses.add(genCourse);
             genscheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(genCourse.getScheduleblockid()));
+        }
         }
         if (gencriteria.getLunch() != null && !gencriteria.getLunch().isEmpty()) {
             String[] lunch = gencriteria.getLunch().split(",");
