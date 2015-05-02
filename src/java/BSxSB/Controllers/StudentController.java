@@ -18,10 +18,20 @@ import Mapping.POJO.Generationcriteria;
 import Mapping.POJO.Scheduleblocks;
 import Mapping.POJO.Schools;
 import Mapping.POJO.Students;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -285,10 +295,9 @@ public class StudentController {
         } else {
             Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
             if (c != null) {
-                if(RegistrationDAO.isRegistered(c, currentStudent)){
+                if (RegistrationDAO.isRegistered(c, currentStudent)) {
                     model.addAttribute("alreadyreg", "You are already registered for this course");
-                }
-                else{
+                } else {
                     RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
                     CourseDAO.incrementCourseStudents(c.getCourseid());
                     model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
@@ -509,17 +518,6 @@ public class StudentController {
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
         return "studentgeneratecourses";
-    }
-
-    @RequestMapping(value = "/studentviewgenerated", method = RequestMethod.GET)
-    public String viewGenerated(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Students currentStudent = StudentDAO.getStudent(name);
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
-        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
-        model.addAttribute("schoolyears", schoolyears);
-        return "studentviewgenerated";
     }
 
     @RequestMapping(value = "/generateschedule", method = RequestMethod.GET)
@@ -799,6 +797,57 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
+    }
+
+@RequestMapping(method = RequestMethod.GET)
+    public void doDownload(HttpServletRequest request,
+            HttpServletResponse response) throws IOException {
+
+             
+     int BUFFER_SIZE = 4096;
+   String filePath = "/WEB-INF/jsp/studentviewgenerated.jsp";
+        // get absolute path of the application
+        ServletContext context = request.getServletContext();
+        String appPath = context.getRealPath("");
+        System.out.println("appPath = " + appPath);
+ 
+        // construct the complete absolute path of the file
+        String fullPath = appPath + filePath;      
+        File downloadFile = new File(fullPath);
+        FileInputStream inputStream = new FileInputStream(downloadFile);
+         
+        // get MIME type of the file
+        String mimeType = context.getMimeType(fullPath);
+        if (mimeType == null) {
+            // set to binary type if MIME mapping not found
+            mimeType = "application/octet-stream";
+        }
+        System.out.println("MIME type: " + mimeType);
+ 
+        // set content attributes for the response
+        response.setContentType(mimeType);
+        response.setContentLength((int) downloadFile.length());
+ 
+        // set headers for the response
+        String headerKey = "Content-Disposition";
+        String headerValue = String.format("attachment; filename=\"%s\"",
+                downloadFile.getName());
+        response.setHeader(headerKey, headerValue);
+ 
+        // get output stream of the response
+        OutputStream outStream = response.getOutputStream();
+ 
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int bytesRead = -1;
+ 
+        // write bytes read from the input stream into the output stream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            outStream.write(buffer, 0, bytesRead);
+        }
+ 
+        inputStream.close();
+        outStream.close();
+ 
     }
 
     public String lunchToText(int numdays) {

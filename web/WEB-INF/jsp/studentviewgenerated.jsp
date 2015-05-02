@@ -20,6 +20,17 @@
                     div[i].style.display = 'none';
                 }
             }
+
+            function downloadCurrentDocument() {
+                var base64doc = btoa(unescape(encodeURIComponent(document.getElementById('1').innerHTML))),
+                        a = document.createElement('a'),
+                        e = document.createEvent("HTMLEvents");
+                a.download = 'generatedschedule.html';
+                a.href = 'data:text/html;base64,' + base64doc;
+                e.initEvent('click');
+                a.dispatchEvent(e);
+            }
+
         </script>
     </head>
     <body>
@@ -91,14 +102,20 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="studentgeneratecourses.html">Generate Desired Courses</a></li>
-                                    <li><a href="studentviewgenerated.html">View Desired Courses</a></li>
-                                    <li><a href="studentviewgenerated.html">Export Desired Courses</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown ">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Export Generated Schedule<span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><button class="btn btn-link" onclick="downloadCurrentDocument();">Export Schedule</button></li>
                                 </ul>
                             </li>
                         </ul>
                         </ul>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-9" style="font-size:12px;">
                         <c:if test = "${not empty conflictCourses}">
                             <h5 style="padding-top:25px;">The following pairs have conflicting schedules:</h5>
                             <c:forEach items="${conflictCourses}" var="conflictCourses">
@@ -111,60 +128,60 @@
                                 </div>
                             </c:forEach>
                         </c:if>
-                        <c:if test = "${not empty semester}">
+                        <div id="1">
+                            <c:if test = "${not empty semester}">
 
-                            <h1 align="center">Generated Courses</h1>
-                            <c:set var="sem" value="1" />
-                            <c:forEach items="${semester}" var="semester2">
-                                <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
-                                    <h3 align="center">Semester ${sem}</h3>
-                                    <table class="table  "style=" width:700px;">
-                                        <thead>
-                                            <tr>
-                                                <th>Period</th>
-                                                <th>Monday</th>
-                                                <th>Tuesday</th>
-                                                <th>Wednesday</th>
-                                                <th>Thursday</th>
-                                                <th>Friday</th>
-                                                <th>Saturday</th>
-                                                <th>Sunday</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:set var="index" value="1" />
-                                            <c:forEach items="${semester2}" var="schedule">
+                                <h1 align="center">Generated Courses</h1>
+                                <c:set var="sem" value="1" />
+                                <c:forEach items="${semester}" var="semester2">
+                                    <div style="border-style:solid; border-width: 1.5px; margin-top:10px;">
+                                        <h3 align="center">Semester ${sem}</h3>
+                                        <table class="table  "style=" width:700px;">
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        ${index}
-                                                    </td>
-                                                    <c:forEach items="${schedule}" var="period">
-                                                        <td>
-                                                            <div class="friends" style=" display: none;">    
-                                                                ${period.getFriends()}
-                                                            </div>
-                                                            ${period.getCoursename()}
-                                                        </td>
-                                                    </c:forEach>
-                                                    <c:set var="index" value="${index + 1}" /> 
+                                                    <th>Period</th>
+                                                    <th>Monday</th>
+                                                    <th>Tuesday</th>
+                                                    <th>Wednesday</th>
+                                                    <th>Thursday</th>
+                                                    <th>Friday</th>
+                                                    <th>Saturday</th>
+                                                    <th>Sunday</th>
                                                 </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <c:set var="sem" value="${sem + 1}" /> 
-                            </c:forEach>
-                        </c:if>    
-
+                                            </thead>
+                                            <tbody>
+                                                <c:set var="index" value="1" />
+                                                <c:forEach items="${semester2}" var="schedule">
+                                                    <tr>
+                                                        <td>
+                                                            ${index}
+                                                        </td>
+                                                        <c:forEach items="${schedule}" var="period">
+                                                            <td>
+                                                                <div class="friends" style=" display: none;">    
+                                                                    ${period.getFriends()}
+                                                                </div>
+                                                                ${period.getCoursename()}
+                                                            </td>
+                                                        </c:forEach>
+                                                        <c:set var="index" value="${index + 1}" /> 
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <c:set var="sem" value="${sem + 1}" /> 
+                                </c:forEach>
+                            </c:if>    
+                        </div>
 
                     </div>
-                    <div style="margin-top:30px;">
-                        <button onclick="showFriends()" class="btn btn-success btn-xs">With friend</button>
-                        <button onclick="hideFriends()"class="btn btn-danger btn-xs" style="margin-top:10px;">Without friend</button>
-                    </div>
-
-
-
+                    <c:if test = "${not empty semester}">
+                        <div style="margin-top:30px;">
+                            <button onclick="showFriends()" class="btn btn-success btn-xs">With friend</button>
+                            <button onclick="hideFriends()"class="btn btn-danger btn-xs" style="margin-top:10px;">Without friend</button>
+                        </div>
+                    </c:if>
                 </div>
             </div>
 

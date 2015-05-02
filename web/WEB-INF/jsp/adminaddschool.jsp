@@ -139,7 +139,7 @@
                                 </button>
                             </div>
                         </form>
-                        <div>
+                        <div style="color:red">
                             <c:if test = "${not empty fillout}">
                                 <div class="fillout">${fillout}</div>
                             </c:if>
