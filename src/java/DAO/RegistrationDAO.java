@@ -24,24 +24,25 @@ public class RegistrationDAO {
     private static Session session;
     
     public static void removereg(int courseid, int studentid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         RegistrationsId regID = new RegistrationsId(courseid, studentid);
         Registrations reg = new Registrations(regID);
         session.delete(reg);
+         
         session.getTransaction().commit();
-        session.close();
     }
     
     public static boolean isRegistered(Courses course, Students student) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM registrations where courseid=? AND studentid=?")
                 .addEntity(Registrations.class)
                 .setInteger(0, course.getCourseid())
                 .setInteger(1, student.getStudentid());
         List<Registrations> reg = query.list();
-        session.close();
+        session.getTransaction().commit();
         if(reg.isEmpty()){
             return false;
         }
@@ -51,12 +52,12 @@ public class RegistrationDAO {
     }
     
     public static void addRegistration(int courseid, int studentid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         RegistrationsId regID = new RegistrationsId(courseid, studentid);
         Registrations reg = new Registrations(regID);
         session.save(reg);
+         
         session.getTransaction().commit();
-        session.close();
     }
 }

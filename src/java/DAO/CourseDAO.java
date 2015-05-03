@@ -22,53 +22,60 @@ public class CourseDAO {
     private static Session session;
 
     public static List<Courses> getCoursesForStudent(int studentid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses, registrations, scheduleblocks WHERE studentid = ? AND courses.courseid = registrations.courseid AND "
                 + "courses.scheduleblockid = scheduleblocks.scheduleblockid ORDER BY period ASC")
                 .addEntity(Courses.class)
                 .setInteger(0, studentid);
         List<Courses> studentsCourses = query.list();
-        session.close();
+        session.getTransaction().commit();
         return studentsCourses;
     }
 
     public static List<Courses> getCourseOfferingForSchool(int schoolid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE schoolid=?")
                 .addEntity(Courses.class)
                 .setInteger(0, schoolid);
         List<Courses> studentsCourses = query.list();
-        session.close();
+        session.getTransaction().commit();
         return studentsCourses;
     }
+
     public static Courses getCourseUsingID(int schoolid, String courseidentifier) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+         session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses where schoolid=? AND courseidentifier=?")
                 .addEntity(Courses.class)
                 .setParameter(0, schoolid)
                 .setParameter(1, courseidentifier);
         List<Courses> courses = query.list();
-        session.close();
-        if(courses.isEmpty()){
+        session.getTransaction().commit();
+        if (courses.isEmpty()) {
             return null;
-        }
-        else{
+        } else {
             return courses.get(0);
         }
     }
+
     public static Courses getCourse(int courseid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+         session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseid=?")
                 .addEntity(Courses.class)
                 .setInteger(0, courseid);
         List<Courses> courses = query.list();
         Courses course = courses.get(0);
-        session.close();
+        session.getTransaction().commit();
         return course;
     }
-    public static Courses getCourse(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String instructor, String semesters){
-                session = HibernateUtil.getSessionFactory().openSession();
-                Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
+
+    public static Courses getCourse(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String instructor, String semesters) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+         session.getTransaction().begin();
+        Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
                 .addEntity(Courses.class)
                 .setParameter(0, courseIdentifier)
                 .setParameter(1, courseName)
@@ -77,42 +84,42 @@ public class CourseDAO {
                 .setParameter(4, instructor)
                 .setParameter(5, semesters);
         List<Courses> course = query.list();
-        session.close();
-        if(course.isEmpty()){
+        session.getTransaction().commit();
+        if (course.isEmpty()) {
             return null;
-        }
-        else{
+        } else {
             return course.get(0);
         }
     }
-    public static void incrementCourseStudents(int courseID){
-        session = HibernateUtil.getSessionFactory().openSession();
+
+    public static void incrementCourseStudents(int courseID) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
-        Courses course = (Courses)session.get(Courses.class, courseID);
+        Courses course = (Courses) session.get(Courses.class, courseID);
         course.incrementStudents();
         session.update(course);
+
         session.getTransaction().commit();
-        session.close();
     }
-    public static void decrementCourseStudentsAndDelete(int courseID){
-        session = HibernateUtil.getSessionFactory().openSession();
+
+    public static void decrementCourseStudentsAndDelete(int courseID) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
-        Courses course = (Courses)session.get(Courses.class, courseID);
+        Courses course = (Courses) session.get(Courses.class, courseID);
         course.decrementStudents();
-        if(course.getNumstudents() == 0){
+        if (course.getNumstudents() == 0) {
             session.delete(course);
-        }
-        else{
-        session.update(course);
+        } else {
+            session.update(course);
         }
         session.getTransaction().commit();
-        session.close();
     }
-    public static void addCourse(Courses newCourse, int studentid){
-        session = HibernateUtil.getSessionFactory().openSession();
+
+    public static void addCourse(Courses newCourse, int studentid) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         session.save(newCourse);
-        session.getTransaction().commit();
+
         //retrieve this course
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
                 .addEntity(Courses.class)
@@ -123,29 +130,28 @@ public class CourseDAO {
                 .setParameter(4, newCourse.getInstructor())
                 .setParameter(5, newCourse.getSemester());
         List<Courses> course = query.list();
-        if(course == null){
-        }
-        else{
+        if (course == null) {
+        } else {
             Courses c = course.get(0);
             RegistrationsId registrationId = new RegistrationsId(c.getCourseid(), studentid);
             Registrations registration = new Registrations(registrationId);
-            session.getTransaction().begin();
             session.save(registration);
-            session.getTransaction().commit();
+
         }
-        session.close();
+        session.getTransaction().commit();
     }
-    public static void deleteCourse(int courseid){
-        session = HibernateUtil.getSessionFactory().openSession();
+
+    public static void deleteCourse(int courseid) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseid = ?")
                 .addEntity(Courses.class)
                 .setParameter(0, courseid);
         List<Courses> courses = query.list();
         Courses course = courses.get(0);
-        session.getTransaction().begin();
         session.delete(course);
+
         session.getTransaction().commit();
-        session.close();
     }
-   
+
 }

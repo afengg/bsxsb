@@ -21,7 +21,7 @@ public class StudentDAO {
     private static Session session;
 
     public static void setLoggedIn(String email) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ?")
@@ -31,12 +31,12 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         student.setLoggedin(true);
         session.update(student);
+
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void setLoggedOut(String email) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ?")
@@ -46,21 +46,21 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         student.setLoggedin(false);
         session.update(student);
+
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void register(String firstName, String lastName, String email, String password, String school) {
         //the String school is actually in the form: [schoolname] - [academicyear]
         //so we need to split it into these two parts to query for the school id
         String[] schoolparts = school.split(" - ");
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT schoolid FROM schools WHERE schoolname = ? AND academicyear = ?")
                 .setParameter(0, schoolparts[0])
                 .setParameter(1, schoolparts[1]);
         //This query should only return one result, a schoolid int
-        session.getTransaction().begin();
         int schoolid = (int) query.uniqueResult();
         Students newStudent = new Students();
         newStudent.setEmail(email);
@@ -71,8 +71,8 @@ public class StudentDAO {
         newStudent.setRole("ROLE_USER");
         newStudent.setApproved(false);
         session.save(newStudent);
+
         session.getTransaction().commit();
-        session.close();
         /**
          * query = session.createSQLQuery( "INSERT INTO students (email,
          * firstname, lastname, password, schoolid) VALUES (:a, :b, :c, :d,
@@ -83,27 +83,30 @@ public class StudentDAO {
     }
 
     public static List<Students> allStudent() {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allStudents;
     }
 
     public static List<Students> getAcceptedAccounts() {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students where approved =1")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allStudents;
     }
 
     public Students loginStudent(String email, String password) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ? AND password =?")
                 .addEntity(Students.class)
@@ -114,60 +117,65 @@ public class StudentDAO {
             return null;
         }
         Students student = allStudents.get(0);
-        session.close();
+        session.getTransaction().commit();
         return student;
     }
 
     public static Students getStudent(String email) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ?")
                 .addEntity(Students.class)
                 .setString(0, email);
         List<Students> allStudents = query.list();
         if (allStudents.isEmpty()) {
+            session.getTransaction().commit();
             return null;
         }
         Students student = allStudents.get(0);
-        session.close();
+        session.getTransaction().commit();
         return student;
     }
 
     public static List<Students> getAccountRequests() {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE approved = 0")
                 .addEntity(Students.class);
         List<Students> allStudents = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allStudents;
     }
 
     public static List<Students> getFriendRequests(int id) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students INNER JOIN friendships ON friendships.friend1=? AND students.studentid=friend2 AND friendships.accepted=0")
                 .addEntity(Students.class)
                 .setInteger(0, id);
         List<Students> allStudents = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allStudents;
     }
 
     public static List<Students> getFriends(int id) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students INNER JOIN friendships ON ((friendships.friend1=? AND studentid=friend2) OR (friendships.friend2=? AND studentid=friend1)) AND accepted=1")
                 .addEntity(Students.class)
                 .setInteger(0, id)
                 .setInteger(1, id);
         List<Students> allStudents = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allStudents;
     }
 
     public static void acceptAccount(String email) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ?")
@@ -177,12 +185,12 @@ public class StudentDAO {
         Students student = allStudents.get(0);
         student.setApproved(true);
         session.update(student);
+
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void deleteAccount(String email) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students WHERE email = ?")
@@ -191,12 +199,12 @@ public class StudentDAO {
         List<Students> allStudents = query.list();
         Students student = allStudents.get(0);
         session.delete(student);
+
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void acceptAllAccount() {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM students")
@@ -208,7 +216,7 @@ public class StudentDAO {
         for (Students student : allStudents) {
             session.update(student);
         }
+
         session.getTransaction().commit();
-        session.close();
     }
 }

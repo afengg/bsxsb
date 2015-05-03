@@ -20,69 +20,71 @@ public class SchoolDAO {
     private static Session session;
 
     public static List<Schools> allSchools() {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM schools")
                 .addEntity(Schools.class);
         List<Schools> allSchools = query.list();
-        session.close();
+        session.getTransaction().commit();
         return allSchools;
     }
 
     public static Schools getSchool(int schoolID) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolid = ?")
                 .addEntity(Schools.class)
                 .setInteger(0, schoolID);
         List<Schools> schools = query.list();
-        session.close();
-        if(schools.isEmpty()){
+        session.getTransaction().commit();
+        if (schools.isEmpty()) {
             return null;
-        }
-        else{
+        } else {
             return schools.get(0);
         }
     }
 
     public static List<Schools> getSchoolSameName(String schoolName) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ?")
                 .addEntity(Schools.class)
                 .setString(0, schoolName);
         List<Schools> schools = query.list();
-        session.close();
+        session.getTransaction().commit();
         return schools;
     }
 
     public static void deleteSchool(int schoolID) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "select * from schools where schoolid = ?")
                 .addEntity(Schools.class)
                 .setParameter(0, schoolID);
         List<Schools> allSchools = query.list();
         Schools school = allSchools.get(0);
-        session.getTransaction().begin();
         session.delete(school);
+
         session.getTransaction().commit();
-        session.close();
     }
 
     public static Schools getSchoolByNameYear(String schoolName, String academicYear) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM schools WHERE schoolname = ? AND academicyear = ?")
                 .addEntity(Schools.class)
                 .setParameter(0, schoolName)
                 .setParameter(1, academicYear);
         List<Schools> schools = query.list();
-        session.close();
-        if(schools.isEmpty()){
+        session.getTransaction().commit();
+        if (schools.isEmpty()) {
             return null;
-        }
-        else{
+        } else {
             return schools.get(0);
         }
-        }
+    }
 
     public static void addSchool(String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange) {
         Schools newSchool = new Schools();
@@ -92,16 +94,17 @@ public class SchoolDAO {
         newSchool.setLunchrange(lunchRange);
         newSchool.setNumperiods(periods);
         newSchool.setNumsemesters(semesters);
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         session.save(newSchool);
+
         session.getTransaction().commit();
-        session.close();
     }
-    public static void editSchool(int schoolID, String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange){
-        session = HibernateUtil.getSessionFactory().openSession();
+
+    public static void editSchool(int schoolID, String schoolName, String academicYear, int semesters, int days, int periods, String lunchRange) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
-        Schools school = (Schools)session.get(Schools.class, schoolID);
+        Schools school = (Schools) session.get(Schools.class, schoolID);
         school.setAcademicyear(academicYear);
         school.setLunchrange(lunchRange);
         school.setNumperiods(periods);
@@ -109,8 +112,8 @@ public class SchoolDAO {
         school.setSchoolname(schoolName);
         school.setNumsemesters(semesters);
         session.save(school);
+
         session.getTransaction().commit();
-        session.close();
-        
+
     }
 }

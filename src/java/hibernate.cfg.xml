@@ -7,6 +7,7 @@
     <property name="hibernate.connection.url">jdbc:mysql://mysql2.cs.stonybrook.edu:3306/lunzhang?zeroDateTimeBehavior=convertToNull</property>
     <property name="hibernate.connection.username">lunzhang</property>
     <property name="hibernate.connection.password">108598933</property>
+    <property name="hibernate.current_session_context_class">thread</property>
     <mapping resource="Mapping/POJO/Scheduleblocks.hbm.xml"/>
     <mapping resource="Mapping/POJO/Friendships.hbm.xml"/>
     <mapping resource="Mapping/POJO/Students.hbm.xml"/>

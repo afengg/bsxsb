@@ -96,9 +96,8 @@ public class StudentController {
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
-        Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
-        List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
-        model.addAttribute("schoolyears", schoolyears);
+
+
         model.addAttribute("friendrequests", friendrequests);
         return "studentmanagefriends";
     }

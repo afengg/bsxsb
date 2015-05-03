@@ -24,19 +24,20 @@ public class GenerationcriteriaDAO {
     private static Session session;
 
     public static Generationcriteria getGenerationCriteria(int studentID) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM generationcriteria where studentid = ?")
                 .addEntity(Generationcriteria.class)
                 .setInteger(0, studentID);
         List<Generationcriteria> gencriterias = query.list();
         Generationcriteria gencriteria = gencriterias.get(0);
-        session.close();
+        session.getTransaction().commit();
         return gencriteria;
 
     }
     public static void addDesiredCourses(int studentid, String courseid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM generationcriteria WHERE studentid = ?")
@@ -46,12 +47,12 @@ public class GenerationcriteriaDAO {
         Generationcriteria gencriteria = gencriterias.get(0);
         gencriteria.setCourseids(gencriteria.getCourseids() + courseid + ",");
         session.update(gencriteria);
+         
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void removeDesiredCourses(int studentid, String courseid) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM generationcriteria WHERE studentid = ?")
@@ -64,12 +65,12 @@ public class GenerationcriteriaDAO {
         String newcourseids = sb.toString();
         gencriteria.setCourseids(newcourseids);
         session.update(gencriteria);
+         
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void addLunch(int studentid, String lunch) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM generationcriteria WHERE studentid = ?")
@@ -84,12 +85,12 @@ public class GenerationcriteriaDAO {
              gencriteria.setLunch(gencriteria.getLunch() + lunch + ",");
         }
         session.update(gencriteria);
+         
         session.getTransaction().commit();
-        session.close();
     }
 
     public static void removeLunch(int studentid, String lunch) {
-        session = HibernateUtil.getSessionFactory().openSession();
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
         session.getTransaction().begin();
         Query query = session.createSQLQuery(
                 "SELECT * FROM generationcriteria WHERE studentid = ?")
@@ -114,7 +115,7 @@ public class GenerationcriteriaDAO {
                 toString();
         gencriteria.setLunch(newlunch);
         session.update(gencriteria);
+         
         session.getTransaction().commit();
-        session.close();
     }
 }
