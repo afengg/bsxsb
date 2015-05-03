@@ -257,23 +257,40 @@ public class StudentController {
         if (course != null) {
             courseName = course.getCoursename();
         }
+        System.out.println(courseName);
         return courseName;
     }
 
     @RequestMapping(value = "/courseCheck2.html", method = RequestMethod.POST)
     public @ResponseBody
-    String courseCheck2(@ModelAttribute(value = "identifier") String identifier,
+    String courseCheck2(@ModelAttribute(value = "criteria") String criteria,
+            @ModelAttribute(value = "schoolname") String schoolname,
+            @ModelAttribute(value = "academicyear") String academicyear,
             BindingResult result) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         int schoolid = currentStudent.getSchoolid();
-        Courses course = CourseDAO.getCourseUsingID(schoolid, identifier);
-        String courseName = "";
-        if (course != null) {
-            courseName = course.getCoursename();
+        String[] criteriaparts = criteria.split("/");
+        String courseidentifier = criteriaparts[0];
+        String coursename = criteriaparts[1];
+        String semString = criteriaparts[2];
+        int period = Integer.parseInt(criteriaparts[3]);
+        String daysString = criteriaparts[4];
+        Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, period, daysString);
+        if(sb == null){
+            return "";
         }
-        return courseName;
+        else{
+            int sbid = sb.getScheduleblockid();
+            Courses course = CourseDAO.getCourseNoInstructor(courseidentifier, coursename, sbid, schoolid, semString);
+            if(course == null){
+                return "";
+            }
+            else{
+                return course.getInstructor();
+            }
+        }
     }
     
     @RequestMapping(value = "/submitassigned", method = RequestMethod.POST)

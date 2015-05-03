@@ -46,7 +46,7 @@ public class CourseDAO {
 
     public static Courses getCourseUsingID(int schoolid, String courseidentifier) {
         session = HibernateUtil.getSessionFactory().getCurrentSession();
-         session.getTransaction().begin();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses where schoolid=? AND courseidentifier=?")
                 .addEntity(Courses.class)
                 .setParameter(0, schoolid)
@@ -62,7 +62,7 @@ public class CourseDAO {
 
     public static Courses getCourse(int courseid) {
         session = HibernateUtil.getSessionFactory().getCurrentSession();
-         session.getTransaction().begin();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseid=?")
                 .addEntity(Courses.class)
                 .setInteger(0, courseid);
@@ -72,9 +72,29 @@ public class CourseDAO {
         return course;
     }
 
+    public static Courses getCourseNoInstructor(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String semesters) {
+        session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.getTransaction().begin();
+        Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND semester = ?")
+                .addEntity(Courses.class)
+                .setParameter(0, courseIdentifier)
+                .setParameter(1, courseName)
+                .setParameter(2, scheduleblockid)
+                .setParameter(3, schoolid)
+                .setParameter(4, semesters);
+        List<Courses> course = query.list();
+
+        session.getTransaction().commit();
+        if (course.isEmpty()) {
+            return null;
+        } else {
+            return course.get(0);
+        }
+    }
+
     public static Courses getCourse(String courseIdentifier, String courseName, int scheduleblockid, int schoolid, String instructor, String semesters) {
         session = HibernateUtil.getSessionFactory().getCurrentSession();
-         session.getTransaction().begin();
+        session.getTransaction().begin();
         Query query = session.createSQLQuery("SELECT * FROM courses WHERE courseidentifier = ? AND coursename = ? AND scheduleblockid = ? AND schoolid = ? AND instructor = ? AND semester = ?")
                 .addEntity(Courses.class)
                 .setParameter(0, courseIdentifier)
