@@ -31,10 +31,12 @@ public class GenerationcriteriaDAO {
                 .addEntity(Generationcriteria.class)
                 .setInteger(0, studentID);
         List<Generationcriteria> gencriterias = query.list();
-        Generationcriteria gencriteria = gencriterias.get(0);
         session.getTransaction().commit();
+        if(!gencriterias.isEmpty()){
+        Generationcriteria gencriteria = gencriterias.get(0);
         return gencriteria;
-
+        }
+        return null;
     }
     public static void addDesiredCourses(int studentid, String courseid) {
         session = HibernateUtil.getSessionFactory().getCurrentSession();
