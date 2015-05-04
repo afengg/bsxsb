@@ -70,6 +70,7 @@ public class StudentDAO {
         newStudent.setPassword(password);
         newStudent.setRole("ROLE_USER");
         newStudent.setApproved(false);
+        newStudent.setLoggedin(false);
         session.save(newStudent);
 
         session.getTransaction().commit();

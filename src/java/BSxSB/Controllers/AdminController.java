@@ -40,28 +40,41 @@ public class AdminController {
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        Admins admin = AdminDAO.getAdmin(name);
-        if (!admin.getLoggedin()) {
-            AdminDAO.setLoggedIn(name);
-        }
-        SchoolDAO schoolDAO = new SchoolDAO();
-        ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
-        List<Schools> schools = schoolDAO.allSchools();
-        for (Schools school : schools) {
-            List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
-            String SB2Strings = "";
-            for (Scheduleblocks sb : scheduleBlocks) {
-                SB2Strings += sb.toString();
+        try{
+            Handler handler = new FileHandler("%tBSxSBAdminSchools.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+            logger.info("Admin Viewing List of Schools.");      
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String name = auth.getName();
+            Admins admin = AdminDAO.getAdmin(name);
+            if (!admin.getLoggedin()) {
+                AdminDAO.setLoggedIn(name);
             }
-            school.setScheduleblocks(SB2Strings);
-        }
-        model.addAttribute("school", schools);
-        return "admin";
+            SchoolDAO schoolDAO = new SchoolDAO();
+            ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
+            List<Schools> schools = schoolDAO.allSchools();
+            for (Schools school : schools) {
+                List<Scheduleblocks> scheduleBlocks = scheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
+                String SB2Strings = "";
+                for (Scheduleblocks sb : scheduleBlocks) {
+                    SB2Strings += sb.toString();
+                }
+                school.setScheduleblocks(SB2Strings);
+            }
+            model.addAttribute("school", schools);
+            logger.info("Schools successfully updated to model.");
+            handler.close();
+            logger.removeHandler(handler);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }   
+            return "admin";
     }
     @RequestMapping(value = "/admineditschool", method = RequestMethod.POST)
-    public String editRequest(Model model, @RequestParam(value = "schoolID") String schoolID){
+    public String editRequest(Model model, @RequestParam(value = "schoolID") String schoolID){  
         Schools school = SchoolDAO.getSchool(Integer.parseInt(schoolID));
         List<Scheduleblocks> scheduleBlocks = ScheduleBlockDAO.getSchoolsScheduleBlocks(school.getSchoolid());
             String SB2Strings = "";
@@ -79,12 +92,27 @@ public class AdminController {
     }
     @RequestMapping(value = "/admineditscheduleblocks", method = RequestMethod.POST)
     public String editScheduleBlocks(Model model, @RequestParam(value="schoolID") String schoolID){
+    try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminScheduleBlocks.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+            logger.info("Admin Viewing List of School's Schedule Blocks.");    
         int schoolID2 = Integer.parseInt(schoolID);
         Schools school = SchoolDAO.getSchool(schoolID2);
         List<Scheduleblocks> sbs = ScheduleBlockDAO.getSchoolsScheduleBlocks(schoolID2);
         model.addAttribute("school", school);
         model.addAttribute("scheduleblocks", sbs);
+            logger.info("School's schedule blocks successfully updated to model.");
+            handler.close();
+            logger.removeHandler(handler);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }   
         return "admineditscheduleblocks";
+        
     }
     
     @RequestMapping(value = "/addscheduleblock", method = RequestMethod.POST)
@@ -92,6 +120,12 @@ public class AdminController {
                                                 @RequestParam(value="schoolid") String schoolID,
                                                 @RequestParam(value="period") String period,
                                                 @RequestParam(value="days") String[] days){
+    try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminScheduleBlocks.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+            logger.info("Admin Viewing List of School's Schedule Blocks.");           
         int schoolID2 = Integer.parseInt(schoolID);
         if(period.isEmpty() || days.length == 0){
             model.addAttribute("sbempty", "A field is empty");
@@ -106,18 +140,41 @@ public class AdminController {
         Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolID2, periodInt, daysString);
         if(sb != null){
             model.addAttribute("sbexists", "This scheduleblock exists");
+            logger.info("Error: SB exists");
         }
         else{
         ScheduleBlockDAO.addScheduleBlock(schoolID2, periodInt, daysString);
+        logger.info("Scheduleblock with period " + periodInt + " and days " + daysString + " added to school.");
         }
+            handler.close();
+        logger.removeHandler(handler);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }   
         return editScheduleBlocks(model, schoolID);
     }
     
     @RequestMapping(value = "/deletescheduleblock", method = RequestMethod.POST)
     public String deleteScheduleBlocks(Model model, @RequestParam(value="scheduleblockID") String scheduleblockID,
                                                        @RequestParam(value="schoolid") String schoolid) {
+            try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminScheduleBlocks.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+            logger.info("Admin Viewing List of School's Schedule Blocks.");    
         int sbid = Integer.parseInt(scheduleblockID);
         ScheduleBlockDAO.deleteScheduleBlock(sbid);
+        logger.info("Scheduleblock " + sbid + "was deleted.");
+        handler.close();
+        logger.removeHandler(handler);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }   
         return editScheduleBlocks(model, schoolid);
     }
     @RequestMapping(value = "/editschool", method = RequestMethod.POST)
@@ -128,6 +185,12 @@ public class AdminController {
                                            @RequestParam(value="numdays") String numDays,
                                            @RequestParam(value="numperiods") String numPeriods,
                                            @RequestParam(value="lunchrange") String lunchRange){
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminSchools.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+            logger.info("Admin Viewing List of School's Schedule Blocks.");    
         boolean valid = true;
         if (schoolName.isEmpty() || academicYear.isEmpty() || numSemesters.isEmpty() || numPeriods.isEmpty() || lunchRange.isEmpty()) {
             model.addAttribute("fillout", "Please fill out all Required Fields");
@@ -145,10 +208,12 @@ public class AdminController {
                 */
         if (!academicYear.matches(academicYearRegex)) {
             model.addAttribute("ayregex", "Academic Year is invalid.");
+            logger.info("Error: invalid academic year.");
             valid = false;
         }
        if (!lunchRange.matches(lunchRangeRegex)) {
             model.addAttribute("lrregex", "Lunch Range is invalid.");
+            logger.info("Error: invalid lunch range.");
             valid = false;
         }
         if (valid == true) {
@@ -157,7 +222,14 @@ public class AdminController {
             //Delete all existing scheduleblocks
  
             model.addAttribute("added", "School has been successfully edited.");
+            logger.info("School was successfully edited");
         }
+                logger.removeHandler(handler);
+            } catch (IOException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            } catch (SecurityException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }  
         return editRequest(model, schoolID);
     }
     @RequestMapping(value = "/deleteschool", method = RequestMethod.POST)
@@ -165,13 +237,9 @@ public class AdminController {
         SchoolDAO.deleteSchool(schoolID);
         try {
             //Initialize the file that the logger writes to.
-            Handler handler = new FileHandler("./ViewSchools.log");
+            Handler handler = new FileHandler("%tBSxSBAdminSchools.log");
+            handler.setFormatter(new SimpleFormatter());
             logger.addHandler(handler);
-        } catch (IOException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        } catch (SecurityException ex) {
-            logger.log(Level.SEVERE, null, ex);
-        }
         logger.info("Admin Viewing List of Schools.");
         SchoolDAO schoolDAO = new SchoolDAO();
         ScheduleBlockDAO scheduleBlockDAO = new ScheduleBlockDAO();
@@ -187,40 +255,99 @@ public class AdminController {
         }
         model.addAttribute("school", schools);
         logger.info("Schools successfully added to model.");
+        handler.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "admin";
     }
 
     @RequestMapping(value = "/acceptaccount", method = RequestMethod.POST)
     public String acceptAccount(Model model, @RequestParam(value = "email") String email) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminStudentAccts.log");
+            logger.addHandler(handler);
+            handler.setFormatter(new SimpleFormatter());            
         StudentDAO.acceptAccount(email);
         Students student = StudentDAO.getStudent(email);
         EmailNotification.sendEmail(student.getEmail(), student.getFirstname());
         List<Students> accountrequests = StudentDAO.getAccountRequests();
         model.addAttribute("accountrequests", accountrequests);
+        logger.info("Successfully accepted: " + email);
+        logger.info("Account successfully updated to model");        
+        handler.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "adminmanagerequests";
+        
     }
 
     @RequestMapping(value = "/rejectaccount", method = RequestMethod.POST)
     public String rejectAccount(Model model, @RequestParam(value = "email") String email) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminStudentAccts.log");
+            logger.addHandler(handler);
+            handler.setFormatter(new SimpleFormatter());  
         StudentDAO.deleteAccount(email);
         List<Students> accountrequests = StudentDAO.getAccountRequests();
         model.addAttribute("accountrequests", accountrequests);
+        logger.info("Successfully rejected: " + email);
+        logger.info("Accounts successfully updated to model");
+        handler.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "adminmanagerequests";
     }
 
     @RequestMapping(value = "/acceptallaccount", method = RequestMethod.POST)
     public String acceptAllAccount(Model model) {
+    try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminStudentAccts.log");
+            logger.addHandler(handler);
+            handler.setFormatter(new SimpleFormatter());  
         StudentDAO.acceptAllAccount();
         List<Students> accountrequests = StudentDAO.getAccountRequests();
         model.addAttribute("accountrequests", accountrequests);
+        logger.info("Successfully accepted all accounts");
+        logger.info("Accounts successfully updated to model");
+        handler.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "adminmanagerequests";
     }
 
     @RequestMapping(value = "/deleteaccount", method = RequestMethod.POST)
     public String deleteAccount(Model model, @RequestParam(value = "email") String email) {
+    try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAdminStudentAccts.log");
+            logger.addHandler(handler);
+            handler.setFormatter(new SimpleFormatter());  
         StudentDAO.deleteAccount(email);
         List<Students> allStudents = StudentDAO.getAcceptedAccounts();
         model.addAttribute("allstudents", allStudents);
+        logger.info("Successfully deleted: " + email);
+        logger.info("Accounts successfully updated to model");        
+        handler.close();
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "adminmanageaccounts";
     }
 
@@ -237,6 +364,11 @@ public class AdminController {
             @RequestParam(value = "numdays") String numDays,
             @RequestParam(value = "legalblocks") String legalBlocks,
             @RequestParam(value = "lunchrange") String lunchRange) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBAddSchool.log",true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         boolean valid = true;
         if (schoolName.isEmpty() || academicYear.isEmpty() || numSemesters.isEmpty() || numPeriods.isEmpty() || legalBlocks.isEmpty() || lunchRange.isEmpty()) {
             model.addAttribute("fillout", "Please fill out all Required Fields");
@@ -252,20 +384,24 @@ public class AdminController {
                 + "(#<[1-" + periods + "];([1-" + days + "](,[1-" + days + "]){0," + days + "})>)*";
         if (!academicYear.matches(academicYearRegex)) {
             model.addAttribute("ayregex", "Academic Year is invalid");
+            logger.info("Invalid Academic Year");
             valid = false;
         }
         if (!lunchRange.matches(lunchRangeRegex)) {
             model.addAttribute("lrregex", "Lunch Range is invalid");
+            logger.info("Invalid Lunch Range");
             valid = false;
         }
         if (periods <= 9) {
             if (!legalBlocks.matches(legalBlockRegex)) {
                 model.addAttribute("lbregex", "Legal Block set is invalid");
+                logger.info("Invalid Legal Block");                
                 valid = false;
             }
         }
         if (school != null) {
             model.addAttribute("taken", "There is already a school with this name and academic year.");
+            logger.info("Invalid name and academic year");
             valid = false;
         }
         if (valid == true) {
@@ -283,9 +419,16 @@ public class AdminController {
             }
 
             model.addAttribute("added", "School has been successfully added.");
+            logger.info("Successfully added school" + schoolName);
         }
+        handler.close();
+        logger.removeHandler(handler);
         // Scheduleblocks are in the form of <period;day1,day2..>#<period;day1,day2..>.
-
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "adminaddschool";
     }
 

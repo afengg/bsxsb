@@ -29,6 +29,11 @@ import java.lang.annotation.Annotation;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,13 +56,19 @@ import org.springframework.web.portlet.ModelAndView;
  */
 @Controller
 public class StudentController {
-
+    static final Logger logger = Logger.getLogger(StudentController.class.getName());
+    
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(Model model, @RequestParam(value = "firstName") String firstName,
             @RequestParam(value = "lastName") String lastName,
             @RequestParam(value = "email") String email,
             @RequestParam(value = "password") String password,
             @RequestParam(value = "school") String school) {
+         try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentAccount.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         List<Schools> schools = SchoolDAO.allSchools();
         if (schools != null) {
             model.addAttribute("school", schools);
@@ -65,11 +76,21 @@ public class StudentController {
         Students student = StudentDAO.getStudent(email);
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             model.addAttribute("fillout", "Please fill out all Required Fields");
+            logger.info("A field was not filled.");
         } else if (student != null) {
             model.addAttribute("taken", "The email address is taken");
+            logger.info("Email address was taken.");
         } else {
             StudentDAO.register(firstName, lastName, email, password, school);
             model.addAttribute("registered", "You have been successfully registered. Please Login");
+            logger.info("Successfully registered an account with email " + email);
+        }
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
         }
         return "index";
     }
@@ -104,6 +125,11 @@ public class StudentController {
 
     @RequestMapping(value = "/studentassignedcourses", method = RequestMethod.GET)
     public String assignedCourses(Model model) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentAssignedCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -125,6 +151,7 @@ public class StudentController {
                 }
             }
         }
+                logger.info("Successfully retrieved all friends for each course.");
         for (int s = 0; s < school.getNumsemesters(); s++) {
             List<Courses[]> schedule = new ArrayList<>();
             for (int i = 0; i < school.getNumperiods(); i++) {
@@ -147,15 +174,28 @@ public class StudentController {
             }
             semesters.add(schedule);
         }
+                logger.info("Successfully retrieved schedule for each semester.");
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("semester", semesters);
+                handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentassignedcourses";
     }
 
     @RequestMapping(value = "/studentcourseofferings", method = RequestMethod.GET)
     public String courseOfferings(Model model, @RequestParam(value = "year") String year) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentCourseOfferings.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -170,10 +210,18 @@ public class StudentController {
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
             scheduleblocks.add(ScheduleBlockDAO.getScheduleBlock(course.getScheduleblockid()));
+            logger.info("Retrieved course: " + course.getCourseidentifier());
         }
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("courses", courses);
+                handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentcourseofferings";
     }
 
@@ -192,6 +240,11 @@ public class StudentController {
 
     @RequestMapping(value = "/studenteditassigned", method = RequestMethod.GET)
     public String editAssigned(Model model) {
+                try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentAssignedCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -205,16 +258,30 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+        logger.info("Courses for this student added to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studenteditassigned";
     }
 
     @RequestMapping(value = "/removeassign", method = RequestMethod.POST)
     public String removeAssigned(Model model, @RequestParam(value = "id") int id) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentAssignedCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         RegistrationDAO.removereg(id, currentStudent.getStudentid());
         CourseDAO.decrementCourseStudentsAndDelete(id);
+        logger.info("Course successfully deleted");
         List<Courses> courses = CourseDAO.getCoursesForStudent(currentStudent.getStudentid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<Scheduleblocks>();
         for (Courses course : courses) {
@@ -225,6 +292,14 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+        logger.info("Courses for this student added to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studenteditassigned";
     }
 
@@ -300,8 +375,16 @@ public class StudentController {
             @RequestParam(value = "semesters") String[] semesters,
             @RequestParam(value = "period") String period,
             @RequestParam(value = "days") String[] days) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentAssignedCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         if(coursename.isEmpty() || instructor.isEmpty() || semesters[0].matches("noinput")  || period.isEmpty() || days[0].matches("noinput")){
             model.addAttribute("fieldempty", "Please fill out all required fields.");
+            logger.info("Error: Fields are empty");
+            handler.close();
+            logger.removeHandler(handler);
             return enterCourses(model);
         }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -327,16 +410,19 @@ public class StudentController {
         Scheduleblocks sb = ScheduleBlockDAO.getScheduleBlock(schoolid, periodInt, daysString);
         if (sb == null) {
             model.addAttribute("sbinvalid", "Scheduleblock provided is invalid.");
+            logger.info("Error: The chosen scheduleblock does not exist for this school");
             // return error msg
         } else {
             Courses c = CourseDAO.getCourse(courseidentifier, coursename, sb.getScheduleblockid(), schoolid, instructor, semString);
             if (c != null) {
                 if (RegistrationDAO.isRegistered(c, currentStudent)) {
                     model.addAttribute("alreadyreg", "You are already registered for this course");
+                    logger.info("Error: already registered for this course");
                 } else {
                     RegistrationDAO.addRegistration(c.getCourseid(), currentStudent.getStudentid());
                     CourseDAO.incrementCourseStudents(c.getCourseid());
                     model.addAttribute("halfsuccess", "Course already exists, you have been successfully added to the course roster.");
+                    logger.info("Course exists and student has been added to roster");
                 }
             } else {
                 int sbid = sb.getScheduleblockid();
@@ -345,6 +431,7 @@ public class StudentController {
                 int studentid = currentStudent.getStudentid();
                 CourseDAO.addCourse(newCourse, studentid);
                 model.addAttribute("success", "New course successfully added.");
+                logger.info("Course " + courseidentifier + " " + coursename + " successfully added");
             }
         }
 
@@ -354,11 +441,23 @@ public class StudentController {
         model.addAttribute("numSemesters", currentSchool.getNumsemesters());
         model.addAttribute("numPeriods", currentSchool.getNumperiods());
         model.addAttribute("numDays", currentSchool.getNumdays());
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studententercourses";
     }
 
     @RequestMapping(value = "/studentgeneratecourses", method = RequestMethod.GET)
     public String generateCourses(Model model) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -395,15 +494,29 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+        logger.info("Successfully loaded generation criteria.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/adddesiredcourse", method = RequestMethod.POST)
     public String adddesiredcourses(Model model, @RequestParam("id") String id) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.addDesiredCourses(currentStudent.getStudentid(), id);
+        logger.info("Course successfully added to generation criteria.");
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
@@ -424,6 +537,7 @@ public class StudentController {
             String[] lunch = gencriteria.getLunch().split(",");
             model.addAttribute("lunch", lunch);
         }
+        logger.info("Generation Criteria successfully updated.");
         String lunchrange = currentSchool.getLunchrange();
         model.addAttribute("lunchrange", lunchrange);
         int numdays = currentSchool.getNumdays();
@@ -435,15 +549,28 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+                handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/removedesiredcourse", method = RequestMethod.POST)
     public String removedesiredcourses(Model model, @RequestParam("id") String id) {
+                try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.removeDesiredCourses(currentStudent.getStudentid(), id);
+        logger.info("Course sucessfully removed from generation criteria.");
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
@@ -477,16 +604,30 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+        logger.info("Generation criteria successfully updated.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/removelunch", method = RequestMethod.POST)
     public String removelunch(Model model, @RequestParam("lunch") String lunchday) {
+         try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         GenerationcriteriaDAO.removeLunch(currentStudent.getStudentid(), lunchday);
+        logger.info(lunchday + " removed from generation crtieria.");
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
         for (Courses course : courses) {
@@ -517,15 +658,29 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+                logger.info("Generation criteria successfully updated.");
+                handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/addlunch", method = RequestMethod.POST)
     public String addlunch(Model model, @RequestParam("lunch") String lunchday) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         GenerationcriteriaDAO.addLunch(currentStudent.getStudentid(), lunchday);
+        logger.info(lunchday + " successfully added to Generation Criteria.");
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Courses> courses = CourseDAO.getCourseOfferingForSchool(currentSchool.getSchoolid());
         List<Scheduleblocks> scheduleblocks = new ArrayList<>();
@@ -557,11 +712,23 @@ public class StudentController {
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("scheduleblocks", scheduleblocks);
         model.addAttribute("courses", courses);
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentgeneratecourses";
     }
 
     @RequestMapping(value = "/generateschedule", method = RequestMethod.GET)
     public String generateSchedule(Model model, @RequestParam("instructors") String instructors) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentGenerateCourses.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
@@ -767,77 +934,145 @@ public class StudentController {
                 semesters.add(schedule);
             }
             model.addAttribute("semester", semesters);
+            logger.info("Generated schedule complete.");
         } else {
             model.addAttribute("conflictCourses", conflictCourses);
+            logger.info("Conflicting courses displayed.");
         }
 
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentviewgenerated";
     }
 
     @RequestMapping(value = "/acceptfriend", method = RequestMethod.POST)
     public String acceptfriend(Model model, @RequestParam(value = "id") int id) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentFriends.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.acceptfriend(currentStudent.getStudentid(), id);
+        logger.info("Approved friendship between " + currentStudent.getStudentid() + " and " + id);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
+        logger.info("Friend requests updated to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentmanagefriends";
     }
 
     @RequestMapping(value = "/rejectfriend", method = RequestMethod.POST)
     public String rejectfriend(Model model, @RequestParam(value = "id") int id) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentFriends.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
+        logger.info("Rejected friendship between " + currentStudent.getStudentid() + " and " + id);
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
+        logger.info("Friend requests updated to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentmanagefriends";
     }
 
     @RequestMapping(value = "/unfriend", method = RequestMethod.POST)
     public String unfriend(Model model, @RequestParam(value = "id") int id) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentFriends.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         FriendshipsDAO.deletefriend(currentStudent.getStudentid(), id);
+        logger.info("Successfully deleted friendship between " + currentStudent.getStudentid() + " and " + id);
         List<Students> friends = StudentDAO.getFriends(currentStudent.getStudentid());
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friends", friends);
+        logger.info("Friends updated to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentdisplayfriends";
     }
 
     @RequestMapping(value = "/addfriend", method = RequestMethod.POST)
     public String addfriend(Model model, @RequestParam(value = "email") String email) {
+        try {
+            //Initialize the file that the logger writes to.
+            Handler handler = new FileHandler("%tBSxSBStudentFriends.log", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         Students currentStudent = StudentDAO.getStudent(name);
         Students friend = StudentDAO.getStudent(email);
         if (friend == null) {
             model.addAttribute("msg", "The email you have entered doesn't belong to any student");
+            logger.info(email + " does not exist in database.");
         } else if (friend.getStudentid() == currentStudent.getStudentid()) {
             model.addAttribute("msg", "Can't friend yourself...");
+            logger.info("This is your email.");
         } else if (friend.getSchoolid() != currentStudent.getSchoolid()) {
             model.addAttribute("msg", "Can not add a student from different school");
+            logger.info("This student belongs to a different school");
         } else {
             model.addAttribute("msg", FriendshipsDAO.addfriend(friend, currentStudent));
+            logger.info("Successfully created a friend request.");    
         }
         List<Students> friendrequests = StudentDAO.getFriendRequests(currentStudent.getStudentid());
         Schools currentSchool = SchoolDAO.getSchool(currentStudent.getSchoolid());
         List<Schools> schoolyears = SchoolDAO.getSchoolSameName(currentSchool.getSchoolname());
         model.addAttribute("schoolyears", schoolyears);
         model.addAttribute("friendrequests", friendrequests);
+        logger.info("Friend requests updated to model.");
+        handler.close();
+        logger.removeHandler(handler);
+         } catch (IOException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            logger.log(Level.SEVERE, null, ex);
+        }
         return "studentmanagefriends";
     }
 
