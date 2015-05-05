@@ -167,7 +167,7 @@ public class AdminController {
             logger.info("Admin Viewing List of School's Schedule Blocks.");    
         int sbid = Integer.parseInt(scheduleblockID);
         ScheduleBlockDAO.deleteScheduleBlock(sbid);
-        logger.info("Scheduleblock " + sbid + "was deleted.");
+        logger.info("Scheduleblock " + sbid + " was deleted.");
         handler.close();
         logger.removeHandler(handler);
             } catch (IOException ex) {
@@ -419,7 +419,7 @@ public class AdminController {
             }
 
             model.addAttribute("added", "School has been successfully added.");
-            logger.info("Successfully added school" + schoolName);
+            logger.info("Successfully added school " + schoolName);
         }
         handler.close();
         logger.removeHandler(handler);
